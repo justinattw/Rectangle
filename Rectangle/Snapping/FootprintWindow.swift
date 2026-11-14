@@ -65,7 +65,7 @@ enum FootprintStyle {
         return NSColor(srgbRed: gray, green: gray, blue: gray, alpha: 0.35)
     }
     static var borderWidth: CGFloat {
-        UserDefaults.standard.object(forKey: Defaults.footprintBorderWidth.key) == nil
+        JSONPreferences.shared.object(forKey: Defaults.footprintBorderWidth.key) == nil
             ? 1 : max(0, CGFloat(Defaults.footprintBorderWidth.value))
     }
 }
@@ -154,7 +154,7 @@ class FootprintWindow: NSWindow {
          accessibility: @escaping () -> FootprintAccessibility = { .current }) {
         self.accessibility = accessibility
         super.init(contentRect: initialFrame, styleMask: .borderless, backing: .buffered, defer: false)
-        title = "Rectangle"
+        title = "JRectangle"
         colorSpace = .sRGB
         isOpaque = false
         backgroundColor = .clear

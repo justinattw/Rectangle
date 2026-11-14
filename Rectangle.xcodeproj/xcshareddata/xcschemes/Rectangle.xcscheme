@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9824700822AF9B7D0037B409"
-               BuildableName = "Rectangle.app"
+               BuildableName = "JRectangle.app"
                BlueprintName = "Rectangle"
                ReferencedContainer = "container:Rectangle.xcodeproj">
             </BuildableReference>
@@ -26,12 +26,12 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "NO">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9824700822AF9B7D0037B409"
-            BuildableName = "Rectangle.app"
+            BuildableName = "JRectangle.app"
             BlueprintName = "Rectangle"
             ReferencedContainer = "container:Rectangle.xcodeproj">
          </BuildableReference>
@@ -48,6 +48,13 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "JRECTANGLE_TESTING"
+            value = "1"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -64,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9824700822AF9B7D0037B409"
-            BuildableName = "Rectangle.app"
+            BuildableName = "JRectangle.app"
             BlueprintName = "Rectangle"
             ReferencedContainer = "container:Rectangle.xcodeproj">
          </BuildableReference>
@@ -81,7 +88,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9824700822AF9B7D0037B409"
-            BuildableName = "Rectangle.app"
+            BuildableName = "JRectangle.app"
             BlueprintName = "Rectangle"
             ReferencedContainer = "container:Rectangle.xcodeproj">
          </BuildableReference>

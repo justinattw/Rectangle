@@ -512,7 +512,7 @@
       }
     },
     "1Xt-HY-uBw.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Rectangle\"; ObjectID = \"1Xt-HY-uBw\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"JRectangle\"; ObjectID = \"1Xt-HY-uBw\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -524,187 +524,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         }
       }
@@ -2054,7 +2054,7 @@
       }
     },
     "4sb-4s-VLi.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Quit Rectangle\"; ObjectID = \"4sb-4s-VLi\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Quit JRectangle\"; ObjectID = \"4sb-4s-VLi\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -2066,193 +2066,193 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukončit Rectangle"
+            "value" : "Ukončit JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle beenden"
+            "value" : "JRectangle beenden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Quit Rectangle"
+            "value" : "Quit JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "خروج از Rectangle"
+            "value" : "خروج از JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quitter Rectangle"
+            "value" : "Quitter JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle बंद करें"
+            "value" : "JRectangle बंद करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keluar Rectangle"
+            "value" : "Keluar JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esci da Rectangle"
+            "value" : "Esci da JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleを終了"
+            "value" : "JRectangleを終了"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 종료"
+            "value" : "JRectangle 종료"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Išeiti iš Rectangle"
+            "value" : "Išeiti iš JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle stoppen"
+            "value" : "JRectangle stoppen"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wyjdź z Rectangle"
+            "value" : "Wyjdź z JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encerrar Rectangle"
+            "value" : "Encerrar JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sair do Rectangle"
+            "value" : "Sair do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Închide Rectangle"
+            "value" : "Închide JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выход из Rectangle"
+            "value" : "Выход из JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukončiť Rectangle"
+            "value" : "Ukončiť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avsluta Rectangle"
+            "value" : "Avsluta JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'dan Çık"
+            "value" : "JRectangle'dan Çık"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вийти з Rectangle"
+            "value" : "Вийти з JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thoát Rectangle"
+            "value" : "Thoát JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "退出 Rectangle"
+            "value" : "退出 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "結束 Rectangle"
+            "value" : "結束 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "結束Rectangle"
+            "value" : "結束JRectangle"
           }
         }
       }
     },
     "5kV-Vb-QxS.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"About Rectangle\"; ObjectID = \"5kV-Vb-QxS\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"About JRectangle\"; ObjectID = \"5kV-Vb-QxS\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -2264,187 +2264,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quant a Rectangle"
+            "value" : "Quant a JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quant a Rectangle"
+            "value" : "Quant a JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O aplikaci Rectangle"
+            "value" : "O aplikaci JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Über Rectangle"
+            "value" : "Über JRectangle"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "About Rectangle"
+            "value" : "About JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de Rectangle"
+            "value" : "Acerca de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de Rectangle"
+            "value" : "Acerca de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "دربارهٔ Rectangle"
+            "value" : "دربارهٔ JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À propos de Rectangle"
+            "value" : "À propos de JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle के बारे में"
+            "value" : "JRectangle के बारे में"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tentang Rectangle"
+            "value" : "Tentang JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informazioni su Rectangle"
+            "value" : "Informazioni su JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleについて"
+            "value" : "JRectangleについて"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 정보"
+            "value" : "JRectangle 정보"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apie Rectangle"
+            "value" : "Apie JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om Rectangle"
+            "value" : "Om JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Over Rectangle"
+            "value" : "Over JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om Rectangle"
+            "value" : "Om JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle"
+            "value" : "O JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sobre o Rectangle"
+            "value" : "Sobre o JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sobre o Rectangle"
+            "value" : "Sobre o JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Despre Rectangle"
+            "value" : "Despre JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "О Rectangle"
+            "value" : "О JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O aplikácii Rectangle"
+            "value" : "O aplikácii JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om Rectangle"
+            "value" : "Om JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Hakkında"
+            "value" : "JRectangle Hakkında"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Про Rectangle"
+            "value" : "Про JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Giới thiệu Rectangle"
+            "value" : "Giới thiệu JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "关于 Rectangle"
+            "value" : "关于 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於 Rectangle"
+            "value" : "關於 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於Rectangle"
+            "value" : "關於JRectangle"
           }
         }
       }
@@ -3794,25 +3794,25 @@
         "ca" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ukončit Rectangle"
+            "value" : "Ukončit JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rectangle beenden"
+            "value" : "JRectangle beenden"
           }
         },
         "en" : {
@@ -3824,157 +3824,157 @@
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "خروج از Rectangle"
+            "value" : "خروج از JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quitter Rectangle"
+            "value" : "Quitter JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rectangle बंद करें"
+            "value" : "JRectangle बंद करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Keluar Rectangle"
+            "value" : "Keluar JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Esci da Rectangle"
+            "value" : "Esci da JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rectangleを終了"
+            "value" : "JRectangleを終了"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rectangle 종료"
+            "value" : "JRectangle 종료"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Išeiti iš Rectangle"
+            "value" : "Išeiti iš JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rectangle stoppen"
+            "value" : "JRectangle stoppen"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wyjdź z Rectangle"
+            "value" : "Wyjdź z JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Encerrar Rectangle"
+            "value" : "Encerrar JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sair do Rectangle"
+            "value" : "Sair do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Închide Rectangle"
+            "value" : "Închide JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Выход из Rectangle"
+            "value" : "Выход из JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ukončiť Rectangle"
+            "value" : "Ukončiť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Avsluta Rectangle"
+            "value" : "Avsluta JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rectangle'dan Çık"
+            "value" : "JRectangle'dan Çık"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Вийти з Rectangle"
+            "value" : "Вийти з JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Thoát Rectangle"
+            "value" : "Thoát JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "退出 Rectangle"
+            "value" : "退出 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "結束 Rectangle"
+            "value" : "結束 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "結束Rectangle"
+            "value" : "結束JRectangle"
           }
         }
       }
@@ -7906,79 +7906,79 @@
         }
       }
     },
-    "Disable in Rectangle" : {
+    "Disable in JRectangle" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In Rectangle deaktivieren"
+            "value" : "In JRectangle deaktivieren"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desactivar en Rectangle"
+            "value" : "Desactivar en JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desactivar en Rectangle"
+            "value" : "Desactivar en JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "غیرفعال‌سازی در Rectangle"
+            "value" : "غیرفعال‌سازی در JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle में अक्षम करें"
+            "value" : "JRectangle में अक्षम करें"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 側を無効化"
+            "value" : "JRectangle 側を無効化"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle의 기능 끄기"
+            "value" : "JRectangle의 기능 끄기"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desativar no Rectangle"
+            "value" : "Desativar no JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vypnúť v Rectangle"
+            "value" : "Vypnúť v JRectangle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вимкнути в Rectangle"
+            "value" : "Вимкнути в JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vô hiệu hóa trong Rectangle"
+            "value" : "Vô hiệu hóa trong JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 里禁用"
+            "value" : "在 JRectangle 里禁用"
           }
         }
       }
@@ -8442,37 +8442,37 @@
         }
       }
     },
-    "Drag to screen edge tiling is enabled in both Rectangle and macOS." : {
+    "Drag to screen edge tiling is enabled in both JRectangle and macOS." : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Das Ziehen zum Bildschirmrand für das Anordnen von Fenstern ist sowohl in Rectangle als auch in den macOS Systemeinstellungen aktiviert."
+            "value" : "Das Ziehen zum Bildschirmrand für das Anordnen von Fenstern ist sowohl in JRectangle als auch in den macOS Systemeinstellungen aktiviert."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en Rectangle como en macOS."
+            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en JRectangle como en macOS."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en Rectangle como en macOS."
+            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en JRectangle como en macOS."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "چیدمان کاشی‌وار با کشیدن به لبهٔ نمایشگر در هر دوی Rectangle و macOS فعال است."
+            "value" : "چیدمان کاشی‌وار با کشیدن به لبهٔ نمایشگر در هر دوی JRectangle و macOS فعال است."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "स्क्रीन के किनारे पर ड्रैग करके टाइलिंग Rectangle और macOS दोनों में सक्षम है।"
+            "value" : "स्क्रीन के किनारे पर ड्रैग करके टाइलिंग JRectangle और macOS दोनों में सक्षम है।"
           }
         },
         "ja" : {
@@ -8484,37 +8484,37 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "화면 가장자리로 드래그해 타일을 정렬하는 기능이 Rectangle과 macOS 설정에서 모두 켜져 있습니다."
+            "value" : "화면 가장자리로 드래그해 타일을 정렬하는 기능이 JRectangle과 macOS 설정에서 모두 켜져 있습니다."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A organização lado a lado ao arrastar para a borda da tela está ativada no Rectangle e no macOS."
+            "value" : "A organização lado a lado ao arrastar para a borda da tela está ativada no JRectangle e no macOS."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Potiahnutie na okraj obrazovky je zapnuté v Rectangle aj macOS."
+            "value" : "Potiahnutie na okraj obrazovky je zapnuté v JRectangle aj macOS."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розкладання вікон перетягуванням до краю екрана увімкнено і в Rectangle, і в macOS."
+            "value" : "Розкладання вікон перетягуванням до краю екрана увімкнено і в JRectangle, і в macOS."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tính năng kéo để ghép cạnh màn hình được bật trong cả Rectangle và macOS."
+            "value" : "Tính năng kéo để ghép cạnh màn hình được bật trong cả JRectangle và macOS."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 和 macOS 中都启用了拖移窗口至屏幕边缘实现平铺"
+            "value" : "在 JRectangle 和 macOS 中都启用了拖移窗口至屏幕边缘实现平铺"
           }
         }
       }
@@ -9711,7 +9711,7 @@
       }
     },
     "FKE-Sm-Kum.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Rectangle Help\"; ObjectID = \"FKE-Sm-Kum\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"JRectangle Help\"; ObjectID = \"FKE-Sm-Kum\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -9723,187 +9723,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda de Rectangle"
+            "value" : "Ajuda de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda de Rectangle"
+            "value" : "Ajuda de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle nápověda"
+            "value" : "JRectangle nápověda"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-Hilfe"
+            "value" : "JRectangle-Hilfe"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Rectangle Help"
+            "value" : "JRectangle Help"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayuda de Rectangle"
+            "value" : "Ayuda de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayuda de Rectangle"
+            "value" : "Ayuda de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "راهنمای Rectangle"
+            "value" : "راهنمای JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aide Rectangle"
+            "value" : "Aide JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle सहायता"
+            "value" : "JRectangle सहायता"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bantuan Rectangle"
+            "value" : "Bantuan JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aiuto su Rectangle"
+            "value" : "Aiuto su JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleヘルプ"
+            "value" : "JRectangleヘルプ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 도움말"
+            "value" : "JRectangle 도움말"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Pagalba"
+            "value" : "JRectangle Pagalba"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-hjelp"
+            "value" : "JRectangle-hjelp"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle hulp"
+            "value" : "JRectangle hulp"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-hjelp"
+            "value" : "JRectangle-hjelp"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pomoc Rectangle"
+            "value" : "Pomoc JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda do Rectangle"
+            "value" : "Ajuda do JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda do Rectangle"
+            "value" : "Ajuda do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajutor Rectangle"
+            "value" : "Ajutor JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Справка"
+            "value" : "JRectangle Справка"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pomocník pre Rectangle"
+            "value" : "Pomocník pre JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-hjälp"
+            "value" : "JRectangle-hjälp"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Yardım"
+            "value" : "JRectangle Yardım"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Довідка по Rectangle"
+            "value" : "Довідка по JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trợ giúp của Rectangle"
+            "value" : "Trợ giúp của JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 帮助"
+            "value" : "JRectangle 帮助"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 輔助說明"
+            "value" : "JRectangle 輔助說明"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle輔助說明"
+            "value" : "JRectangle輔助說明"
           }
         }
       }
@@ -10560,7 +10560,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleについて"
+            "value" : "JRectangleについて"
           }
         },
         "ko" : {
@@ -10596,7 +10596,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle"
+            "value" : "O JRectangle"
           }
         },
         "pt-BR" : {
@@ -14130,7 +14130,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleについて"
+            "value" : "JRectangleについて"
           }
         },
         "ko" : {
@@ -14142,7 +14142,7 @@
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apie Rectangle"
+            "value" : "Apie JRectangle"
           }
         },
         "nb" : {
@@ -14166,7 +14166,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle"
+            "value" : "O JRectangle"
           }
         },
         "pt-BR" : {
@@ -14190,7 +14190,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "О Rectangle"
+            "value" : "О JRectangle"
           }
         },
         "sk" : {
@@ -17440,7 +17440,7 @@
       }
     },
     "Olw-nP-bQN.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Hide Rectangle\"; ObjectID = \"Olw-nP-bQN\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Hide JRectangle\"; ObjectID = \"Olw-nP-bQN\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -17452,187 +17452,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Amaga Rectangle"
+            "value" : "Amaga JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Amaga Rectangle"
+            "value" : "Amaga JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skrýt Rectangle"
+            "value" : "Skrýt JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle ausblenden"
+            "value" : "JRectangle ausblenden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Hide Rectangle"
+            "value" : "Hide JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "پنهان کردن Rectangle"
+            "value" : "پنهان کردن JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Masquer Rectangle"
+            "value" : "Masquer JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle छिपाएँ"
+            "value" : "JRectangle छिपाएँ"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sembunyikan Rectangle"
+            "value" : "Sembunyikan JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nascondi Rectangle"
+            "value" : "Nascondi JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleを非表示"
+            "value" : "JRectangleを非表示"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 가리기"
+            "value" : "JRectangle 가리기"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slėpti Rectangle"
+            "value" : "Slėpti JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skjul Rectangle"
+            "value" : "Skjul JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verberg Rectangle"
+            "value" : "Verberg JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gøym Rectangle"
+            "value" : "Gøym JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukryj Rectangle"
+            "value" : "Ukryj JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ascunde Rectangle"
+            "value" : "Ascunde JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скрыть Rectangle"
+            "value" : "Скрыть JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skryť Rectangle"
+            "value" : "Skryť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dölj Rectangle"
+            "value" : "Dölj JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'ı Gizle"
+            "value" : "JRectangle'ı Gizle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сховати Rectangle"
+            "value" : "Сховати JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ẩn Rectangle"
+            "value" : "Ẩn JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "隐藏 Rectangle"
+            "value" : "隐藏 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "隱藏 Rectangle"
+            "value" : "隱藏 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "隱藏Rectangle"
+            "value" : "隱藏JRectangle"
           }
         }
       }
@@ -22264,49 +22264,49 @@
         }
       }
     },
-    "Tiling in Rectangle has been disabled" : {
+    "Tiling in JRectangle has been disabled" : {
       "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha desactivado el mosaico de Rectangle"
+            "value" : "Se ha desactivado el mosaico de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha desactivado el mosaico de Rectangle"
+            "value" : "Se ha desactivado el mosaico de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "چیدمان کاشی‌وار در Rectangle غیرفعال شده است"
+            "value" : "چیدمان کاشی‌وار در JRectangle غیرفعال شده است"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle में टाइलिंग अक्षम कर दी गई है"
+            "value" : "JRectangle में टाइलिंग अक्षम कर दी गई है"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle의 타일 정리 기능이 비활성화됨"
+            "value" : "JRectangle의 타일 정리 기능이 비활성화됨"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A organização lado a lado do Rectangle foi desativada"
+            "value" : "A organização lado a lado do JRectangle foi desativada"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розкладання вікон у Rectangle вимкнено"
+            "value" : "Розкладання вікон у JRectangle вимкнено"
           }
         },
         "vi" : {
@@ -22318,7 +22318,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 中的窗口平铺功能已被禁用"
+            "value" : "JRectangle 中的窗口平铺功能已被禁用"
           }
         }
       }
@@ -23325,7 +23325,7 @@
       }
     },
     "uQy-DD-JDr.title" : {
-      "comment" : "Class = \"NSMenu\"; title = \"Rectangle\"; ObjectID = \"uQy-DD-JDr\";",
+      "comment" : "Class = \"NSMenu\"; title = \"JRectangle\"; ObjectID = \"uQy-DD-JDr\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -23337,187 +23337,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         }
       }
@@ -27908,193 +27908,193 @@
       }
     },
     "yvN-PE-bxn.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Quit Rectangle\"; ObjectID = \"yvN-PE-bxn\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Quit JRectangle\"; ObjectID = \"yvN-PE-bxn\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukončit Rectangle"
+            "value" : "Ukončit JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle beenden"
+            "value" : "JRectangle beenden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Quit Rectangle"
+            "value" : "Quit JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "خروج از Rectangle"
+            "value" : "خروج از JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quitter Rectangle"
+            "value" : "Quitter JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle बंद करें"
+            "value" : "JRectangle बंद करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keluar Rectangle"
+            "value" : "Keluar JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esci da Rectangle"
+            "value" : "Esci da JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleを終了"
+            "value" : "JRectangleを終了"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 종료"
+            "value" : "JRectangle 종료"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Išeiti iš Rectangle"
+            "value" : "Išeiti iš JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle stoppen"
+            "value" : "JRectangle stoppen"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wyjdź z Rectangle."
+            "value" : "Wyjdź z JRectangle."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encerrar Rectangle"
+            "value" : "Encerrar JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sair do Rectangle"
+            "value" : "Sair do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Închide Rectangle"
+            "value" : "Închide JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выход из Rectangle"
+            "value" : "Выход из JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukončiť Rectangle"
+            "value" : "Ukončiť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avsluta Rectangle"
+            "value" : "Avsluta JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'dan Çık"
+            "value" : "JRectangle'dan Çık"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вийти з Rectangle"
+            "value" : "Вийти з JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thoát Rectangle"
+            "value" : "Thoát JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "退出 Rectangle"
+            "value" : "退出 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "結束 Rectangle"
+            "value" : "結束 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "結束Rectangle"
+            "value" : "結束JRectangle"
           }
         }
       }

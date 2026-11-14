@@ -11,17 +11,16 @@ extension Defaults {
         for action in WindowAction.active {
             if let masShortcut = ShortcutCycle.shortcut(for: action) {
                 shortcuts[action.name] = Shortcut(masShortcut: masShortcut)
+            } else if JSONPreferences.shared.object(forKey: action.name) != nil {
+                shortcuts[action.name] = Shortcut(0, -1)
             }
         }
-        for defaultsKey in TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys + DesktopMoveManager.defaultsKeys {
-            guard
-                let shortcutDict = UserDefaults.standard.dictionary(forKey: defaultsKey),
-                let dictTransformer = ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName)),
-                let shortcut = dictTransformer.transformedValue(shortcutDict) as? MASShortcut
-            else {
-                continue
+        for defaultsKey in TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys + DesktopMoveManager.defaultsKeys + [CurrentSpaceWindowSwitcher.shortcutDefaultsKey] {
+            if let shortcut = ShortcutCycle.shortcut(forDefaultsKey: defaultsKey) {
+                shortcuts[defaultsKey] = Shortcut(masShortcut: shortcut)
+            } else if JSONPreferences.shared.object(forKey: defaultsKey) != nil {
+                shortcuts[defaultsKey] = Shortcut(0, -1)
             }
-            shortcuts[defaultsKey] = Shortcut(masShortcut: shortcut)
         }
         
         var codableDefaults = [String: CodableDefault]()
@@ -51,46 +50,54 @@ extension Defaults {
         return try? decoder.decode(Config.self, from: jsonData)
     }
     
-    static func load(fileUrl: URL, notificationCenter: NotificationCenter = .default) {
-        guard let dictTransformer = ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName)) else { return }
-        
+    @discardableResult
+    static func load(fileUrl: URL, notificationCenter: NotificationCenter = .default) -> Bool {
         // Size cap: legitimate configs are ~tens of KB; refuse anything that
         // looks abusive (defense against OOM via a giant config file).
         if let attrs = try? FileManager.default.attributesOfItem(atPath: fileUrl.path),
            let size = attrs[.size] as? NSNumber, size.intValue > 1_048_576 {
-            return
+            AlertUtil.oneButtonAlert(question: "Could not import configuration", text: "The configuration file is larger than 1 MB.")
+            return false
         }
         
         guard let jsonString = try? String(contentsOf: fileUrl, encoding: .utf8),
-              let config = convert(jsonString: jsonString) else { return }
+              let config = convert(jsonString: jsonString) else {
+            AlertUtil.oneButtonAlert(question: "Could not import configuration", text: "The file could not be read as a JRectangle configuration.")
+            return false
+        }
 
-        for availableDefault in Defaults.array {
-            if let codedDefault = config.defaults[availableDefault.key] {
-                availableDefault.load(from: codedDefault)
-            }
-        }
-        
-        for action in WindowAction.active {
-            let importedShortcut = config.shortcuts[action.name] ?? action.aliasName.flatMap { config.shortcuts[$0] }
-            if let importedShortcut, importedShortcut.keyCode >= 0 {
-                let shortcut = importedShortcut.toMASSHortcut()
-                let dictValue = dictTransformer.reverseTransformedValue(shortcut)
-                UserDefaults.standard.setValue(dictValue, forKey: action.name)
-            } else {
-                UserDefaults.standard.removeObject(forKey: action.name)
-            }
-        }
-        for defaultsKey in TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys + DesktopMoveManager.defaultsKeys {
-            if let importedShortcut = config.shortcuts[defaultsKey], importedShortcut.keyCode >= 0 {
-                let shortcut = importedShortcut.toMASSHortcut()
-                let dictValue = dictTransformer.reverseTransformedValue(shortcut)
-                UserDefaults.standard.setValue(dictValue, forKey: defaultsKey)
-            } else {
-                UserDefaults.standard.removeObject(forKey: defaultsKey)
+        let saved = JSONPreferences.shared.performBatch {
+            ShortcutPreferences.shared.performBatch {
+                for availableDefault in Defaults.array {
+                    if let codedDefault = config.defaults[availableDefault.key] {
+                        availableDefault.load(from: codedDefault)
+                    }
+                }
+
+                for action in WindowAction.active {
+                    let importedShortcut = config.shortcuts[action.name] ?? action.aliasName.flatMap { config.shortcuts[$0] }
+                    if let importedShortcut, importedShortcut.keyCode >= 0 {
+                        ShortcutPreferences.shared.set(importedShortcut.toMASSHortcut(), for: action.name)
+                    } else if importedShortcut != nil {
+                        ShortcutPreferences.shared.set(nil, for: action.name)
+                    } else {
+                        ShortcutPreferences.shared.reset(action.name)
+                    }
+                }
+                for defaultsKey in TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys + DesktopMoveManager.defaultsKeys + [CurrentSpaceWindowSwitcher.shortcutDefaultsKey] {
+                    if let importedShortcut = config.shortcuts[defaultsKey], importedShortcut.keyCode >= 0 {
+                        ShortcutPreferences.shared.set(importedShortcut.toMASSHortcut(), for: defaultsKey)
+                    } else if config.shortcuts[defaultsKey] != nil {
+                        ShortcutPreferences.shared.set(nil, for: defaultsKey)
+                    } else if defaultsKey != CurrentSpaceWindowSwitcher.shortcutDefaultsKey {
+                        ShortcutPreferences.shared.reset(defaultsKey)
+                    }
+                }
             }
         }
         
         Notification.Name.configImported.post(center: notificationCenter)
+        return saved
     }
     
     static func loadFromSupportDir() {
@@ -125,15 +132,15 @@ extension Defaults {
                 guard isSafe else {
                     AlertUtil.oneButtonAlert(
                         question: "Refused to load RectangleConfig.json",
-                        text: "The configuration file at \(path) is a symlink or world-writable. Rectangle has refused to load it. Remove the file or fix its permissions and try again."
+                        text: "The configuration file at \(path) is a symlink or world-writable. JRectangle has refused to load it. Remove the file or fix its permissions and try again."
                     )
                     try? fm.removeItem(at: configURL)
                     return
                 }
                 
                 let response = AlertUtil.twoButtonAlert(
-                    question: "Apply Rectangle configuration?",
-                    text: "A configuration file was found at \(path). Applying it will overwrite your current Rectangle shortcuts and preferences. Apply now?",
+                    question: "Apply JRectangle configuration?",
+                    text: "A configuration file was found at \(path). Applying it will overwrite your current JRectangle shortcuts and preferences. Apply now?",
                     confirmText: "Apply",
                     cancelText: "Discard"
                 )
@@ -142,7 +149,7 @@ extension Defaults {
                     return
                 }
                 
-                load(fileUrl: configURL)
+                guard load(fileUrl: configURL) else { return }
                 do {
                     let newFilename = "RectangleConfig\(timestamp()).json"
                     

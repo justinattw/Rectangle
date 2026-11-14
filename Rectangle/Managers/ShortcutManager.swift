@@ -14,19 +14,18 @@ protocol ShortcutBindingStore {
 
 struct MASShortcutBindingStore: ShortcutBindingStore {
     func configure() {
-        MASShortcutBinder.shared()?.bindingOptions = [NSBindingOption.valueTransformerName: MASDictionaryTransformerName]
     }
 
     func registerDefaultShortcuts(_ shortcuts: [String: MASShortcut]) {
-        MASShortcutBinder.shared()?.registerDefaultShortcuts(shortcuts)
+        ShortcutPreferences.shared.registerDefaults(shortcuts)
     }
 
     func bindShortcut(withDefaultsKey defaultsKey: String, toAction action: @escaping () -> Void) {
-        MASShortcutBinder.shared()?.bindShortcut(withDefaultsKey: defaultsKey, toAction: action)
+        ShortcutPreferences.shared.bind(defaultsKey, action: action)
     }
 
     func breakBinding(withDefaultsKey defaultsKey: String) {
-        MASShortcutBinder.shared()?.breakBinding(withDefaultsKey: defaultsKey)
+        ShortcutPreferences.shared.unbind(defaultsKey)
     }
 }
 
@@ -111,6 +110,7 @@ class ShortcutManager {
 
         notificationCenter.addObserver(self, selector: #selector(defaultShortcutsChanged), name: .changeDefaults, object: nil)
         notificationCenter.addObserver(self, selector: #selector(userDefaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(shortcutPreferencesChanged), name: .shortcutPreferencesChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(shortcutRecordingChanged), name: .shortcutRecording, object: nil)
         workspaceNotificationCenter.addObserver(self, selector: #selector(sessionDidResignActive), name: NSWorkspace.sessionDidResignActiveNotification, object: nil)
         workspaceNotificationCenter.addObserver(self, selector: #selector(sessionDidBecomeActive), name: NSWorkspace.sessionDidBecomeActiveNotification, object: nil)
@@ -384,6 +384,13 @@ class ShortcutManager {
         reloadShortcutBindingsIfNeeded()
     }
 
+    @objc private func shortcutPreferencesChanged(_ notification: Notification) {
+        reloadShortcutBindingsIfNeeded()
+        TodoManager.registerUnregisterToggleShortcut()
+        TodoManager.registerUnregisterReflowShortcut()
+        StackBadgeManager.reevaluateToggleShortcut()
+    }
+
     private func reloadShortcutBindingsIfNeeded() {
         guard !isUpdatingShortcutBindings && !shortcutsSuspendedForRecording else { return }
 
@@ -497,11 +504,12 @@ struct ShortcutCycle {
         }
     }
 
-    static func shortcut(for action: WindowAction, userDefaults: UserDefaults = .standard) -> MASShortcut? {
+    static func shortcut(for action: WindowAction, userDefaults: UserDefaults? = nil) -> MASShortcut? {
         return shortcut(forDefaultsKey: action.name, userDefaults: userDefaults)
     }
 
-    static func shortcut(forDefaultsKey defaultsKey: String, userDefaults: UserDefaults = .standard) -> MASShortcut? {
+    static func shortcut(forDefaultsKey defaultsKey: String, userDefaults: UserDefaults? = nil) -> MASShortcut? {
+        guard let userDefaults else { return ShortcutPreferences.shared.shortcut(for: defaultsKey) }
         guard let shortcutDict = userDefaults.dictionary(forKey: defaultsKey),
               let dictTransformer = ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName)),
               let shortcut = dictTransformer.transformedValue(shortcutDict) as? MASShortcut
@@ -512,7 +520,7 @@ struct ShortcutCycle {
         return shortcut
     }
 
-    static func shortcutsByAction(actions: [WindowAction] = WindowAction.active, userDefaults: UserDefaults = .standard) -> [WindowAction: MASShortcut] {
+    static func shortcutsByAction(actions: [WindowAction] = WindowAction.active, userDefaults: UserDefaults? = nil) -> [WindowAction: MASShortcut] {
         actions.reduce(into: [WindowAction: MASShortcut]()) { dict, action in
             if let shortcut = shortcut(for: action, userDefaults: userDefaults) {
                 dict[action] = shortcut

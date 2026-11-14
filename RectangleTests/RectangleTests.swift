@@ -1389,16 +1389,16 @@ final class FootprintAlphaDefaultsTests: XCTestCase {
         super.setUp()
         savedAlpha = Defaults.footprintAlpha.value
         savedBlur = Defaults.footprintBlur.enabled
-        storedAlpha = UserDefaults.standard.object(forKey: Defaults.footprintAlpha.key)
-        storedBlur = UserDefaults.standard.object(forKey: Defaults.footprintBlur.key)
-        UserDefaults.standard.removeObject(forKey: Defaults.footprintAlpha.key)
+        storedAlpha = JSONPreferences.shared.object(forKey: Defaults.footprintAlpha.key)
+        storedBlur = JSONPreferences.shared.object(forKey: Defaults.footprintBlur.key)
+        JSONPreferences.shared.removeObject(forKey: Defaults.footprintAlpha.key)
     }
 
     override func tearDown() {
         Defaults.footprintAlpha.value = savedAlpha
         Defaults.footprintBlur.enabled = savedBlur
-        UserDefaults.standard.set(storedAlpha, forKey: Defaults.footprintAlpha.key)
-        UserDefaults.standard.set(storedBlur, forKey: Defaults.footprintBlur.key)
+        JSONPreferences.shared.set(storedAlpha, forKey: Defaults.footprintAlpha.key)
+        JSONPreferences.shared.set(storedBlur, forKey: Defaults.footprintBlur.key)
         super.tearDown()
     }
 
@@ -1413,7 +1413,7 @@ final class FootprintAlphaDefaultsTests: XCTestCase {
             XCTAssertEqual(Defaults.effectiveFootprintAlpha, blurred ? 0 : 0.3)
             XCTAssertEqual(window.presentation.alpha, blurred ? 1 : 0.3)
             XCTAssertEqual(window.presentation.usesBlur, blurred)
-            XCTAssertNil(UserDefaults.standard.object(forKey: Defaults.footprintAlpha.key))
+            XCTAssertNil(JSONPreferences.shared.object(forKey: Defaults.footprintAlpha.key))
         }
     }
 
@@ -1449,11 +1449,11 @@ final class FootprintAlphaDefaultsTests: XCTestCase {
 
     func testExportUsesTheEffectiveUnsetAlpha() throws {
         for blurred in [false, true] {
-            UserDefaults.standard.removeObject(forKey: Defaults.footprintAlpha.key)
+            JSONPreferences.shared.removeObject(forKey: Defaults.footprintAlpha.key)
             Defaults.footprintBlur.enabled = blurred
             let exported = try exportedAlpha()
             XCTAssertEqual(exported.double, blurred ? 0 : 0.3)
-            XCTAssertNil(UserDefaults.standard.object(forKey: Defaults.footprintAlpha.key))
+            XCTAssertNil(JSONPreferences.shared.object(forKey: Defaults.footprintAlpha.key))
 
             Defaults.footprintAlpha.value = 0.8
             Defaults.footprintAlpha.load(from: exported)
@@ -1475,15 +1475,15 @@ final class BoolDefaultTests: XCTestCase {
     /// omitting a default keeps the historical false.
     func testDefaultValueAppliesOnlyWhileUnset() {
         let key = "boolDefaultTest_\(UUID().uuidString)"
-        defer { UserDefaults.standard.removeObject(forKey: key) }
+        defer { JSONPreferences.shared.removeObject(forKey: key) }
 
         XCTAssertTrue(BoolDefault(key: key, defaultValue: true).enabled, "Unset falls back to the supplied default")
         XCTAssertFalse(BoolDefault(key: key).enabled, "Unset stays false when no default is supplied")
 
-        UserDefaults.standard.set(false, forKey: key)
+        JSONPreferences.shared.set(false, forKey: key)
         XCTAssertFalse(BoolDefault(key: key, defaultValue: true).enabled, "An explicit false overrides a true default")
 
-        UserDefaults.standard.set(true, forKey: key)
+        JSONPreferences.shared.set(true, forKey: key)
         XCTAssertTrue(BoolDefault(key: key, defaultValue: false).enabled, "An explicit true overrides a false default")
     }
 }
@@ -2107,10 +2107,10 @@ final class ScreenEdgeGapTests: XCTestCase {
 
     func testFreshInstallTreatsNotchGapAsUnset() {
         let key = Defaults.screenEdgeGapTopNotch.key
-        let stored = UserDefaults.standard.object(forKey: key)
-        defer { UserDefaults.standard.set(stored, forKey: key) }
+        let stored = JSONPreferences.shared.object(forKey: key)
+        defer { JSONPreferences.shared.set(stored, forKey: key) }
 
-        UserDefaults.standard.removeObject(forKey: key)
+        JSONPreferences.shared.removeObject(forKey: key)
         XCTAssertEqual(DoubleDefault(key: key, defaultValue: -1).value, -1)
     }
 
@@ -2246,7 +2246,7 @@ final class IgnoreMenuBarTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        storedIgnoreMenuBar = UserDefaults.standard.object(forKey: Defaults.ignoreMenuBar.key)
+        storedIgnoreMenuBar = JSONPreferences.shared.object(forKey: Defaults.ignoreMenuBar.key)
         let settings: [(Default, CodableDefault)] = [
             (Defaults.combinedDisplayMode, CodableDefault(int: 2)),
             (Defaults.screenEdgeGapsOnMainScreenOnly, CodableDefault(bool: false)),
@@ -2260,7 +2260,7 @@ final class IgnoreMenuBarTests: XCTestCase {
 
     override func tearDown() {
         savedDefaults.forEach { $0.0.load(from: $0.1) }
-        UserDefaults.standard.set(storedIgnoreMenuBar, forKey: Defaults.ignoreMenuBar.key)
+        JSONPreferences.shared.set(storedIgnoreMenuBar, forKey: Defaults.ignoreMenuBar.key)
         super.tearDown()
     }
 
@@ -2305,16 +2305,16 @@ final class IgnoreMenuBarTests: XCTestCase {
 
     func testTerminalBoolValueEnablesOption() {
         let key = Defaults.ignoreMenuBar.key
-        let stored = UserDefaults.standard.object(forKey: key)
-        defer { UserDefaults.standard.set(stored, forKey: key) }
+        let stored = JSONPreferences.shared.object(forKey: key)
+        defer { JSONPreferences.shared.set(stored, forKey: key) }
 
-        UserDefaults.standard.set(true, forKey: key)
+        JSONPreferences.shared.set(true, forKey: key)
         XCTAssertTrue(OptionalBoolDefault(key: key).userEnabled)
 
-        UserDefaults.standard.set(false, forKey: key)
+        JSONPreferences.shared.set(false, forKey: key)
         XCTAssertFalse(OptionalBoolDefault(key: key).userEnabled)
 
-        UserDefaults.standard.removeObject(forKey: key)
+        JSONPreferences.shared.removeObject(forKey: key)
         XCTAssertTrue(OptionalBoolDefault(key: key).notSet)
     }
 
@@ -2445,7 +2445,7 @@ class ConfigImportTests: XCTestCase {
     override func setUp() {
         super.setUp()
         for key in Self.shortcutKeys {
-            if let value = UserDefaults.standard.object(forKey: key) {
+            if let value = JSONPreferences.shared.object(forKey: key) {
                 storedValues[key] = value
             } else {
                 absentKeys.insert(key)
@@ -2456,9 +2456,9 @@ class ConfigImportTests: XCTestCase {
     override func tearDown() {
         for key in Self.shortcutKeys {
             if let value = storedValues[key] {
-                UserDefaults.standard.set(value, forKey: key)
+                JSONPreferences.shared.set(value, forKey: key)
             } else if absentKeys.contains(key) {
-                UserDefaults.standard.removeObject(forKey: key)
+                JSONPreferences.shared.removeObject(forKey: key)
             }
         }
         storedValues.removeAll()
@@ -2474,7 +2474,7 @@ class ConfigImportTests: XCTestCase {
 
         try loadConfig(shortcuts: [:])
 
-        XCTAssertNil(UserDefaults.standard.object(forKey: action.name))
+        XCTAssertNil(JSONPreferences.shared.object(forKey: action.name))
     }
 
     func testImportClearsOmittedTodoShortcut() throws {
@@ -2483,7 +2483,7 @@ class ConfigImportTests: XCTestCase {
 
         try loadConfig(shortcuts: [:])
 
-        XCTAssertNil(UserDefaults.standard.object(forKey: defaultsKey))
+        XCTAssertNil(JSONPreferences.shared.object(forKey: defaultsKey))
     }
 
     func testImportClearsOmittedStackBadgeShortcut() throws {
@@ -2492,7 +2492,7 @@ class ConfigImportTests: XCTestCase {
 
         try loadConfig(shortcuts: [:])
 
-        XCTAssertNil(UserDefaults.standard.object(forKey: defaultsKey))
+        XCTAssertNil(JSONPreferences.shared.object(forKey: defaultsKey))
     }
 
     func testImportAppliesSuppliedActiveShortcut() throws {
@@ -2526,7 +2526,7 @@ class ConfigImportTests: XCTestCase {
 
         try loadConfig(shortcuts: [action.name: Shortcut(NSEvent.ModifierFlags.command.rawValue, -1)])
 
-        XCTAssertNil(UserDefaults.standard.object(forKey: action.name))
+        XCTAssertNil(JSONPreferences.shared.object(forKey: action.name))
     }
 
     func testImportAppliesSuppliedMouseButtonShortcut() throws {
@@ -2553,10 +2553,29 @@ class ConfigImportTests: XCTestCase {
         XCTAssertNotNil(config.defaults[Defaults.mouseButtonShortcutsUseWindowUnderCursor.key])
     }
 
+    func testExportAndImportPreserveClearedShortcut() throws {
+        let action = WindowAction.almostMaximize
+        ShortcutPreferences.shared.set(nil, for: action.name)
+        let config = try XCTUnwrap(Defaults.encoded().flatMap { Defaults.convert(jsonString: $0) })
+        XCTAssertEqual(config.shortcuts[action.name]?.keyCode, -1)
+        store(Shortcut(NSEvent.ModifierFlags.command.rawValue, 12), forKey: action.name)
+        try loadConfig(shortcuts: config.shortcuts)
+        XCTAssertNil(ShortcutCycle.shortcut(for: action))
+    }
+
+    func testExportIncludesCurrentSpaceSwitcher() throws {
+        let key = CurrentSpaceWindowSwitcher.shortcutDefaultsKey
+        let previous = JSONPreferences.shared.object(forKey: key)
+        defer { JSONPreferences.shared.set(previous, forKey: key) }
+        store(Shortcut(NSEvent.ModifierFlags.option.rawValue, 48), forKey: key)
+        let config = try XCTUnwrap(Defaults.encoded().flatMap { Defaults.convert(jsonString: $0) })
+        XCTAssertEqual(config.shortcuts[key]?.keyCode, 48)
+    }
+
     private func store(_ shortcut: Shortcut, forKey key: String) {
         let transformer = ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName))!
         let value = transformer.reverseTransformedValue(shortcut.toMASSHortcut())
-        UserDefaults.standard.set(value, forKey: key)
+        JSONPreferences.shared.set(value, forKey: key)
     }
 
     private func loadConfig(shortcuts: [String: Shortcut]) throws {
@@ -3541,8 +3560,8 @@ class ChangeSizeCalculationTests: XCTestCase {
         gapSize = Defaults.gapSize.value
         curtainChangeSize = Defaults.curtainChangeSize.enabled
         smallerShrinksMaximizedHeight = Defaults.smallerShrinksMaximizedHeight.enabled
-        storedMinimumWindowWidth = UserDefaults.standard.object(forKey: Defaults.minimumWindowWidth.key)
-        storedMinimumWindowHeight = UserDefaults.standard.object(forKey: Defaults.minimumWindowHeight.key)
+        storedMinimumWindowWidth = JSONPreferences.shared.object(forKey: Defaults.minimumWindowWidth.key)
+        storedMinimumWindowHeight = JSONPreferences.shared.object(forKey: Defaults.minimumWindowHeight.key)
 
         Defaults.minimumWindowWidth.value = 0
         Defaults.minimumWindowHeight.value = 0
@@ -3572,8 +3591,8 @@ class ChangeSizeCalculationTests: XCTestCase {
 
     func testDoubleDefaultDistinguishesAbsentFromExplicitZero() {
         let key = "ChangeSizeCalculationTests.minimumWindowWidth"
-        UserDefaults.standard.removeObject(forKey: key)
-        defer { UserDefaults.standard.removeObject(forKey: key) }
+        JSONPreferences.shared.removeObject(forKey: key)
+        defer { JSONPreferences.shared.removeObject(forKey: key) }
 
         let absentPreference = DoubleDefault(key: key, defaultValue: 0.25)
         XCTAssertEqual(absentPreference.value, 0.25)
@@ -3589,8 +3608,8 @@ class ChangeSizeCalculationTests: XCTestCase {
 
     func testDoubleDefaultLoadsLegacyFloatAndNewDoubleConfigValues() throws {
         let key = "ChangeSizeCalculationTests.minimumWindowWidthConfig"
-        UserDefaults.standard.removeObject(forKey: key)
-        defer { UserDefaults.standard.removeObject(forKey: key) }
+        JSONPreferences.shared.removeObject(forKey: key)
+        defer { JSONPreferences.shared.removeObject(forKey: key) }
 
         let preference = DoubleDefault(key: key, defaultValue: 0.25)
         let legacyZero = try JSONDecoder().decode(
@@ -3684,9 +3703,9 @@ class ChangeSizeCalculationTests: XCTestCase {
 
     private func restoreStoredValue(_ value: Any?, for key: String) {
         if let value {
-            UserDefaults.standard.set(value, forKey: key)
+            JSONPreferences.shared.set(value, forKey: key)
         } else {
-            UserDefaults.standard.removeObject(forKey: key)
+            JSONPreferences.shared.removeObject(forKey: key)
         }
     }
 }
@@ -3861,7 +3880,7 @@ class EnhancedUITests: XCTestCase {
 
     func testEnhancedUIPreferenceMigrationAndRawValues() {
         let key = "RectangleTests.enhancedUI.\(UUID().uuidString)"
-        defer { UserDefaults.standard.removeObject(forKey: key) }
+        defer { JSONPreferences.shared.removeObject(forKey: key) }
 
         let absentPreference = IntEnumDefault<EnhancedUI>(
             key: key,
@@ -3870,7 +3889,7 @@ class EnhancedUITests: XCTestCase {
         )
         XCTAssertEqual(absentPreference.value.rawValue, 4)
 
-        UserDefaults.standard.set(0, forKey: key)
+        JSONPreferences.shared.set(0, forKey: key)
         let legacyZeroPreference = IntEnumDefault<EnhancedUI>(
             key: key,
             defaultValue: .automatic,
@@ -3879,7 +3898,7 @@ class EnhancedUITests: XCTestCase {
         XCTAssertEqual(legacyZeroPreference.value.rawValue, 1)
 
         for rawValue in 1...4 {
-            UserDefaults.standard.set(rawValue, forKey: key)
+            JSONPreferences.shared.set(rawValue, forKey: key)
             let preference = IntEnumDefault<EnhancedUI>(
                 key: key,
                 defaultValue: .automatic,
@@ -7420,21 +7439,21 @@ class ShortcutManagerSessionTests: XCTestCase {
 
     func testMouseButtonShortcutHasNoMenuKeyEquivalent() throws {
         let action = WindowAction.almostMaximize
-        let previousValue = UserDefaults.standard.object(forKey: action.name)
+        let previousValue = JSONPreferences.shared.object(forKey: action.name)
         defer {
             if let previousValue {
-                UserDefaults.standard.set(previousValue, forKey: action.name)
+                JSONPreferences.shared.set(previousValue, forKey: action.name)
             } else {
-                UserDefaults.standard.removeObject(forKey: action.name)
+                JSONPreferences.shared.removeObject(forKey: action.name)
             }
         }
         let transformer = try XCTUnwrap(ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName)))
         let harness = makeHarness()
 
-        UserDefaults.standard.set(transformer.reverseTransformedValue(mouseButtonShortcut(3, [.option])), forKey: action.name)
+        JSONPreferences.shared.set(transformer.reverseTransformedValue(mouseButtonShortcut(3, [.option])), forKey: action.name)
         XCTAssertNil(harness.manager.getKeyEquivalent(action: action))
 
-        UserDefaults.standard.set(transformer.reverseTransformedValue(shortcut(3)), forKey: action.name)
+        JSONPreferences.shared.set(transformer.reverseTransformedValue(shortcut(3)), forKey: action.name)
         XCTAssertNotNil(harness.manager.getKeyEquivalent(action: action))
     }
 }
@@ -7655,11 +7674,11 @@ class WindowActionShortcutViewTests: XCTestCase {
         let view = WindowActionShortcutView(frame: NSRect(x: 0, y: 0, width: 160, height: 24))
         window.contentView?.addSubview(view)
         view.shortcutValidator = PassthroughShortcutValidator()
-        view.setAssociatedUserDefaultsKey(defaultsKey, withTransformerName: MASDictionaryTransformerName)
+        let binding = ShortcutViewBinding(view: view, key: defaultsKey)
         defer {
             view.isRecording = false
-            view.setAssociatedUserDefaultsKey(nil, withTransformerName: MASDictionaryTransformerName)
-            UserDefaults.standard.removeObject(forKey: defaultsKey)
+            JSONPreferences.shared.removeObject(forKey: defaultsKey)
+            withExtendedLifetime(binding) {}
         }
 
         // The event factory can't set a button number, so it goes in by way
@@ -10064,13 +10083,13 @@ final class FootprintGeometrySynchronizationTests: XCTestCase {
         let blur = Defaults.footprintBlur.toCodable()
         let alpha = Defaults.footprintAlpha.value
         // A round trip through toCodable() would save an unset alpha as an explicit 0.
-        let storedAlpha = UserDefaults.standard.object(forKey: Defaults.footprintAlpha.key)
+        let storedAlpha = JSONPreferences.shared.object(forKey: Defaults.footprintAlpha.key)
         let duration = Defaults.footprintAnimationDurationMultiplier.toCodable()
         let fade = Defaults.footprintFade.toCodable()
         defer {
             Defaults.footprintBlur.load(from: blur)
             Defaults.footprintAlpha.value = alpha
-            UserDefaults.standard.set(storedAlpha, forKey: Defaults.footprintAlpha.key)
+            JSONPreferences.shared.set(storedAlpha, forKey: Defaults.footprintAlpha.key)
             Defaults.footprintAnimationDurationMultiplier.load(from: duration)
             Defaults.footprintFade.load(from: fade)
         }
@@ -10822,7 +10841,7 @@ final class EdgeActionsAcrossDisplaysTests: XCTestCase {
     override func setUp() {
         super.setUp()
         savedMode = Defaults.subsequentExecutionMode.value
-        storedFlag = UserDefaults.standard.object(forKey: Defaults.thirdsAndFourthsAcrossDisplays.key)
+        storedFlag = JSONPreferences.shared.object(forKey: Defaults.thirdsAndFourthsAcrossDisplays.key)
         savedFlag = Defaults.thirdsAndFourthsAcrossDisplays.toCodable()
         Defaults.thirdsAndFourthsAcrossDisplays.enabled = true
     }
@@ -10831,7 +10850,7 @@ final class EdgeActionsAcrossDisplaysTests: XCTestCase {
         Defaults.subsequentExecutionMode.value = savedMode
         Defaults.thirdsAndFourthsAcrossDisplays.load(from: savedFlag)
         // Written last: nil removes the key, so an unset flag stays unset (load(from:) writes 0).
-        UserDefaults.standard.set(storedFlag, forKey: Defaults.thirdsAndFourthsAcrossDisplays.key)
+        JSONPreferences.shared.set(storedFlag, forKey: Defaults.thirdsAndFourthsAcrossDisplays.key)
         super.tearDown()
     }
 

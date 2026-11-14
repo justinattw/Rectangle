@@ -14,7 +14,7 @@ struct MASShortcutViewRepresentable: NSViewRepresentable {
 
     func makeNSView(context: Context) -> MASShortcutView {
         let view = recordsMouseButtons ? WindowActionShortcutView() : MASShortcutView()
-        view.setAssociatedUserDefaultsKey(defaultsKey, withTransformerName: MASDictionaryTransformerName)
+        context.coordinator.binding = ShortcutViewBinding(view: view, key: defaultsKey)
         if let validator = validator {
             view.shortcutValidator = validator
         }
@@ -32,11 +32,13 @@ struct MASShortcutViewRepresentable: NSViewRepresentable {
     /// every other shortcut suspended.
     static func dismantleNSView(_ nsView: MASShortcutView, coordinator: Coordinator) {
         nsView.isRecording = false
+        coordinator.binding = nil
         coordinator.recordingObserver.unobserve(nsView)
     }
 
     final class Coordinator {
         let recordingObserver: ShortcutRecordingObserver
+        var binding: ShortcutViewBinding?
 
         init(recordingObserver: ShortcutRecordingObserver) {
             self.recordingObserver = recordingObserver

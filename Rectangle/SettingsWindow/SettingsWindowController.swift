@@ -109,7 +109,7 @@ final class DisplayProfileSelectionModel {
     }
 
     private init() {
-        selectedProfileID = UserDefaults.standard.string(forKey: Self.selectedProfileDefaultsKey)
+        selectedProfileID = JSONPreferences.shared.string(forKey: Self.selectedProfileDefaultsKey)
             ?? BehaviorProfileStore.defaultProfileID
         refreshOverrideCount()
         Notification.Name.displayBehaviorProfileOverridesChanged.onPost { [weak self] _ in
@@ -136,7 +136,7 @@ final class DisplayProfileSelectionModel {
     func selectProfile(_ profileID: String) {
         guard availableProfileIDs.contains(profileID), selectedProfileID != profileID else { return }
         selectedProfileID = profileID
-        UserDefaults.standard.set(profileID, forKey: Self.selectedProfileDefaultsKey)
+        JSONPreferences.shared.set(profileID, forKey: Self.selectedProfileDefaultsKey)
         refreshOverrideCount()
         Notification.Name.displayBehaviorProfileChanged.post()
     }

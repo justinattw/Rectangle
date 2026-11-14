@@ -58,13 +58,12 @@ class Defaults {
     static let installVersion = StringDefault(key: "installVersion")
     static let showAllActionsInMenu = OptionalBoolDefault(key: "showAllActionsInMenu")
     static let showAdditionalSizesInMenu = OptionalBoolDefault(key: "showAdditionalSizesInMenu")
-    static var SUHasLaunchedBefore: Bool { UserDefaults.standard.bool(forKey: "SUHasLaunchedBefore") }
     static let footprintAlpha = DoubleDefault(key: "footprintAlpha")
     static var effectiveFootprintAlpha: Double {
         effectiveFootprintAlpha(usesBlur: footprintBlur.enabled)
     }
     static func effectiveFootprintAlpha(usesBlur: Bool) -> Double {
-        if UserDefaults.standard.object(forKey: footprintAlpha.key) == nil {
+        if JSONPreferences.shared.object(forKey: footprintAlpha.key) == nil {
             return usesBlur ? 0 : 0.3
         }
         return footprintAlpha.value
@@ -169,6 +168,7 @@ class Defaults {
         cornerCycleExpansionAxis,
         cooperativeCornerResize,
         experimentalWindowAnimations,
+        showMinimumWindowSizeWarning,
         allowAnyShortcut,
         windowSnapping,
         almostMaximizeHeight,
@@ -187,11 +187,13 @@ class Defaults {
         ignoredSnapAreas,
         traverseSingleScreen,
         thirdsAndFourthsAcrossDisplays,
+        useCursorScreenDetection,
         minimumWindowWidth,
         minimumWindowHeight,
         sizeOffset,
         widthStepSize,
         unsnapRestore,
+        unsnapRestoreFromSizeChange,
         curtainChangeSize,
         smallerShrinksMaximizedHeight,
         relaunchOpensMenu,
@@ -252,12 +254,13 @@ class Defaults {
         doubleClickTitleBar,
         doubleClickTitleBarRestore,
         doubleClickTitleBarIgnoredApps,
+        doubleClickToolBarIgnoredApps,
         ignoreDragSnapToo,
         systemWideMouseDown,
         systemWideMouseDownApps,
         directAnimationNativeResizeApps,
         screensOrderedByX,
-        showAdditionalSizesInMenu,
+        combinedDisplayMode,
         cyclingOverlapOffset,
         cyclingOverlapOffsetSize,
         cyclingOverlapOffsetHorizontal,
@@ -367,17 +370,17 @@ class BoolDefault: Default {
         set {
             storedEnabled = newValue
             if initialized {
-                UserDefaults.standard.set(newValue, forKey: key)
+                JSONPreferences.shared.set(newValue, forKey: key)
             }
         }
     }
     
     init(key: String, defaultValue: Bool = false) {
         self.key = key
-        if UserDefaults.standard.object(forKey: key) == nil {
+        if JSONPreferences.shared.object(forKey: key) == nil {
             storedEnabled = defaultValue
         } else {
-            storedEnabled = UserDefaults.standard.bool(forKey: key)
+            storedEnabled = JSONPreferences.shared.bool(forKey: key)
         }
         initialized = true
     }
@@ -409,11 +412,11 @@ class OptionalBoolDefault: Default {
             storedEnabled = newValue
             if initialized {
                 if newValue == true {
-                    UserDefaults.standard.set(1, forKey: key)
+                    JSONPreferences.shared.set(1, forKey: key)
                 } else if newValue == false {
-                    UserDefaults.standard.set(2, forKey: key)
+                    JSONPreferences.shared.set(2, forKey: key)
                 } else {
-                    UserDefaults.standard.set(0, forKey: key)
+                    JSONPreferences.shared.set(0, forKey: key)
                 }
             }
         }
@@ -426,7 +429,7 @@ class OptionalBoolDefault: Default {
     
     init(key: String) {
         self.key = key
-        let intValue = UserDefaults.standard.integer(forKey: key)
+        let intValue = JSONPreferences.shared.integer(forKey: key)
         set(using: intValue)
         initialized = true
     }
@@ -460,14 +463,14 @@ class StringDefault: Default {
     var value: String? {
         didSet {
             if initialized {
-                UserDefaults.standard.set(value, forKey: key)
+                JSONPreferences.shared.set(value, forKey: key)
             }
         }
     }
     
     init(key: String) {
         self.key = key
-        value = UserDefaults.standard.string(forKey: key)
+        value = JSONPreferences.shared.string(forKey: key)
         initialized = true
     }
     
@@ -492,7 +495,7 @@ class FloatDefault: Default {
         set {
             storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(newValue, forKey: key)
+                JSONPreferences.shared.set(newValue, forKey: key)
             }
         }
     }
@@ -501,7 +504,7 @@ class FloatDefault: Default {
 
     init(key: String, defaultValue: Float = 0) {
         self.key = key
-        storedValue = UserDefaults.standard.float(forKey: key)
+        storedValue = JSONPreferences.shared.float(forKey: key)
         if defaultValue != 0 && storedValue == 0 {
             storedValue = defaultValue
         }
@@ -535,7 +538,7 @@ class DoubleDefault: Default {
         set {
             storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(newValue, forKey: key)
+                JSONPreferences.shared.set(newValue, forKey: key)
             }
         }
     }
@@ -543,10 +546,10 @@ class DoubleDefault: Default {
     init(key: String, defaultValue: Double = 0) {
         self.key = key
         self.defaultValue = defaultValue
-        if UserDefaults.standard.object(forKey: key) == nil {
+        if JSONPreferences.shared.object(forKey: key) == nil {
             storedValue = defaultValue
         } else {
-            storedValue = UserDefaults.standard.double(forKey: key)
+            storedValue = JSONPreferences.shared.double(forKey: key)
         }
         initialized = true
     }
@@ -568,22 +571,29 @@ class DoubleDefault: Default {
 
 class PositiveIntDefault: Default {
     let key: String
-    private let userDefaults: UserDefaults
+    private let userDefaults: UserDefaults?
     private var storedValue: Int
 
     var value: Int {
         get { storedValue }
         set {
             storedValue = max(1, newValue)
-            userDefaults.set(storedValue, forKey: key)
+            if let userDefaults {
+                userDefaults.set(storedValue, forKey: key)
+            } else {
+                JSONPreferences.shared.set(storedValue, forKey: key)
+            }
         }
     }
 
-    init(key: String, defaultValue: Int, userDefaults: UserDefaults = .standard) {
+    init(key: String, defaultValue: Int, userDefaults: UserDefaults? = nil) {
         precondition(defaultValue > 0)
         self.key = key
         self.userDefaults = userDefaults
-        if let savedValue = userDefaults.object(forKey: key) {
+        let savedValue: Any?
+        if let userDefaults { savedValue = userDefaults.object(forKey: key) }
+        else { savedValue = JSONPreferences.shared.object(forKey: key) }
+        if let savedValue {
             storedValue = max(1, savedValue as? Int ?? 1)
         } else {
             storedValue = defaultValue
@@ -608,14 +618,14 @@ class IntDefault: Default {
     var value: Int {
         didSet {
             if initialized {
-                UserDefaults.standard.set(value, forKey: key)
+                JSONPreferences.shared.set(value, forKey: key)
             }
         }
     }
     
     init(key: String, defaultValue: Int = 0) {
         self.key = key
-        value = UserDefaults.standard.integer(forKey: key)
+        value = JSONPreferences.shared.integer(forKey: key)
         if(defaultValue != 0 && value == 0) {
             value = defaultValue
         }
@@ -657,6 +667,7 @@ class JSONDefault<T: Codable>: StringDefault {
         if typedValue == nil {
             typedValue = defaultValue
         }
+        typeInitialized = true
     }
     
     override func load(from codable: CodableDefault) {
@@ -697,7 +708,7 @@ class IntEnumDefault<E: RawRepresentable>: Default where E.RawValue == Int {
         set {
             if newValue != storedValue {
                 storedValue = newValue
-                UserDefaults.standard.set(storedValue.rawValue, forKey: key)
+                JSONPreferences.shared.set(storedValue.rawValue, forKey: key)
             }
         }
         get {
@@ -712,10 +723,10 @@ class IntEnumDefault<E: RawRepresentable>: Default where E.RawValue == Int {
         self.key = key
         let invalidValueFallback = invalidValueFallback ?? defaultValue
         self.invalidValueFallback = invalidValueFallback
-        if UserDefaults.standard.object(forKey: key) == nil {
+        if JSONPreferences.shared.object(forKey: key) == nil {
             storedValue = defaultValue
         } else {
-            let intValue = UserDefaults.standard.integer(forKey: key)
+            let intValue = JSONPreferences.shared.integer(forKey: key)
             storedValue = E(rawValue: intValue) ?? invalidValueFallback
         }
     }
@@ -723,7 +734,7 @@ class IntEnumDefault<E: RawRepresentable>: Default where E.RawValue == Int {
     func load(from codable: CodableDefault) {
         if let intValue = codable.int, storedValue.rawValue != intValue {
             storedValue = E(rawValue: intValue) ?? invalidValueFallback
-            UserDefaults.standard.set(storedValue.rawValue, forKey: key)
+            JSONPreferences.shared.set(storedValue.rawValue, forKey: key)
         }
     }
     

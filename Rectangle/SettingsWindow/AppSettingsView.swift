@@ -36,7 +36,7 @@ struct AppSettingsView: View {
                 Toggle("Hide menu bar icon", isOn: $viewModel.hideMenuBarIcon)
 
                 if viewModel.hideMenuBarIcon {
-                    Text("When the menu bar icon is hidden, relaunch Rectangle from Finder to open")
+                    Text("When the menu bar icon is hidden, relaunch JRectangle from Finder to open")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }

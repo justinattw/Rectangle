@@ -109,14 +109,14 @@ class StackBadgeManager {
             return
         }
 
-        MASShortcutBinder.shared()?.bindShortcut(withDefaultsKey: toggleDefaultsKey, toAction: {
+        ShortcutPreferences.shared.bind(toggleDefaultsKey, action: {
             Defaults.stackBadge.enabled = !Defaults.stackBadge.userEnabled
             Notification.Name.stackBadgeChanged.post()
         })
     }
 
     private static func unregisterToggleShortcut() {
-        MASShortcutBinder.shared()?.breakBinding(withDefaultsKey: toggleDefaultsKey)
+        ShortcutPreferences.shared.unbind(toggleDefaultsKey)
     }
 
     private static func registerUnregisterToggleShortcut() {
@@ -129,7 +129,7 @@ class StackBadgeManager {
 
     /// Break the binding first so re-evaluation can't stack a second action
     /// on the same defaults key.
-    private static func reevaluateToggleShortcut() {
+    static func reevaluateToggleShortcut() {
         unregisterToggleShortcut()
         registerUnregisterToggleShortcut()
     }

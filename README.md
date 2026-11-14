@@ -19,7 +19,7 @@ JRectangle retains Rectangle's existing snapping, tiling, stacked-window cycling
 
 ## System Requirements
 
-Rectangle supports macOS v14+. 
+JRectangle supports macOS v14+.
 
 For macOS 10.15 - 13: [v1.100](https://github.com/rxhanson/Rectangle/releases/tag/v1.100)
 
@@ -39,7 +39,7 @@ brew install --cask rectangle
 
 The [keyboard shortcuts](https://support.apple.com/guide/mac-help/what-are-those-symbols-shown-in-menus-cpmh0011/mac) are self explanatory, but the snap areas can use some explanation if you've never used them on Windows or other window management apps.
 
-Drag a window to the edge of the screen. When the mouse cursor reaches the edge of the screen, you'll see a footprint that Rectangle will attempt to resize and move the window to when the click is released.
+Drag a window to the edge of the screen. When the mouse cursor reaches the edge of the screen, you'll see a footprint that JRectangle will attempt to resize and move the window to when the click is released.
 
 | Snap Area                                              | Resulting Action                       |
 |--------------------------------------------------------|----------------------------------------|
@@ -62,23 +62,23 @@ The display profile picker lists connected resolutions and labels a connected bu
 
 In **Behavior** > **Extras**, enable **Show Extra shortcuts in menu** to include Rows and Columns in the **Tiling** submenu. Their keyboard shortcuts remain available when the submenu is hidden.
 
-In Settings > **Shortcuts**, expand **⋯** and then **Extra** to assign separate keys to **Tile in Rows** and **Tile in Columns**. Each action arranges ordinary windows in the current Space on the display containing the focused window, including windows covered by others. When no ordinary window is focused, the display under the mouse pointer is used instead. **Tile All** uses the same display-selection rule. Normally, windows on another display stay in place, and an empty target display does nothing. When Rectangle's combined-display mode is enabled and macOS "Displays have separate Spaces" is disabled, Rows and Columns instead tile across the combined display area. Rows run from top to bottom; columns run from left to right. Within either direction, Rectangle uses the windows' upper-left positions before moving them to choose their order.
+In Settings > **Shortcuts**, expand **⋯** and then **Extra** to assign separate keys to **Tile in Rows** and **Tile in Columns**. Each action arranges ordinary windows in the current Space on the display containing the focused window, including windows covered by others. When no ordinary window is focused, the display under the mouse pointer is used instead. **Tile All** uses the same display-selection rule. Normally, windows on another display stay in place, and an empty target display does nothing. When JRectangle's combined-display mode is enabled and macOS "Displays have separate Spaces" is disabled, Rows and Columns instead tile across the combined display area. Rows run from top to bottom; columns run from left to right. Within either direction, JRectangle uses the windows' upper-left positions before moving them to choose their order.
 
 From an unrecognized layout, the first press starts with one window per row or column. Repeating the action cycles through distinct grid layouts. Click the gear button next to **Tile in Rows** to set **Maximum windows per column** and **Maximum windows per row**, which control the cycle independently. Both default to 3 and are independent of the single-window **Repeated commands** setting. Set either limit to 1 to keep that action's original one-window-per-row-or-column behavior. Existing saved limits are preserved.
 
 Windows are balanced across occupied rows or columns, with no deliberately empty cells. For example, six windows with a column limit of 3 cycle through six columns of one, three columns of two, two columns of three, then repeat. Five windows cycle through column populations `1,1,1,1,1`, `2,2,1`, and `3,2`. A column with fewer windows still fills its full height; rows behave the same way across their full width. Duplicate layouts are skipped, so four windows with a limit of 3 alternate between four groups of one and two groups of two. Limits above the number of windows add no layouts.
 
-Columns have equal widths and rows have equal heights, within one display pixel, when the apps allow it. The grid fills the selected work area inside macOS reservations (such as the menu bar and Dock) and Rectangle's configured screen-edge gaps. App size restrictions take precedence: if two columns share 1000 pixels and one requires at least 600, a feasible allocation is 600/400. If no allocation satisfies all app restrictions, Rectangle still attempts the layout, which may leave a gap or overlap. If an app does not respond in time, the layout may remain partial.
+Columns have equal widths and rows have equal heights, within one display pixel, when the apps allow it. The grid fills the selected work area inside macOS reservations (such as the menu bar and Dock) and JRectangle's configured screen-edge gaps. App size restrictions take precedence: if two columns share 1000 pixels and one requires at least 600, a feasible allocation is 600/400. If no allocation satisfies all app restrictions, JRectangle still attempts the layout, which may leave a gap or overlap. If an app does not respond in time, the layout may remain partial.
 
-Moving or resizing a window, opening or closing one, or changing screen-edge gaps does not rearrange windows automatically. The next press of the same action reapplies its active grid layout using the current windows and their positions. A press that would leave the layout unchanged advances immediately. Lowering a limit below the active layout uses the greatest allowed layout on the next press. Rectangle keeps the active layout only while it is running. After a restart, the first press advances from an intact, recognizable grid; otherwise it starts with one window per row or column.
+Moving or resizing a window, opening or closing one, or changing screen-edge gaps does not rearrange windows automatically. The next press of the same action reapplies its active grid layout using the current windows and their positions. A press that would leave the layout unchanged advances immediately. Lowering a limit below the active layout uses the greatest allowed layout on the next press. JRectangle keeps the active layout only while it is running. After a restart, the first press advances from an intact, recognizable grid; otherwise it starts with one window per row or column.
 
-The Todo window is excluded using the same rules as Rectangle's other multi-window actions. The bands respect the existing Todo sidebar reservation. For example, with 1000 pixels available and a 200-pixel sidebar reservation, the other windows tile within the remaining 800 pixels while Todo stays in place.
+The Todo window is excluded using the same rules as JRectangle's other multi-window actions. The bands respect the existing Todo sidebar reservation. For example, with 1000 pixels available and a 200-pixel sidebar reservation, the other windows tile within the remaining 800 pixels while Todo stays in place.
 
 ### Cycle stacked windows
 
 When several windows are snapped to the same area, such as three windows on the left half, only the front one is visible. In Settings > **Behavior** > **Stacked Windows**, assign keys to **Cycle stacked windows** and **Cycle stacked windows backward**. Each press brings forward one window from the stack that the focused window belongs to.
 
-A window is in the stack when it sits at the same position as the window focused at the first press, or is offset from it by **Offset window position on overlap**, whatever its size. With **Only stack windows of the same size** on, it must also be the same size (within 24 points in width and height, so terminal windows that snap to whole character cells still count), so a maximized window that shares a corner with a half is not in that half's stack. The stacked window list follows the same setting. **Cycle stacked windows** first brings forward the window at the back of the stack; **Cycle stacked windows backward** first brings forward the window just behind the front one. Repeated presses visit every window in the stack. Pressing either shortcut while a window outside the stack is focused starts over from that window's stack. When the focused window has nothing stacked with it, Rectangle beeps.
+A window is in the stack when it sits at the same position as the window focused at the first press, or is offset from it by **Offset window position on overlap**, whatever its size. With **Only stack windows of the same size** on, it must also be the same size (within 24 points in width and height, so terminal windows that snap to whole character cells still count), so a maximized window that shares a corner with a half is not in that half's stack. The stacked window list follows the same setting. **Cycle stacked windows** first brings forward the window at the back of the stack; **Cycle stacked windows backward** first brings forward the window just behind the front one. Repeated presses visit every window in the stack. Pressing either shortcut while a window outside the stack is focused starts over from that window's stack. When the focused window has nothing stacked with it, JRectangle beeps.
 
 Set horizontal and vertical overlap offsets independently in **Stacked Windows**. A window only moves on an axis when there is enough room inside the usable display area.
 
@@ -86,24 +86,24 @@ Set horizontal and vertical overlap offsets independently in **Stacked Windows**
 
 A window action's shortcut can be a mouse button instead of a key, such as one of the side buttons found on many mice. The side buttons pair well with **Cycle stacked windows** and **Cycle stacked windows backward**. To assign one, click the action's shortcut field in Settings, either on the **Shortcuts** tab or in **Behavior** > **Stacked Windows**, then press the middle button or an extra button with the pointer over the Settings window. Hold any of ⌃, ⌥, ⇧ and ⌘ while pressing to include them, just as in a keyboard shortcut. Each action has one shortcut, so a mouse button replaces the action's keyboard shortcut. Left and right clicks can't be assigned.
 
-A press of an assigned button goes only to Rectangle, so the app under the pointer doesn't also act on it, for example by going back in a browser. Buttons that aren't assigned work as usual. Like keyboard shortcuts, mouse button shortcuts are off while an ignored app is frontmost or a shortcut is being recorded, and assigning one button to several actions cycles through them.
+A press of an assigned button goes only to JRectangle, so the app under the pointer doesn't also act on it, for example by going back in a browser. Buttons that aren't assigned work as usual. Like keyboard shortcuts, mouse button shortcuts are off while an ignored app is frontmost or a shortcut is being recorded, and assigning one button to several actions cycles through them.
 
-Mouse button shortcuts act on the focused window, as keyboard shortcuts do. To have them act on the window under the pointer instead, turn on **Mouse button shortcuts act on the window under the pointer** in **Behavior** > **Extras**. Focus stays where it is, except with actions that work by bringing windows forward, such as the cycle actions. When there's no window under the pointer, Rectangle beeps.
+Mouse button shortcuts act on the focused window, as keyboard shortcuts do. To have them act on the window under the pointer instead, turn on **Mouse button shortcuts act on the window under the pointer** in **Behavior** > **Extras**. Focus stays where it is, except with actions that work by bringing windows forward, such as the cycle actions. When there's no window under the pointer, JRectangle beeps.
 
-If pressing a button doesn't record it, other software, such as your mouse's own utility, may be remapping the button before Rectangle sees it.
+If pressing a button doesn't record it, other software, such as your mouse's own utility, may be remapping the button before JRectangle sees it.
 
 ### Ignore an app
 
-Ignoring an app means that when the app is frontmost, keyboard shortcuts are un-registered from macOS. When the app is no longer frontmost, keyboard shortcuts are re-registered with macOS. This is useful for apps that have the same shortcuts like Rectangle and you do not want to change them. Double-clicking the title bar of an ignored app's window does not trigger Rectangle's title bar action either.
+Ignoring an app means that when the app is frontmost, keyboard shortcuts are un-registered from macOS. When the app is no longer frontmost, keyboard shortcuts are re-registered with macOS. This is useful for apps that have the same shortcuts like JRectangle and you do not want to change them. Double-clicking the title bar of an ignored app's window does not trigger JRectangle's title bar action either.
 
 1. Focus the app that you want to ignore (make a window from that app frontmost).
-1. Open the Rectangle menu and select "Ignore app"
+1. Open the JRectangle menu and select "Ignore app"
 
-To un-ignore an app that you have selected to ignore, simply bring that app frontmost again, open the Rectangle menu, and deselect "Ignore".
+To un-ignore an app that you have selected to ignore, simply bring that app frontmost again, open the JRectangle menu, and deselect "Ignore".
 
 ## Execute an action by URL
 
-Open the URL `rectangle://execute-action?name=[name]`. Do not activate Rectangle if possible.
+Open the URL `rectangle://execute-action?name=[name]`. Do not activate JRectangle if possible.
 
 Available values for `[name]`: `left-half`, `right-half`, `center-half`, `top-half`, `bottom-half`, `top-left`, `top-right`, `bottom-left`, `bottom-right`, `first-third`, `center-third`, `last-third`, `first-two-thirds`, `last-two-thirds`, `maximize`, `almost-maximize`, `maximize-height`, `smaller`, `larger`, `center`, `center-prominently`, `restore`, `next-display`, `previous-display`, `move-left`, `move-right`, `move-up`, `move-down`, `first-fourth`, `second-fourth`, `third-fourth`, `last-fourth`, `first-three-fourths`, `last-three-fourths`, `top-left-sixth`, `top-center-sixth`, `top-right-sixth`, `bottom-left-sixth`, `bottom-center-sixth`, `bottom-right-sixth`, `specified`, `reverse-all`, `top-left-ninth`, `top-center-ninth`, `top-right-ninth`, `middle-left-ninth`, `middle-center-ninth`, `middle-right-ninth`, `bottom-left-ninth`, `bottom-center-ninth`, `bottom-right-ninth`, `top-left-third`, `top-right-third`, `bottom-left-third`, `bottom-right-third`, `top-left-eighth`, `top-center-left-eighth`, `top-center-right-eighth`, `top-right-eighth`, `bottom-left-eighth`, `bottom-center-left-eighth`, `bottom-center-right-eighth`, `bottom-right-eighth`, `tile-all`, `tile-rows`, `tile-columns`, `cascade-all`, `cascade-active-app`, `cycle-stacked-windows`, `cycle-stacked-windows-backward`
 
@@ -126,8 +126,8 @@ See [TerminalCommands.md](TerminalCommands.md)
 
 ## Differences with Spectacle
 
-* Rectangle uses [MASShortcut](https://github.com/rxhanson/MASShortcut) for keyboard shortcut recording. Spectacle used its own shortcut recorder.
-* Rectangle has additional window actions: move windows to each edge without resizing, maximize only the height of a window, almost maximizing a window.
+* JRectangle uses [MASShortcut](https://github.com/rxhanson/MASShortcut) for keyboard shortcut recording. Spectacle used its own shortcut recorder.
+* JRectangle has additional window actions: move windows to each edge without resizing, maximize only the height of a window, almost maximizing a window.
 * Next/prev screen thirds is replaced with explicitly first third, first two thirds, center third, last two thirds, and last third. Screen orientation is taken into account, as in first third will be left third on landscape and top third on portrait.
   * You can however emulate Spectacle's third cycling using first and last third actions. So, if you repeatedly execute first third, it will cycle through thirds (first, center, last) and vice-versa with the last third.
 * There's an option to have windows traverse across displays on repeated side actions. Left/Right Half use the display ordering. Top/Bottom Half move to the nearest display above/below with horizontal overlap, landing on its facing half. At the top or bottom of a display stack, traversal wraps to its opposite end, just like left/right cycling. The combined traverse-and-resize option cycles sizes at the boundary instead.
@@ -135,13 +135,13 @@ See [TerminalCommands.md](TerminalCommands.md)
 
 ## Common Known Issues
 
-### Rectangle doesn't have the ability to move to other desktops/spaces
+### Moving windows between desktops is experimental
 
-Apple never released a public API for doing this. Rectangle Pro has next/prev Space actions, but there are no plans to add those into Rectangle at this time.
+macOS does not provide a public API for moving another app's window between Spaces. JRectangle's experimental desktop shortcuts simulate a drag and have the limitations described above.
 
 ### Windows overlap when using thirds or other small layouts
 
-Some apps enforce a minimum window size that is larger than the requested layout. For example, a window with a minimum width of 600 points cannot fit a 504-point third of a display. Rectangle keeps the window on screen and briefly shows a “Minimum window size reached” HUD with a window icon when the app leaves it larger than the requested size. Use a larger layout, such as halves, or reduce the adjacent window manually. Rectangle cannot override an app's minimum window size.
+Some apps enforce a minimum window size that is larger than the requested layout. For example, a window with a minimum width of 600 points cannot fit a 504-point third of a display. JRectangle keeps the window on screen and briefly shows a “Minimum window size reached” HUD with a window icon when the app leaves it larger than the requested size. Use a larger layout, such as halves, or reduce the adjacent window manually. JRectangle cannot override an app's minimum window size.
 
 ### Window resizing is off slightly for iTerm2
 
@@ -151,7 +151,7 @@ By default iTerm2 will only resize in increments of character widths. There migh
 defaults write com.googlecode.iterm2 DisableWindowSizeSnap -integer 1
 ```
 
-### Rectangle appears to cause Notification Center to freeze
+### JRectangle appears to cause Notification Center to freeze
 
 This appears to affect only a small amount of users. To prevent this from happening, uncheck the box for "Snap windows by dragging".
 See issue [317](https://github.com/rxhanson/Rectangle/issues/317).
@@ -168,7 +168,7 @@ If windows aren't resizing or moving as you expect, here's some initial steps to
 
 **Diagnose the issue:**
 
-4. **Enable debug logging** (see instructions in the following section) – This helps identify whether Rectangle is working correctly.
+4. **Enable debug logging** (see instructions in the following section) – This helps identify whether JRectangle is working correctly.
 1. The logs are straightforward. If your calculated rect and your resulting rect are identical, chances are that there is another application causing issues.
 
 **Check for conflicts:**
@@ -182,51 +182,44 @@ If windows aren't resizing or moving as you expect, here's some initial steps to
 9. If you suspect there may be another application causing issues, try creating and logging in as a new macOS user.
 1. Save your logs to attach to an issue if you need to create one.
 
-#### Try resetting the macOS accessibility permissions for Rectangle:
+#### Try resetting the macOS accessibility permissions for JRectangle:
 
 ```bash
 tccutil reset All com.knollsoft.Rectangle
 ```
 
 Or, this can be done with the following steps instead of the tccutil terminal command.
-1. Close Rectangle if it's running
-2. In System Settings -> Privacy & Security -> Accessibility, first disable Rectangle, then remove it with the minus button. (it's important to do both of those steps in that order)
+1. Close JRectangle if it's running
+2. In System Settings -> Privacy & Security -> Accessibility, first disable JRectangle, then remove it with the minus button. (it's important to do both of those steps in that order)
 3. Restart your mac.
-4. Launch Rectangle and enable settings for it as prompted.
+4. Launch JRectangle and enable settings for it as prompted.
 
 ## View Debug Logging
 
-1. Hold down the alt (option) key with the Rectangle menu open.
+1. Hold down the alt (option) key with the JRectangle menu open.
 1. Select the "View Logging..." menu item, which is in place of the "About" menu item.
-1. Logging will appear in the window as you perform Rectangle commands.
+1. Logging will appear in the window as you perform JRectangle commands.
 
 ## Import & export JSON config
 
 There are buttons for importing and exporting the config as a JSON file on the **App Settings** tab of the Settings window.
 
-Upon launch, Rectangle will load a config file at `~/Library/Application Support/Rectangle/RectangleConfig.json` if it is present and will rename that file with a time/date stamp so that it isn't read on subsequent launches.
+Upon launch, JRectangle asks whether to apply a config file found at `~/Library/Application Support/Rectangle/RectangleConfig.json`. After applying it, the app renames it with a timestamp so it isn't read on subsequent launches.
 
-## Preferences Storage
+## Preferences storage
 
-The configuration for Rectangle is stored using NSUserDefaults, meaning it is stored in the following location:
-`~/Library/Preferences/com.knollsoft.Rectangle.plist`
-Note that shortcuts in v0.41+ are stored in a different format and will not load in prior versions.
+JRectangle stores its settings and shortcuts in `~/Library/Application Support/JRectangle/config.json`.
+On first launch it copies existing app preferences from `com.knollsoft.Rectangle` without deleting them.
+Debug builds use `~/Library/Application Support/JRectangle/Debug/config.json` and migrate the separate debug preferences.
 
-That file can be backed up or transferred to other machines.
+Quit JRectangle before editing the file. If JRectangle detects an external change when saving, it warns instead of overwriting it.
+Use **Import** and **Export** in App Settings to share settings and shortcuts. Export files use the existing Rectangle import format and are distinct from the live settings file.
 
-If you are using Rectangle v0.44+, you can also use the import/export buttons on the **App Settings** tab of the Settings window to share your preferences and keyboard shortcuts across machines using a JSON file.
-
-> [!NOTE]  
-> If you are having issues with configuration options persisting after an application restart and you've installed using Homebrew, you will need to uninstall and reinstall with the `--zap` flag.
-
-```
-brew uninstall --zap rectangle
-brew install rectangle
-```
+macOS manages permissions and launch-at-login separately. JRectangle also reads macOS window manager, Dock and title-bar preferences, and may disable macOS window tiling when resolving conflicts; those system preferences remain in their macOS domains.
 
 ## Uninstallation
 
-Rectangle can be uninstalled by quitting the app and moving it to the trash. You can remove the Rectangle defaults from your machine with the following terminal command:
+JRectangle can be uninstalled by quitting the app and moving it to the trash. Its settings file remains in `~/Library/Application Support/JRectangle/`. Old, pre-migration defaults can also be removed with:
 
 ```bash
 defaults delete com.knollsoft.Rectangle
@@ -247,7 +240,7 @@ Logic from Rectangle is used in the [Multitouch](https://multitouch.app) app. Th
 
 ### Contributing additional sizes and positions
 
-Rectangle's UI is intentionally simple. If you want to add a size and position that's not in the main list of the Shortcuts tab, then you can now add them into the "Extra" section, inside the collapsible "⋯" section at the bottom of the Shortcuts tab.
+JRectangle's UI is intentionally simple. If you want to add a size and position that's not in the main list of the Shortcuts tab, then you can now add them into the "Extra" section, inside the collapsible "⋯" section at the bottom of the Shortcuts tab.
 
 ### Localization
 
@@ -264,7 +257,7 @@ You need Xcode and a Mac that can run the app (macOS 14 or later). JRectangle us
 1. Choose the **Debug** configuration, then press **⌘R** to build and run.
 1. Grant JRectangle permission under **System Settings > Privacy & Security > Accessibility** when macOS prompts you.
 
-Debug builds use the separate bundle identifier `com.knollsoft.Rectangle.debug` and ad-hoc signing, so they keep their own preferences and Accessibility permission without needing a developer certificate. Quit any installed copy of Rectangle before running the Debug build; otherwise both copies will respond to the same shortcuts and window drags. After granting permission, enable the Debug build in Accessibility if it is not already enabled. macOS may require you to grant Accessibility permission again after rebuilding.
+Debug builds use the separate bundle identifier `com.knollsoft.Rectangle.debug` and ad-hoc signing, so they keep their own preferences and Accessibility permission without needing a developer certificate. Quit any installed copy of JRectangle before running the Debug build; otherwise both copies will respond to the same shortcuts and window drags. After granting permission, enable the Debug build in Accessibility if it is not already enabled. macOS may require you to grant Accessibility permission again after rebuilding or changing the app's path.
 
 You can also build and launch the Debug app from Terminal:
 
@@ -275,7 +268,7 @@ xcodebuild -project Rectangle.xcodeproj \
   -destination 'platform=macOS' \
   -derivedDataPath build \
   build
-open build/Build/Products/Debug/Rectangle.app
+open build/Build/Products/Debug/JRectangle.app
 ```
 
 If an ad-hoc signed rebuild stops responding to shortcuts, remove its old Accessibility entry in System Settings and grant permission again. To clear the entry from Terminal:
@@ -284,11 +277,11 @@ If an ad-hoc signed rebuild stops responding to shortcuts, remove its old Access
 tccutil reset Accessibility com.knollsoft.Rectangle.debug
 ```
 
-Rectangle's icon uses a Liquid Glass asset with a fallback for older macOS versions. If asset compilation fails on a Mac running an older macOS version, remove **Asset Catalog Other Flags** from the project build settings locally; do not include that change in a pull request.
+JRectangle uses a J-marked app icon. If asset compilation fails on a Mac running an older macOS version, remove **Asset Catalog Other Flags** from the project build settings locally; do not include that change in a pull request.
 
 ## Credits
 
-As mentioned above, Rectangle uses a forked version of [MASShortcut](https://github.com/rxhanson/MASShortcut), which still works great.
+JRectangle uses a forked version of [MASShortcut](https://github.com/rxhanson/MASShortcut).
 
 The Big Sur variant of the Rectangle app icon was created by Giovanni Maria Cusaro (@gmcusaro). The Liquid Glass variant of the app icon was created by [Alexander Käßner](https://www.alexkaessner.de) (@alexkaessner).
 

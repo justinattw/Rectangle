@@ -59,17 +59,21 @@ final class AppSettingsViewModel {
     }
 
     func restoreDefaults() {
-        let currentDefaults = Defaults.alternateDefaultShortcuts.enabled ? "Rectangle" : "Spectacle"
+        let currentDefaults = Defaults.alternateDefaultShortcuts.enabled ? "JRectangle" : "Spectacle"
         let defaultShortcutsTitle = String(localized: "Default Shortcuts")
         let currentlyUsingText = String(localized: "Currently using: ")
         let cancelText = String(localized: "Cancel")
 
-        let response = AlertUtil.threeButtonAlert(question: defaultShortcutsTitle, text: currentlyUsingText + currentDefaults, buttonOneText: "Rectangle", buttonTwoText: "Spectacle", buttonThreeText: cancelText)
+        let response = AlertUtil.threeButtonAlert(question: defaultShortcutsTitle, text: currentlyUsingText + currentDefaults, buttonOneText: "JRectangle", buttonTwoText: "Spectacle", buttonThreeText: cancelText)
         if response == .alertThirdButtonReturn { return }
 
         let rectangleDefaults = (response == .alertFirstButtonReturn)
-        WindowAction.active.forEach { UserDefaults.standard.removeObject(forKey: $0.name) }
-        Defaults.alternateDefaultShortcuts.enabled = rectangleDefaults
+        JSONPreferences.shared.performBatch {
+            ShortcutPreferences.shared.performBatch {
+                WindowAction.active.forEach { ShortcutPreferences.shared.reset($0.name) }
+                Defaults.alternateDefaultShortcuts.enabled = rectangleDefaults
+            }
+        }
         Notification.Name.changeDefaults.post()
 
         Defaults.portraitSnapAreas.typedValue = nil
@@ -86,10 +90,13 @@ final class AppSettingsViewModel {
         if savePanel.runModal() == .OK, let url = savePanel.url {
             do {
                 if let jsonString = Defaults.encoded() {
-                    try jsonString.write(to: url, atomically: false, encoding: .utf8)
+                    try jsonString.write(to: url, atomically: true, encoding: .utf8)
+                } else {
+                    AlertUtil.oneButtonAlert(question: "Could not export configuration", text: "The settings could not be encoded.")
                 }
             } catch {
                 Logger.log(error.localizedDescription)
+                AlertUtil.oneButtonAlert(question: "Could not export configuration", text: error.localizedDescription)
             }
         }
         Notification.Name.windowSnapping.post(object: true)

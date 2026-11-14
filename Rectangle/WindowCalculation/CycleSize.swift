@@ -132,13 +132,13 @@ class CycleSizesDefault: Default {
         set {
             storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(newValue.toBits(), forKey: key)
+                JSONPreferences.shared.set(newValue.toBits(), forKey: key)
             }
         }
     }
     
     init() {
-        let bits = UserDefaults.standard.integer(forKey: key)
+        let bits = JSONPreferences.shared.integer(forKey: key)
         storedValue = CycleSize.fromBits(bits: bits)
         initialized = true
     }

@@ -878,7 +878,7 @@
         }
       }
     },
-    "2. In the Rectangle menu, select\n\"Use [Application] as Todo App\"" : {
+    "2. In the JRectangle menu, select\n\"Use [Application] as Todo App\"" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -890,384 +890,384 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Al menú Rectangle, selecciona\n\"Utilitza [Application] com a app Todo\""
+            "value" : "2. Al menú JRectangle, selecciona\n\"Utilitza [Application] com a app Todo\""
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Al menú Rectangle, selecciona\n\"Utilitza [Application] com a app Todo\""
+            "value" : "2. Al menú JRectangle, selecciona\n\"Utilitza [Application] com a app Todo\""
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. V Rectangle menu, zvolte\n\"Vybrat [Application] jako Todo aplikaci\""
+            "value" : "2. V JRectangle menu, zvolte\n\"Vybrat [Application] jako Todo aplikaci\""
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Wähle \n\"Verwende [Application] als To-do-Anwendung\" im Rectangle-Menü."
+            "value" : "2. Wähle \n\"Verwende [Application] als To-do-Anwendung\" im JRectangle-Menü."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. In the Rectangle menu, select\n\"Use [Application] as Todo App\""
+            "value" : "2. In the JRectangle menu, select\n\"Use [Application] as Todo App\""
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. En el menú de Rectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
+            "value" : "2. En el menú de JRectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. En el menú de Rectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
+            "value" : "2. En el menú de JRectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. در منوی Rectangle، گزینهٔ\n«استفاده از [برنامه] به‌عنوان برنامهٔ Todo» را انتخاب کنید"
+            "value" : "2. در منوی JRectangle، گزینهٔ\n«استفاده از [برنامه] به‌عنوان برنامهٔ Todo» را انتخاب کنید"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Dans le menu de Rectangle, sélectionner\n« Utiliser [Application] comme App Todo »"
+            "value" : "2. Dans le menu de JRectangle, sélectionner\n« Utiliser [Application] comme App Todo »"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Rectangle मेन्यू में चुनें\n\"[ऐप्लिकेशन] को टूडू ऐप के रूप में उपयोग करें\""
+            "value" : "2. JRectangle मेन्यू में चुनें\n\"[ऐप्लिकेशन] को टूडू ऐप के रूप में उपयोग करें\""
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Di Menu Rectangle, pilih\n\"Gunakan [Application] sebagai Aplikasi Todo\""
+            "value" : "2. Di Menu JRectangle, pilih\n\"Gunakan [Application] sebagai Aplikasi Todo\""
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Nel menu di Rectangle, seleziona \n\"Usa [Applicazione] come applicazione in evidenza\""
+            "value" : "2. Nel menu di JRectangle, seleziona \n\"Usa [Applicazione] come applicazione in evidenza\""
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Rectangleのメニューにある\n\"[アプリケーション名]をToDoアプリとして使う\"を選択します"
+            "value" : "2. JRectangleのメニューにある\n\"[アプリケーション名]をToDoアプリとして使う\"を選択します"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Rectangle 메뉴에서, \n\"[Application]을 Todo 앱으로 사용\" 메뉴를 클릭합니다"
+            "value" : "2. JRectangle 메뉴에서, \n\"[Application]을 Todo 앱으로 사용\" 메뉴를 클릭합니다"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "„Rectangle“ meniu pasirinkite „Naudoti [Programą] kaip Todo programą“"
+            "value" : "„JRectangle“ meniu pasirinkite „Naudoti [Programą] kaip Todo programą“"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. I Rectangle-menyen: velg\n\"Bruk [Program] som Gjøreliste-program\""
+            "value" : "2. I JRectangle-menyen: velg\n\"Bruk [Program] som Gjøreliste-program\""
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. In the Rectangle menu, select\n\"Use [Application] as Todo App\""
+            "value" : "2. In the JRectangle menu, select\n\"Use [Application] as Todo App\""
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. I Rectangle-menyen: vel\n\"Bruk [Program] som Gjereliste-program\""
+            "value" : "2. I JRectangle-menyen: vel\n\"Bruk [Program] som Gjereliste-program\""
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. In the Rectangle menu, select\n\"Use [Application] as Todo App\""
+            "value" : "2. In the JRectangle menu, select\n\"Use [Application] as Todo App\""
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. No menu do Rectangle, selecione\n\"Usar [app] como app de tarefas\""
+            "value" : "2. No menu do JRectangle, selecione\n\"Usar [app] como app de tarefas\""
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. In the Rectangle menu, select\n\"Use [Application] as Todo App\""
+            "value" : "2. In the JRectangle menu, select\n\"Use [Application] as Todo App\""
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. În meniul Rectangle, selectează\n\"Folosește [Application] ca și Todo App\""
+            "value" : "2. În meniul JRectangle, selectează\n\"Folosește [Application] ca și Todo App\""
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. В меню Rectangle выберите \"Использовать [Приложение] в качестве приложения Todo\""
+            "value" : "2. В меню JRectangle выберите \"Использовать [Приложение] в качестве приложения Todo\""
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. V Rectangle menu, zvoľ\n\"Použiť [Aplikácia] ako Todo aplikáciu\""
+            "value" : "2. V JRectangle menu, zvoľ\n\"Použiť [Aplikácia] ako Todo aplikáciu\""
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. I Rectangle-menyn, välj\n\"Använd [Applikation] som Att göra-app\""
+            "value" : "2. I JRectangle-menyn, välj\n\"Använd [Applikation] som Att göra-app\""
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Rectangle menüsünde \n\"[Uygulama Adı]nı Todo App olarak kullan\" seçeneğini seçin"
+            "value" : "2. JRectangle menüsünde \n\"[Uygulama Adı]nı Todo App olarak kullan\" seçeneğini seçin"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. У меню Rectangle виберіть\n\"Використовувати [Застосунок] як застосунок Завдань\""
+            "value" : "2. У меню JRectangle виберіть\n\"Використовувати [Застосунок] як застосунок Завдань\""
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Trên menu của Rectangle, chọn\n\"Sử dụng [Ứng dụng] làm ứng dụng Todo\""
+            "value" : "2. Trên menu của JRectangle, chọn\n\"Sử dụng [Ứng dụng] làm ứng dụng Todo\""
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⒉在 Rectangle 菜单中，选择\n“使用［应用程序］作为待办应用”"
+            "value" : "⒉在 JRectangle 菜单中，选择\n“使用［应用程序］作为待办应用”"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⒉ 在 Rectangle 選單中，選擇\n「使用［應用程式］作為待辦應用程式」"
+            "value" : "⒉ 在 JRectangle 選單中，選擇\n「使用［應用程式］作為待辦應用程式」"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⒉在Rectangle選單中，選擇\n「使用［應用程式］作為待辦應用」"
+            "value" : "⒉在JRectangle選單中，選擇\n「使用［應用程式］作為待辦應用」"
           }
         }
       }
     },
-    "3. In the Rectangle menu, enable Todo Mode." : {
+    "3. In the JRectangle menu, enable Todo Mode." : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. في قائمة Rectangle ، قم بتمكين Todo Mode"
+            "value" : "3. في قائمة JRectangle ، قم بتمكين Todo Mode"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Al menú Rectangle, habilita el mode Todo."
+            "value" : "3. Al menú JRectangle, habilita el mode Todo."
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Al menú Rectangle, habilita el mode Todo."
+            "value" : "3. Al menú JRectangle, habilita el mode Todo."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Zapněte Todo mód v Rectangle menu."
+            "value" : "3. Zapněte Todo mód v JRectangle menu."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Aktiviere den To-do-Modus im Rectangle-Menü."
+            "value" : "3. Aktiviere den To-do-Modus im JRectangle-Menü."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. In the Rectangle menu, enable Todo Mode."
+            "value" : "3. In the JRectangle menu, enable Todo Mode."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. En el menú de Rectangle, activa el modo Todo."
+            "value" : "3. En el menú de JRectangle, activa el modo Todo."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. En el menú de Rectangle, activa el modo Todo."
+            "value" : "3. En el menú de JRectangle, activa el modo Todo."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. در منوی Rectangle، حالت Todo را فعال کنید."
+            "value" : "3. در منوی JRectangle، حالت Todo را فعال کنید."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Dans le menu de Rectangle, activer le mode Todo."
+            "value" : "3. Dans le menu de JRectangle, activer le mode Todo."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Rectangle मेन्यू में टूडू मोड सक्षम करें।"
+            "value" : "3. JRectangle मेन्यू में टूडू मोड सक्षम करें।"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Di Menu Rectangle, Aktifkan mode Todo."
+            "value" : "3. Di Menu JRectangle, Aktifkan mode Todo."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Nel menu di Rectangle, attiva modalità In evidenza"
+            "value" : "3. Nel menu di JRectangle, attiva modalità In evidenza"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. RectangleのメニューからToDoモードを有効にします。"
+            "value" : "3. JRectangleのメニューからToDoモードを有効にします。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Rectangle 메뉴에서, Todo 모드를 켭니다"
+            "value" : "3. JRectangle 메뉴에서, Todo 모드를 켭니다"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. „Rectangle“ meniu įjunkite Todo režimą."
+            "value" : "3. „JRectangle“ meniu įjunkite Todo režimą."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. I Rectangle-menyen: aktiver Gjøreliste-modus."
+            "value" : "3. I JRectangle-menyen: aktiver Gjøreliste-modus."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. In the Rectangle menu, enable Todo Mode."
+            "value" : "3. In the JRectangle menu, enable Todo Mode."
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. I Rectangle-menyen: aktiver Gjereliste-modus."
+            "value" : "3. I JRectangle-menyen: aktiver Gjereliste-modus."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. In the Rectangle menu, enable Todo Mode."
+            "value" : "3. In the JRectangle menu, enable Todo Mode."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. No menu do Rectangle, ative o Modo Tarefas."
+            "value" : "3. No menu do JRectangle, ative o Modo Tarefas."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. In the Rectangle menu, enable Todo Mode."
+            "value" : "3. In the JRectangle menu, enable Todo Mode."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Activează modul Todo în meniul Rectangle."
+            "value" : "3. Activează modul Todo în meniul JRectangle."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3.  В меню Rectangle включите Todo режим."
+            "value" : "3.  В меню JRectangle включите Todo режим."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Zapni Todo režim v Rectangle menu."
+            "value" : "3. Zapni Todo režim v JRectangle menu."
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. I Rectangle-menyn, aktivera Att göra-läge."
+            "value" : "3. I JRectangle-menyn, aktivera Att göra-läge."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Rectangle menüsünde,  Todo Modunu aktif edin."
+            "value" : "3. JRectangle menüsünde,  Todo Modunu aktif edin."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. В меню Rectangle увімкніть режим Завдань."
+            "value" : "3. В меню JRectangle увімкніть режим Завдань."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Trên menu của Rectangle, bật chế độ Todo."
+            "value" : "3. Trên menu của JRectangle, bật chế độ Todo."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⒊在 Rectangle 菜单中，启用待办模式"
+            "value" : "⒊在 JRectangle 菜单中，启用待办模式"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⒊ 在 Rectangle 選單中，啟用待辦模式。"
+            "value" : "⒊ 在 JRectangle 選單中，啟用待辦模式。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⒊在Rectangle選單中，啟用待辦模式。"
+            "value" : "⒊在JRectangle選單中，啟用待辦模式。"
           }
         }
       }
@@ -1758,7 +1758,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleについて"
+            "value" : "JRectangleについて"
           }
         },
         "ko" : {
@@ -1770,7 +1770,7 @@
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apie Rectangle"
+            "value" : "Apie JRectangle"
           }
         },
         "nb" : {
@@ -1794,7 +1794,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle"
+            "value" : "O JRectangle"
           }
         },
         "pt-BR" : {
@@ -1818,7 +1818,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "О Rectangle"
+            "value" : "О JRectangle"
           }
         },
         "sk" : {
@@ -1871,7 +1871,7 @@
         }
       }
     },
-    "About Rectangle" : {
+    "About JRectangle" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -1883,187 +1883,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quant a Rectangle"
+            "value" : "Quant a JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quant a Rectangle"
+            "value" : "Quant a JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O aplikaci Rectangle"
+            "value" : "O aplikaci JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Über Rectangle"
+            "value" : "Über JRectangle"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "About Rectangle"
+            "value" : "About JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de Rectangle"
+            "value" : "Acerca de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acerca de Rectangle"
+            "value" : "Acerca de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "دربارهٔ Rectangle"
+            "value" : "دربارهٔ JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À propos de Rectangle"
+            "value" : "À propos de JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle के बारे में"
+            "value" : "JRectangle के बारे में"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tentang Rectangle"
+            "value" : "Tentang JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informazioni su Rectangle"
+            "value" : "Informazioni su JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleについて"
+            "value" : "JRectangleについて"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 정보"
+            "value" : "JRectangle 정보"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apie Rectangle"
+            "value" : "Apie JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om Rectangle"
+            "value" : "Om JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Over Rectangle"
+            "value" : "Over JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om Rectangle"
+            "value" : "Om JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle"
+            "value" : "O JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sobre o Rectangle"
+            "value" : "Sobre o JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sobre o Rectangle"
+            "value" : "Sobre o JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Despre Rectangle"
+            "value" : "Despre JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "О Rectangle"
+            "value" : "О JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O aplikácii Rectangle"
+            "value" : "O aplikácii JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om Rectangle"
+            "value" : "Om JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Hakkında"
+            "value" : "JRectangle Hakkında"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Про Rectangle"
+            "value" : "Про JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Giới thiệu Rectangle"
+            "value" : "Giới thiệu JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "关于 Rectangle"
+            "value" : "关于 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於 Rectangle"
+            "value" : "關於 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "關於Rectangle"
+            "value" : "關於JRectangle"
           }
         }
       }
@@ -2316,61 +2316,61 @@
         }
       }
     },
-    "After Rectangle maximizes or almost maximizes a window, executing the same action again moves the window back to its previous size and position." : {
+    "After JRectangle maximizes or almost maximizes a window, executing the same action again moves the window back to its previous size and position." : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After Rectangle maximizes or almost maximizes a window, executing the same action again moves the window back to its previous size and position."
+            "value" : "After JRectangle maximizes or almost maximizes a window, executing the same action again moves the window back to its previous size and position."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Después de que Rectangle maximice o casi maximice una ventana, repetir la misma acción la devuelve a su tamaño y posición anteriores."
+            "value" : "Después de que JRectangle maximice o casi maximice una ventana, repetir la misma acción la devuelve a su tamaño y posición anteriores."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Después de que Rectangle maximice o casi maximice una ventana, repetir la misma acción la devuelve a su tamaño y posición anteriores."
+            "value" : "Después de que JRectangle maximice o casi maximice una ventana, repetir la misma acción la devuelve a su tamaño y posición anteriores."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "پس از اینکه Rectangle پنجره‌ای را بیشینه یا تقریباً بیشینه کرد، اجرای دوبارهٔ همان عمل پنجره را به اندازه و موقعیت قبلی‌اش بازمی‌گرداند."
+            "value" : "پس از اینکه JRectangle پنجره‌ای را بیشینه یا تقریباً بیشینه کرد، اجرای دوبارهٔ همان عمل پنجره را به اندازه و موقعیت قبلی‌اش بازمی‌گرداند."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle द्वारा किसी विंडो को मैक्सिमाइज़ या लगभग मैक्सिमाइज़ करने के बाद, वही क्रिया फिर से करने पर विंडो अपने पिछले आकार और स्थिति में लौट आती है।"
+            "value" : "JRectangle द्वारा किसी विंडो को मैक्सिमाइज़ या लगभग मैक्सिमाइज़ करने के बाद, वही क्रिया फिर से करने पर विंडो अपने पिछले आकार और स्थिति में लौट आती है।"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Depois que o Rectangle maximiza ou quase maximiza uma janela, executar a mesma ação novamente devolve a janela ao tamanho e à posição anteriores."
+            "value" : "Depois que o JRectangle maximiza ou quase maximiza uma janela, executar a mesma ação novamente devolve a janela ao tamanho e à posição anteriores."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Після того як Rectangle максимізує або майже максимізує вікно, повторне виконання тієї самої дії повертає вікну попередній розмір і положення."
+            "value" : "Після того як JRectangle максимізує або майже максимізує вікно, повторне виконання тієї самої дії повертає вікну попередній розмір і положення."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 将窗口最大化或接近最大化后，再次执行同一操作会将窗口恢复到之前的大小和位置。"
+            "value" : "JRectangle 将窗口最大化或接近最大化后，再次执行同一操作会将窗口恢复到之前的大小和位置。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 將視窗放到最大或近乎放到最大後，再次執行相同的動作會將視窗復原至先前的大小與位置。"
+            "value" : "JRectangle 將視窗放到最大或近乎放到最大後，再次執行相同的動作會將視窗復原至先前的大小與位置。"
           }
         }
       }
@@ -2429,54 +2429,54 @@
         }
       }
     },
-    "Allow Rectangle URL action?" : {
+    "Allow JRectangle URL action?" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Permitir la acción de URL de Rectangle?"
+            "value" : "¿Permitir la acción de URL de JRectangle?"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Permitir la acción de URL de Rectangle?"
+            "value" : "¿Permitir la acción de URL de JRectangle?"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اجازهٔ اجرای فرمان URL به Rectangle داده شود؟"
+            "value" : "اجازهٔ اجرای فرمان URL به JRectangle داده شود؟"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle URL क्रिया की अनुमति दें?"
+            "value" : "JRectangle URL क्रिया की अनुमति दें?"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permitir ação de URL do Rectangle?"
+            "value" : "Permitir ação de URL do JRectangle?"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Дозволити дію Rectangle через URL?"
+            "value" : "Дозволити дію JRectangle через URL?"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "允许 Rectangle 执行 URL 操作？"
+            "value" : "允许 JRectangle 执行 URL 操作？"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "是否允許 Rectangle 執行 URL 動作？"
+            "value" : "是否允許 JRectangle 執行 URL 動作？"
           }
         }
       }
@@ -2717,62 +2717,62 @@
         }
       }
     },
-    "An external source asked Rectangle to perform \"%@\" on app bundle id \"%@\". Allow?" : {
+    "An external source asked JRectangle to perform \"%@\" on app bundle id \"%@\". Allow?" : {
       "comment" : "The text in the alert that appears when the user is not currently using the app. The argument is the string “ignore-app” or the string “unignore-app”.",
       "isCommentAutoGenerated" : true,
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "An external source asked Rectangle to perform \"%1$@\" on app bundle id \"%2$@\". Allow?"
+            "value" : "An external source asked JRectangle to perform \"%1$@\" on app bundle id \"%2$@\". Allow?"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Una fuente externa ha pedido a Rectangle que ejecute \"%1$@\" en la app con identificador de paquete \"%2$@\". ¿Permitirlo?"
+            "value" : "Una fuente externa ha pedido a JRectangle que ejecute \"%1$@\" en la app con identificador de paquete \"%2$@\". ¿Permitirlo?"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Una fuente externa ha pedido a Rectangle que ejecute \"%1$@\" en la app con identificador de paquete \"%2$@\". ¿Permitirlo?"
+            "value" : "Una fuente externa ha pedido a JRectangle que ejecute \"%1$@\" en la app con identificador de paquete \"%2$@\". ¿Permitirlo?"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "یک منبع خارجی از Rectangle درخواست کرده است تا «%1$@» را روی شناسهٔ بستهٔ برنامهٔ «%2$@» اجرا کند. اجازه می‌دهید؟"
+            "value" : "یک منبع خارجی از JRectangle درخواست کرده است تا «%1$@» را روی شناسهٔ بستهٔ برنامهٔ «%2$@» اجرا کند. اجازه می‌دهید؟"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "एक बाहरी स्रोत ने Rectangle से ऐप बंडल आईडी \"%2$@\" पर \"%1$@\" करने को कहा है। अनुमति दें?"
+            "value" : "एक बाहरी स्रोत ने JRectangle से ऐप बंडल आईडी \"%2$@\" पर \"%1$@\" करने को कहा है। अनुमति दें?"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uma fonte externa pediu ao Rectangle para executar \"%1$@\" no app com bundle ID \"%2$@\". Permitir?"
+            "value" : "Uma fonte externa pediu ao JRectangle para executar \"%1$@\" no app com bundle ID \"%2$@\". Permitir?"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Зовнішнє джерело просить Rectangle виконати «%1$@» для застосунку з ідентифікатором «%2$@». Дозволити?"
+            "value" : "Зовнішнє джерело просить JRectangle виконати «%1$@» для застосунку з ідентифікатором «%2$@». Дозволити?"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "外部来源请求 Rectangle 对包标识符为“%2$@”的 App 执行“%1$@”操作。是否允许？"
+            "value" : "外部来源请求 JRectangle 对包标识符为“%2$@”的 App 执行“%1$@”操作。是否允许？"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "外部來源請求 Rectangle 執行「%@」動作，目標應用程式的套件識別碼為「%@」。是否允許？"
+            "value" : "外部來源請求 JRectangle 執行「%@」動作，目標應用程式的套件識別碼為「%@」。是否允許？"
           }
         }
       }
@@ -3142,7 +3142,7 @@
         }
       }
     },
-    "Authorize Rectangle" : {
+    "Authorize JRectangle" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3153,193 +3153,193 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoritza Rectangle"
+            "value" : "Autoritza JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoritza Rectangle"
+            "value" : "Autoritza JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizovat Rectangle"
+            "value" : "Autorizovat JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle autorisieren"
+            "value" : "JRectangle autorisieren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Authorize Rectangle"
+            "value" : "Authorize JRectangle"
           }
         },
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Authorise Rectangle"
+            "value" : "Authorise JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizar Rectangle"
+            "value" : "Autorizar JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizar Rectangle"
+            "value" : "Autorizar JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تأیید مجوز Rectangle"
+            "value" : "تأیید مجوز JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoriser Rectangle"
+            "value" : "Autoriser JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle को अधिकृत करें"
+            "value" : "JRectangle को अधिकृत करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Izinkan Rectangle"
+            "value" : "Izinkan JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizza Rectangle"
+            "value" : "Autorizza JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleを許可"
+            "value" : "JRectangleを許可"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 승인"
+            "value" : "JRectangle 승인"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suteikti Rectangle prieigą"
+            "value" : "Suteikti JRectangle prieigą"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoriser Rectangle"
+            "value" : "Autoriser JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle toestemming geven"
+            "value" : "JRectangle toestemming geven"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoriser Rectangle"
+            "value" : "Autoriser JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autoryzacja Rectangle"
+            "value" : "Autoryzacja JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizar o Rectangle"
+            "value" : "Autorizar o JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizar Rectangle"
+            "value" : "Autorizar JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorizare Rectangle"
+            "value" : "Autorizare JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Дать Rectangle доступ"
+            "value" : "Дать JRectangle доступ"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povoliť Rectangle"
+            "value" : "Povoliť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auktorisera Rectangle"
+            "value" : "Auktorisera JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'ı Yetkilendir"
+            "value" : "JRectangle'ı Yetkilendir"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Авторизувати Rectangle"
+            "value" : "Авторизувати JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cấp phép cho Rectangle"
+            "value" : "Cấp phép cho JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "授权Rectangle"
+            "value" : "授权JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "授權 Rectangle"
+            "value" : "授權 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "授權Rectangle"
+            "value" : "授權JRectangle"
           }
         }
       }
@@ -11200,91 +11200,91 @@
         }
       }
     },
-    "Disable in Rectangle" : {
+    "Disable in JRectangle" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In Rectangle deaktivieren"
+            "value" : "In JRectangle deaktivieren"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disable in Rectangle"
+            "value" : "Disable in JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desactivar en Rectangle"
+            "value" : "Desactivar en JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desactivar en Rectangle"
+            "value" : "Desactivar en JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "غیرفعال‌سازی در Rectangle"
+            "value" : "غیرفعال‌سازی در JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle में अक्षम करें"
+            "value" : "JRectangle में अक्षम करें"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 側を無効化"
+            "value" : "JRectangle 側を無効化"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle의 기능 끄기"
+            "value" : "JRectangle의 기능 끄기"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desativar no Rectangle"
+            "value" : "Desativar no JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vypnúť v Rectangle"
+            "value" : "Vypnúť v JRectangle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вимкнути в Rectangle"
+            "value" : "Вимкнути в JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vô hiệu hóa trong Rectangle"
+            "value" : "Vô hiệu hóa trong JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 里禁用"
+            "value" : "在 JRectangle 里禁用"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 中停用"
+            "value" : "在 JRectangle 中停用"
           }
         }
       }
@@ -11974,43 +11974,43 @@
         }
       }
     },
-    "Drag to screen edge tiling is enabled in both Rectangle and macOS." : {
+    "Drag to screen edge tiling is enabled in both JRectangle and macOS." : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Das Ziehen zum Bildschirmrand für das Anordnen von Fenstern ist sowohl in Rectangle als auch in den macOS Systemeinstellungen aktiviert."
+            "value" : "Das Ziehen zum Bildschirmrand für das Anordnen von Fenstern ist sowohl in JRectangle als auch in den macOS Systemeinstellungen aktiviert."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Drag to screen edge tiling is enabled in both Rectangle and macOS."
+            "value" : "Drag to screen edge tiling is enabled in both JRectangle and macOS."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en Rectangle como en macOS."
+            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en JRectangle como en macOS."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en Rectangle como en macOS."
+            "value" : "El mosaico al arrastrar al borde de la pantalla está activado tanto en JRectangle como en macOS."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "چیدمان کاشی‌وار با کشیدن به لبهٔ نمایشگر در هر دو برنامهٔ Rectangle و macOS فعال است."
+            "value" : "چیدمان کاشی‌وار با کشیدن به لبهٔ نمایشگر در هر دو برنامهٔ JRectangle و macOS فعال است."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "स्क्रीन के किनारे पर ड्रैग करके टाइलिंग Rectangle और macOS दोनों में सक्षम है।"
+            "value" : "स्क्रीन के किनारे पर ड्रैग करके टाइलिंग JRectangle और macOS दोनों में सक्षम है।"
           }
         },
         "ja" : {
@@ -12022,43 +12022,43 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "화면 가장자리로 드래그해 타일을 정렬하는 기능이 Rectangle과 macOS 설정에서 모두 켜져 있습니다."
+            "value" : "화면 가장자리로 드래그해 타일을 정렬하는 기능이 JRectangle과 macOS 설정에서 모두 켜져 있습니다."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A organização lado a lado ao arrastar para a borda da tela está ativada no Rectangle e no macOS."
+            "value" : "A organização lado a lado ao arrastar para a borda da tela está ativada no JRectangle e no macOS."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Potiahnutie na okraj obrazovky je zapnuté v Rectangle aj macOS."
+            "value" : "Potiahnutie na okraj obrazovky je zapnuté v JRectangle aj macOS."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розкладання вікон перетягуванням до краю екрана увімкнено і в Rectangle, і в macOS."
+            "value" : "Розкладання вікон перетягуванням до краю екрана увімкнено і в JRectangle, і в macOS."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tính năng kéo để ghép cạnh màn hình được bật trong cả Rectangle và macOS."
+            "value" : "Tính năng kéo để ghép cạnh màn hình được bật trong cả JRectangle và macOS."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 和 macOS 中都启用了拖移窗口至屏幕边缘实现平铺"
+            "value" : "在 JRectangle 和 macOS 中都启用了拖移窗口至屏幕边缘实现平铺"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 和 macOS 都已啟用拖移視窗至螢幕邊緣來並排視窗的功能。"
+            "value" : "JRectangle 和 macOS 都已啟用拖移視窗至螢幕邊緣來並排視窗的功能。"
           }
         }
       }
@@ -12331,198 +12331,198 @@
         }
       }
     },
-    "Enable Rectangle.app" : {
+    "Enable JRectangle.app" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تحقق من Rectangle.app"
+            "value" : "تحقق من JRectangle.app"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comprova Rectangle.app"
+            "value" : "Comprova JRectangle.app"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comprova Rectangle.app"
+            "value" : "Comprova JRectangle.app"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zkontrolovat Rectangle.app"
+            "value" : "Zkontrolovat JRectangle.app"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle.app prüfen"
+            "value" : "JRectangle.app prüfen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enable Rectangle.app"
+            "value" : "Enable JRectangle.app"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activa Rectangle.app"
+            "value" : "Activa JRectangle.app"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activa Rectangle.app"
+            "value" : "Activa JRectangle.app"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "فعال‌سازی Rectangle.app"
+            "value" : "فعال‌سازی JRectangle.app"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vérifier Rectangle.app"
+            "value" : "Vérifier JRectangle.app"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle.app सक्षम करें"
+            "value" : "JRectangle.app सक्षम करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Periksa Rectangle.app"
+            "value" : "Periksa JRectangle.app"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Controlla Rectangle.app"
+            "value" : "Controlla JRectangle.app"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle.appを確認してください"
+            "value" : "JRectangle.appを確認してください"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle.app 확인하기"
+            "value" : "JRectangle.app 확인하기"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Patikrinkite failą Rectangle.app."
+            "value" : "Patikrinkite failą JRectangle.app."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sjekk Rectangle.app"
+            "value" : "Sjekk JRectangle.app"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Controleer Rectangle.app"
+            "value" : "Controleer JRectangle.app"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sjekk Rectangle.app"
+            "value" : "Sjekk JRectangle.app"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sprawdź Rectangle.app."
+            "value" : "Sprawdź JRectangle.app."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ative o Rectangle.app"
+            "value" : "Ative o JRectangle.app"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verificar Rectangle.app"
+            "value" : "Verificar JRectangle.app"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verifică Rectangle.app"
+            "value" : "Verifică JRectangle.app"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Проверьте файл Rectangle.app."
+            "value" : "Проверьте файл JRectangle.app."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skontrolovať Rectangle.app"
+            "value" : "Skontrolovať JRectangle.app"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontrollera Rectangle.app"
+            "value" : "Kontrollera JRectangle.app"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle.app'ı işaretleyerek izin verin"
+            "value" : "JRectangle.app'ı işaretleyerek izin verin"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Увімкнути Rectangle.app"
+            "value" : "Увімкнути JRectangle.app"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bật Rectangle.app"
+            "value" : "Bật JRectangle.app"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "启用 Rectangle.app"
+            "value" : "启用 JRectangle.app"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "啟用 Rectangle.app"
+            "value" : "啟用 JRectangle.app"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "啟用Rectangle.app"
+            "value" : "啟用JRectangle.app"
           }
         }
       }
@@ -17792,7 +17792,7 @@
         }
       }
     },
-    "Hide Rectangle" : {
+    "Hide JRectangle" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -17804,187 +17804,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Amaga Rectangle"
+            "value" : "Amaga JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Amaga Rectangle"
+            "value" : "Amaga JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skrýt Rectangle"
+            "value" : "Skrýt JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle ausblenden"
+            "value" : "JRectangle ausblenden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hide Rectangle"
+            "value" : "Hide JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "پنهان کردن Rectangle"
+            "value" : "پنهان کردن JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Masquer Rectangle"
+            "value" : "Masquer JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle छिपाएँ"
+            "value" : "JRectangle छिपाएँ"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sembunyikan Rectangle"
+            "value" : "Sembunyikan JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nascondi Rectangle"
+            "value" : "Nascondi JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleを非表示"
+            "value" : "JRectangleを非表示"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 가리기"
+            "value" : "JRectangle 가리기"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slėpti Rectangle"
+            "value" : "Slėpti JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skjul Rectangle"
+            "value" : "Skjul JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verberg Rectangle"
+            "value" : "Verberg JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gøym Rectangle"
+            "value" : "Gøym JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukryj Rectangle"
+            "value" : "Ukryj JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar Rectangle"
+            "value" : "Ocultar JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ascunde Rectangle"
+            "value" : "Ascunde JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скрыть Rectangle"
+            "value" : "Скрыть JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skryť Rectangle"
+            "value" : "Skryť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dölj Rectangle"
+            "value" : "Dölj JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'ı Gizle"
+            "value" : "JRectangle'ı Gizle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сховати Rectangle"
+            "value" : "Сховати JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ẩn Rectangle"
+            "value" : "Ẩn JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "隐藏 Rectangle"
+            "value" : "隐藏 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "隱藏 Rectangle"
+            "value" : "隱藏 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "隱藏Rectangle"
+            "value" : "隱藏JRectangle"
           }
         }
       }
@@ -19405,118 +19405,118 @@
         }
       }
     },
-    "In the Rectangle menu, enable Todo Mode." : {
+    "In the JRectangle menu, enable Todo Mode." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In the Rectangle menu, enable Todo Mode."
+            "value" : "In the JRectangle menu, enable Todo Mode."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En el menú de Rectangle, activa el modo 'Todo'."
+            "value" : "En el menú de JRectangle, activa el modo 'Todo'."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En el menú de Rectangle, activa el modo 'Todo'."
+            "value" : "En el menú de JRectangle, activa el modo 'Todo'."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "در منوی Rectangle، حالت Todo را فعال کنید."
+            "value" : "در منوی JRectangle، حالت Todo را فعال کنید."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle मेन्यू में टूडू मोड सक्षम करें।"
+            "value" : "JRectangle मेन्यू में टूडू मोड सक्षम करें।"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No menu do Rectangle, ative o Modo Tarefas."
+            "value" : "No menu do JRectangle, ative o Modo Tarefas."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У меню Rectangle увімкніть режим Завдань."
+            "value" : "У меню JRectangle увімкніть режим Завдань."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 菜单中，启用待办模式。"
+            "value" : "在 JRectangle 菜单中，启用待办模式。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 選單中，啟用待辦模式。"
+            "value" : "在 JRectangle 選單中，啟用待辦模式。"
           }
         }
       }
     },
-    "In the Rectangle menu, select\n\"Use [Application] as Todo App\"" : {
+    "In the JRectangle menu, select\n\"Use [Application] as Todo App\"" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In the Rectangle menu, select\n\"Use [Application] as Todo App\""
+            "value" : "In the JRectangle menu, select\n\"Use [Application] as Todo App\""
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En el menú de Rectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
+            "value" : "En el menú de JRectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En el menú de Rectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
+            "value" : "En el menú de JRectangle, selecciona\n\"Usar [Aplicación] como aplicación 'Todo'\""
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "در منوی Rectangle، گزینهٔ\n«استفاده از [برنامه] به‌عنوان برنامهٔ Todo» را انتخاب کنید"
+            "value" : "در منوی JRectangle، گزینهٔ\n«استفاده از [برنامه] به‌عنوان برنامهٔ Todo» را انتخاب کنید"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle मेन्यू में चुनें\n\"[ऐप्लिकेशन] को टूडू ऐप के रूप में उपयोग करें\""
+            "value" : "JRectangle मेन्यू में चुनें\n\"[ऐप्लिकेशन] को टूडू ऐप के रूप में उपयोग करें\""
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No menu do Rectangle, selecione\n\"Usar [app] como app de tarefas\""
+            "value" : "No menu do JRectangle, selecione\n\"Usar [app] como app de tarefas\""
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У меню Rectangle виберіть\n«Використовувати [Застосунок] як застосунок Завдань»"
+            "value" : "У меню JRectangle виберіть\n«Використовувати [Застосунок] як застосунок Завдань»"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 菜单中，选择\n“使用［应用程序］作为待办应用”"
+            "value" : "在 JRectangle 菜单中，选择\n“使用［应用程序］作为待办应用”"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在 Rectangle 選單中，選擇\n「使用［應用程式］作為待辦應用程式」"
+            "value" : "在 JRectangle 選單中，選擇\n「使用［應用程式］作為待辦應用程式」"
           }
         }
       }
@@ -26506,13 +26506,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle no tiene permiso para controlar tu Mac"
+            "value" : "JRectangle no tiene permiso para controlar tu Mac"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle no tiene permiso para controlar tu Mac"
+            "value" : "JRectangle no tiene permiso para controlar tu Mac"
           }
         },
         "fa" : {
@@ -28900,7 +28900,7 @@
         }
       }
     },
-    "Quit Rectangle" : {
+    "Quit JRectangle" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -28912,187 +28912,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sortir de Rectangle"
+            "value" : "Sortir de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukončit Rectangle"
+            "value" : "Ukončit JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle beenden"
+            "value" : "JRectangle beenden"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quit Rectangle"
+            "value" : "Quit JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salir de Rectangle"
+            "value" : "Salir de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "خروج از Rectangle"
+            "value" : "خروج از JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quitter Rectangle"
+            "value" : "Quitter JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle बंद करें"
+            "value" : "JRectangle बंद करें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keluar Rectangle"
+            "value" : "Keluar JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esci da Rectangle"
+            "value" : "Esci da JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleを終了"
+            "value" : "JRectangleを終了"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 종료"
+            "value" : "JRectangle 종료"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Išeiti iš Rectangle"
+            "value" : "Išeiti iš JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle stoppen"
+            "value" : "JRectangle stoppen"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avslutt Rectangle"
+            "value" : "Avslutt JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wyjdź z Rectangle."
+            "value" : "Wyjdź z JRectangle."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encerrar Rectangle"
+            "value" : "Encerrar JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sair do Rectangle"
+            "value" : "Sair do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Închide Rectangle"
+            "value" : "Închide JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выход из Rectangle"
+            "value" : "Выход из JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukončiť Rectangle"
+            "value" : "Ukončiť JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avsluta Rectangle"
+            "value" : "Avsluta JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'dan Çık"
+            "value" : "JRectangle'dan Çık"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вийти з Rectangle"
+            "value" : "Вийти з JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thoát Rectangle"
+            "value" : "Thoát JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "退出 Rectangle"
+            "value" : "退出 JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "結束 Rectangle"
+            "value" : "結束 JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "結束Rectangle"
+            "value" : "結束JRectangle"
           }
         }
       }
@@ -29351,7 +29351,7 @@
         }
       }
     },
-    "Rectangle" : {
+    "JRectangle" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -29363,192 +29363,192 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle"
+            "value" : "JRectangle"
           }
         }
       }
     },
-    "Rectangle Help" : {
+    "JRectangle Help" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -29560,192 +29560,192 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda de Rectangle"
+            "value" : "Ajuda de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda de Rectangle"
+            "value" : "Ajuda de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle nápověda"
+            "value" : "JRectangle nápověda"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-Hilfe"
+            "value" : "JRectangle-Hilfe"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Help"
+            "value" : "JRectangle Help"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayuda de Rectangle"
+            "value" : "Ayuda de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ayuda de Rectangle"
+            "value" : "Ayuda de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "راهنمای Rectangle"
+            "value" : "راهنمای JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aide Rectangle"
+            "value" : "Aide JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle सहायता"
+            "value" : "JRectangle सहायता"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bantuan Rectangle"
+            "value" : "Bantuan JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aiuto su Rectangle"
+            "value" : "Aiuto su JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleヘルプ"
+            "value" : "JRectangleヘルプ"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 도움말"
+            "value" : "JRectangle 도움말"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Pagalba"
+            "value" : "JRectangle Pagalba"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-hjelp"
+            "value" : "JRectangle-hjelp"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle hulp"
+            "value" : "JRectangle hulp"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-hjelp"
+            "value" : "JRectangle-hjelp"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pomoc Rectangle"
+            "value" : "Pomoc JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda do Rectangle"
+            "value" : "Ajuda do JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajuda do Rectangle"
+            "value" : "Ajuda do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajutor Rectangle"
+            "value" : "Ajutor JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Справка"
+            "value" : "JRectangle Справка"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pomocník pre Rectangle"
+            "value" : "Pomocník pre JRectangle"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-hjälp"
+            "value" : "JRectangle-hjälp"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Yardım"
+            "value" : "JRectangle Yardım"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Довідка по Rectangle"
+            "value" : "Довідка по JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trợ giúp của Rectangle"
+            "value" : "Trợ giúp của JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 帮助"
+            "value" : "JRectangle 帮助"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 輔助說明"
+            "value" : "JRectangle 輔助說明"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle輔助說明"
+            "value" : "JRectangle輔助說明"
           }
         }
       }
     },
-    "Rectangle needs your permission to control your window positions." : {
+    "JRectangle needs your permission to control your window positions." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -29756,192 +29756,192 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle necessita el vostre permís per controlar les posicions de les finestres."
+            "value" : "JRectangle necessita el vostre permís per controlar les posicions de les finestres."
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle necessita el vostre permís per controlar les posicions de les finestres."
+            "value" : "JRectangle necessita el vostre permís per controlar les posicions de les finestres."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle potřebuje vaše povolení, aby mohl ovládat pozice oken."
+            "value" : "JRectangle potřebuje vaše povolení, aby mohl ovládat pozice oken."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle benötigt deine Erlaubnis, um Fensterpositionen zu steuern."
+            "value" : "JRectangle benötigt deine Erlaubnis, um Fensterpositionen zu steuern."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle needs your permission to control your window positions."
+            "value" : "JRectangle needs your permission to control your window positions."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle necesita tu permiso para controlar la posición de las ventanas."
+            "value" : "JRectangle necesita tu permiso para controlar la posición de las ventanas."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle necesita tu permiso para controlar la posición de las ventanas."
+            "value" : "JRectangle necesita tu permiso para controlar la posición de las ventanas."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "برای کنترل موقعیت پنجره‌های شما، Rectangle به اجازه نیاز دارد."
+            "value" : "برای کنترل موقعیت پنجره‌های شما، JRectangle به اجازه نیاز دارد."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle requiert votre permission pour contrôler la position de vos fenêtres."
+            "value" : "JRectangle requiert votre permission pour contrôler la position de vos fenêtres."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle को आपकी विंडो की स्थितियाँ नियंत्रित करने के लिए आपकी अनुमति चाहिए।"
+            "value" : "JRectangle को आपकी विंडो की स्थितियाँ नियंत्रित करने के लिए आपकी अनुमति चाहिए।"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle memerlukan izin anda untuk mengatur posisi jendela."
+            "value" : "JRectangle memerlukan izin anda untuk mengatur posisi jendela."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle ha bisogno del tuo permesso per controllare le posizioni delle tue finestre."
+            "value" : "JRectangle ha bisogno del tuo permesso per controllare le posizioni delle tue finestre."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleがウインドウの位置を制御するには許可が必要です。"
+            "value" : "JRectangleがウインドウの位置を制御するには許可が必要です。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle은 창 위치를 제어하기 위해 권한이 필요합니다."
+            "value" : "JRectangle은 창 위치를 제어하기 위해 권한이 필요합니다."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle reikia jūsų leidimo valdyti langų padėtį"
+            "value" : "JRectangle reikia jūsų leidimo valdyti langų padėtį"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle trenger lov av deg for å kontrollere vindusposisjonene."
+            "value" : "JRectangle trenger lov av deg for å kontrollere vindusposisjonene."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle heeft uw toestemming nodig om uw vensterposities te kunnen aanpassen."
+            "value" : "JRectangle heeft uw toestemming nodig om uw vensterposities te kunnen aanpassen."
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle treng lov av deg for å kontrollera vindaugsposisjonane."
+            "value" : "JRectangle treng lov av deg for å kontrollera vindaugsposisjonane."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle potrzebuje twojego pozwolenia, aby móc sterować pozycjami okna."
+            "value" : "JRectangle potrzebuje twojego pozwolenia, aby móc sterować pozycjami okna."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle precisa de sua permissão para controlar a posição das janelas."
+            "value" : "O JRectangle precisa de sua permissão para controlar a posição das janelas."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Rectangle precisa da sua permissão para controlar as posições das janelas."
+            "value" : "O JRectangle precisa da sua permissão para controlar as posições das janelas."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle are nevoie de permisiunea ta pentru a controla poziția ferestrelor tale."
+            "value" : "JRectangle are nevoie de permisiunea ta pentru a controla poziția ferestrelor tale."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle необходимо ваше разрешение для управления положением окон"
+            "value" : "JRectangle необходимо ваше разрешение для управления положением окон"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle potrebuje povolenie na ovládanie umiestnenia tvojich okien."
+            "value" : "JRectangle potrebuje povolenie na ovládanie umiestnenia tvojich okien."
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle behöver ditt tillstånd för att kontrollera dina fönsterpositioner."
+            "value" : "JRectangle behöver ditt tillstånd för att kontrollera dina fönsterpositioner."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'ın pencere konumlarını değiştirebilmek için izninize ihtiyacı var."
+            "value" : "JRectangle'ın pencere konumlarını değiştirebilmek için izninize ihtiyacı var."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle потребує вашого дозволу для керування позиціями ваших вікон."
+            "value" : "JRectangle потребує вашого дозволу для керування позиціями ваших вікон."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle cần sự cho phép của bạn để điều khỉển vị trí cửa sổ."
+            "value" : "JRectangle cần sự cho phép của bạn để điều khỉển vị trí cửa sổ."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 需要您的允许以控制窗口位置。"
+            "value" : "JRectangle 需要您的允许以控制窗口位置。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 需要您的許可來控制視窗位置。"
+            "value" : "JRectangle 需要您的許可來控制視窗位置。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle需要你的允許以控制視窗位置。"
+            "value" : "JRectangle需要你的允許以控制視窗位置。"
           }
         }
       }
     },
-    "Rectangle Settings" : {
+    "JRectangle Settings" : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
@@ -29953,187 +29953,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferències de Rectangle"
+            "value" : "Preferències de JRectangle"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferències de Rectangle"
+            "value" : "Preferències de JRectangle"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle předvolby"
+            "value" : "JRectangle předvolby"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-Einstellungen"
+            "value" : "JRectangle-Einstellungen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Settings"
+            "value" : "JRectangle Settings"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajustes de Rectangle"
+            "value" : "Ajustes de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajustes de Rectangle"
+            "value" : "Ajustes de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تنظیمات Rectangle"
+            "value" : "تنظیمات JRectangle"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Préférences Rectangle"
+            "value" : "Préférences JRectangle"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle सेटिंग"
+            "value" : "JRectangle सेटिंग"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferensi Rectangle"
+            "value" : "Preferensi JRectangle"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferenze Rectangle"
+            "value" : "Preferenze JRectangle"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle環境設定"
+            "value" : "JRectangle環境設定"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 설정"
+            "value" : "JRectangle 설정"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle nustatymai"
+            "value" : "JRectangle nustatymai"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-innstillinger"
+            "value" : "JRectangle-innstillinger"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voorkeuren Rectangle"
+            "value" : "Voorkeuren JRectangle"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-innstillingar"
+            "value" : "JRectangle-innstillingar"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferencje Rectangle"
+            "value" : "Preferencje JRectangle"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajustes do Rectangle"
+            "value" : "Ajustes do JRectangle"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferências do Rectangle"
+            "value" : "Preferências do JRectangle"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preferințe Rectangle"
+            "value" : "Preferințe JRectangle"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Настройки Rectangle"
+            "value" : "Настройки JRectangle"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle predvoľby"
+            "value" : "JRectangle predvoľby"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle-inställningar"
+            "value" : "JRectangle-inställningar"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle Tercihleri"
+            "value" : "JRectangle Tercihleri"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Налаштування Rectangle"
+            "value" : "Налаштування JRectangle"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cài đặt của Rectangle"
+            "value" : "Cài đặt của JRectangle"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 偏好设置"
+            "value" : "JRectangle 偏好设置"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 設定"
+            "value" : "JRectangle 設定"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle偏好設定"
+            "value" : "JRectangle偏好設定"
           }
         }
       }
@@ -37432,55 +37432,55 @@
         }
       }
     },
-    "Tiling in Rectangle has been disabled" : {
+    "Tiling in JRectangle has been disabled" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tiling in Rectangle has been disabled"
+            "value" : "Tiling in JRectangle has been disabled"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha desactivado el mosaico de Rectangle"
+            "value" : "Se ha desactivado el mosaico de JRectangle"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha desactivado el mosaico de Rectangle"
+            "value" : "Se ha desactivado el mosaico de JRectangle"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "چیدمان کاشی‌وار در Rectangle غیرفعال شده است"
+            "value" : "چیدمان کاشی‌وار در JRectangle غیرفعال شده است"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle में टाइलिंग अक्षम कर दी गई है"
+            "value" : "JRectangle में टाइलिंग अक्षम कर दी गई है"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle의 타일 정리 기능이 비활성화됨"
+            "value" : "JRectangle의 타일 정리 기능이 비활성화됨"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A organização lado a lado do Rectangle foi desativada"
+            "value" : "A organização lado a lado do JRectangle foi desativada"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Розкладання вікон у Rectangle вимкнено"
+            "value" : "Розкладання вікон у JRectangle вимкнено"
           }
         },
         "vi" : {
@@ -37492,13 +37492,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 中的窗口平铺功能已被禁用"
+            "value" : "JRectangle 中的窗口平铺功能已被禁用"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle 的視窗並排功能已停用"
+            "value" : "JRectangle 的視窗並排功能已停用"
           }
         }
       }
@@ -37574,198 +37574,198 @@
         }
       }
     },
-    "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting." : {
+    "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pour permettre à Rectangle de gérer la fonctionnalité de double-clic sur la barre de titre d'une fenêtre, vous devez désactiver le paramètre macOS correspondant."
+            "value" : "Pour permettre à JRectangle de gérer la fonctionnalité de double-clic sur la barre de titre d'une fenêtre, vous devez désactiver le paramètre macOS correspondant."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Damit Rectangle die Doppelklickfunktion der Titelleiste verwalten kann, muss die entsprechende macOS Systemeinstellung deaktiviert werden."
+            "value" : "Damit JRectangle die Doppelklickfunktion der Titelleiste verwalten kann, muss die entsprechende macOS Systemeinstellung deaktiviert werden."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para que Rectangle gestione el doble clic en la barra de título, tienes que desactivar el ajuste correspondiente de macOS."
+            "value" : "Para que JRectangle gestione el doble clic en la barra de título, tienes que desactivar el ajuste correspondiente de macOS."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para que Rectangle gestione el doble clic en la barra de título, tienes que desactivar el ajuste correspondiente de macOS."
+            "value" : "Para que JRectangle gestione el doble clic en la barra de título, tienes que desactivar el ajuste correspondiente de macOS."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "برای اینکه Rectangle عملکرد دوبار کلیک روی نوار عنوان را مدیریت کند، باید تنظیم مربوطه در macOS را غیرفعال کنید."
+            "value" : "برای اینکه JRectangle عملکرد دوبار کلیک روی نوار عنوان را مدیریت کند، باید تنظیم مربوطه در macOS را غیرفعال کنید."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pour permettre à Rectangle de gérer la fonctionnalité de double-clic sur la barre de titre d'une fenêtre, vous devez désactiver le paramètre macOS correspondant."
+            "value" : "Pour permettre à JRectangle de gérer la fonctionnalité de double-clic sur la barre de titre d'une fenêtre, vous devez désactiver le paramètre macOS correspondant."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "टाइटल बार पर डबल-क्लिक का काम Rectangle को सौंपने के लिए, आपको macOS की संबंधित सेटिंग अक्षम करनी होगी।"
+            "value" : "टाइटल बार पर डबल-क्लिक का काम JRectangle को सौंपने के लिए, आपको macOS की संबंधित सेटिंग अक्षम करनी होगी।"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per permettere a Rectangle di gestire la funzione di doppio clic sulla barra del titolo, devi disabilitare l'impostazione di macOS corrispondente."
+            "value" : "Per permettere a JRectangle di gestire la funzione di doppio clic sulla barra del titolo, devi disabilitare l'impostazione di macOS corrispondente."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleがタイトルバーのダブルクリック機能を管理するには、該当するmacOSの設定を無効にする必要があります。"
+            "value" : "JRectangleがタイトルバーのダブルクリック機能を管理するには、該当するmacOSの設定を無効にする必要があります。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle이 제목 막대 두 번 클릭 기능을 제어하려면, 해당하는 macOS 설정을 꺼야 합니다."
+            "value" : "JRectangle이 제목 막대 두 번 클릭 기능을 제어하려면, 해당하는 macOS 설정을 꺼야 합니다."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Norėdami leisti „Rectangle“ valdyti antraštės juostos dvigubą spustelėjimą, turite išjungti atitinkamą „macOS“ nustatymą."
+            "value" : "Norėdami leisti „JRectangle“ valdyti antraštės juostos dvigubą spustelėjimą, turite išjungti atitinkamą „macOS“ nustatymą."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For å la Rectangle styre dobbeltklikking i vindustittelen må du slå av den tilsvarende innstillinga i macOS."
+            "value" : "For å la JRectangle styre dobbeltklikking i vindustittelen må du slå av den tilsvarende innstillinga i macOS."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For å la Rectangle styra dobbeltklikking i vindaugstittelen må du slå av den tilsvarande innstillinga i macOS."
+            "value" : "For å la JRectangle styra dobbeltklikking i vindaugstittelen må du slå av den tilsvarande innstillinga i macOS."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para que o Rectangle controle o clique duplo na barra de título, você precisa desativar a configuração correspondente do macOS."
+            "value" : "Para que o JRectangle controle o clique duplo na barra de título, você precisa desativar a configuração correspondente do macOS."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чтобы позволить Rectangle управлять функцией двойного щелчка в заголовке, необходимо отключить соответствующую настройку macOS."
+            "value" : "Чтобы позволить JRectangle управлять функцией двойного щелчка в заголовке, необходимо отключить соответствующую настройку macOS."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aby Rectangle mohol spravovať funkciu dvojitého kliknutia v lište s názvom, musíš vypnúť príslušné nastavenie v macOS."
+            "value" : "Aby JRectangle mohol spravovať funkciu dvojitého kliknutia v lište s názvom, musíš vypnúť príslušné nastavenie v macOS."
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Щоб Rectangle керував подвійним клацанням по заголовку вікна, потрібно вимкнути відповідне налаштування macOS."
+            "value" : "Щоб JRectangle керував подвійним клацанням по заголовку вікна, потрібно вимкнути відповідне налаштування macOS."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Để cho phép Rectangle quản lý chức năng nhấp đúp vào thanh tiêu đề, bạn cần phải tắt cài đặt macOS tương ứng."
+            "value" : "Để cho phép JRectangle quản lý chức năng nhấp đúp vào thanh tiêu đề, bạn cần phải tắt cài đặt macOS tương ứng."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "你需要禁用 macOS 中对应的设置以使用 Rectangle 管理连按窗口标题功能。"
+            "value" : "你需要禁用 macOS 中对应的设置以使用 JRectangle 管理连按窗口标题功能。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "若要讓 Rectangle 管理標題列連點功能，您需要停用對應的 macOS 設定。"
+            "value" : "若要讓 JRectangle 管理標題列連點功能，您需要停用對應的 macOS 設定。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To let Rectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
+            "value" : "To let JRectangle manage the title bar double click functionality, you need to disable the corresponding macOS setting."
           }
         }
       }
@@ -43832,7 +43832,7 @@
         }
       }
     },
-    "Welcome to Rectangle!" : {
+    "Welcome to JRectangle!" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -43843,187 +43843,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Benvingut a Rectangle!"
+            "value" : "Benvingut a JRectangle!"
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Benvingut a Rectangle!"
+            "value" : "Benvingut a JRectangle!"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vítejte do Rectangle!"
+            "value" : "Vítejte do JRectangle!"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Willkommen bei Rectangle!"
+            "value" : "Willkommen bei JRectangle!"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to Rectangle!"
+            "value" : "Welcome to JRectangle!"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¡Bienvenido a Rectangle!"
+            "value" : "¡Bienvenido a JRectangle!"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¡Bienvenido a Rectangle!"
+            "value" : "¡Bienvenido a JRectangle!"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "به Rectangle خوش آمدید!"
+            "value" : "به JRectangle خوش آمدید!"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenue dans Rectangle !"
+            "value" : "Bienvenue dans JRectangle !"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle में आपका स्वागत है!"
+            "value" : "JRectangle में आपका स्वागत है!"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selamat Datang di Rectangle!"
+            "value" : "Selamat Datang di JRectangle!"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle ti dà il benvenuto!"
+            "value" : "JRectangle ti dà il benvenuto!"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangleへようこそ!"
+            "value" : "JRectangleへようこそ!"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle에 오신 것을 환영합니다!"
+            "value" : "JRectangle에 오신 것을 환영합니다!"
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sveiki atvykę į Rectangle!"
+            "value" : "Sveiki atvykę į JRectangle!"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Velkommen til Rectangle!"
+            "value" : "Velkommen til JRectangle!"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Welcome to Rectangle!"
+            "value" : "Welcome to JRectangle!"
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Velkomen til Rectangle!"
+            "value" : "Velkomen til JRectangle!"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Witaj w Rectangle!"
+            "value" : "Witaj w JRectangle!"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Boas-vindas ao Rectangle!"
+            "value" : "Boas-vindas ao JRectangle!"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bem-vindo ao Rectangle!"
+            "value" : "Bem-vindo ao JRectangle!"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bine ai venit în Rectangle!"
+            "value" : "Bine ai venit în JRectangle!"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Добро пожаловать в Rectangle!"
+            "value" : "Добро пожаловать в JRectangle!"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Víta Ťa Rectangle!"
+            "value" : "Víta Ťa JRectangle!"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Välkommen till Rectangle!"
+            "value" : "Välkommen till JRectangle!"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rectangle'a Hoşgeldiniz!"
+            "value" : "JRectangle'a Hoşgeldiniz!"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ласкаво просимо до Rectangle!"
+            "value" : "Ласкаво просимо до JRectangle!"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chào mừng đến với Rectangle!"
+            "value" : "Chào mừng đến với JRectangle!"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "欢迎使用 Rectangle！"
+            "value" : "欢迎使用 JRectangle！"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "歡迎使用 Rectangle！"
+            "value" : "歡迎使用 JRectangle！"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "歡迎使用Rectangle！"
+            "value" : "歡迎使用JRectangle！"
           }
         }
       }
@@ -44277,7 +44277,7 @@
         }
       }
     },
-    "When the menu bar icon is hidden, relaunch Rectangle from Finder to open" : {
+    "When the menu bar icon is hidden, relaunch JRectangle from Finder to open" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -44288,187 +44288,187 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quan la icona de la barra de menús estigui amagada, torneu a iniciar Rectangle des del Finder per obrir el menú."
+            "value" : "Quan la icona de la barra de menús estigui amagada, torneu a iniciar JRectangle des del Finder per obrir el menú."
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quan la icona de la barra de menús estigui amagada, torneu a iniciar Rectangle des del Finder per obrir el menú."
+            "value" : "Quan la icona de la barra de menús estigui amagada, torneu a iniciar JRectangle des del Finder per obrir el menú."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pokud je ikona skrytá v řádku nabídek, tak znovu spusťte Rectangle přes Finder"
+            "value" : "Pokud je ikona skrytá v řádku nabídek, tak znovu spusťte JRectangle přes Finder"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn das Menüleistensymbol ausgeblendet ist, starte Rectangle im Finder neu, um die Rectangle-Einstellungen zu öffnen."
+            "value" : "Wenn das Menüleistensymbol ausgeblendet ist, starte JRectangle im Finder neu, um die JRectangle-Einstellungen zu öffnen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When the menu bar icon is hidden, relaunch Rectangle from Finder to open"
+            "value" : "When the menu bar icon is hidden, relaunch JRectangle from Finder to open"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Con el icono de la barra de menús oculto, vuelve a abrir Rectangle desde el Finder para ver el menú."
+            "value" : "Con el icono de la barra de menús oculto, vuelve a abrir JRectangle desde el Finder para ver el menú."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Con el icono de la barra de menús oculto, vuelve a abrir Rectangle desde el Finder para ver el menú."
+            "value" : "Con el icono de la barra de menús oculto, vuelve a abrir JRectangle desde el Finder para ver el menú."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هنگامی که آیکون نوار منو پنهان است، برای باز کردن Rectangle آن را دوباره از Finder اجرا کنید"
+            "value" : "هنگامی که آیکون نوار منو پنهان است، برای باز کردن JRectangle آن را دوباره از Finder اجرا کنید"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lorsque l'icône de la barre des menus est masquée, relancez Rectangle depuis le Finder pour ouvrir le menu."
+            "value" : "Lorsque l'icône de la barre des menus est masquée, relancez JRectangle depuis le Finder pour ouvrir le menu."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "मेन्यू बार आइकॉन छिपा होने पर, Rectangle को Finder से फिर से खोलें"
+            "value" : "मेन्यू बार आइकॉन छिपा होने पर, JRectangle को Finder से फिर से खोलें"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saat ikon bilah menu disembunyikan, luncurkan kembali Rectangle dari Finder untuk membuka menu."
+            "value" : "Saat ikon bilah menu disembunyikan, luncurkan kembali JRectangle dari Finder untuk membuka menu."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quando l'icona dalla barra dei menu è nascosta, rilancia Rectangle dal Finder per aprire il menu."
+            "value" : "Quando l'icona dalla barra dei menu è nascosta, rilancia JRectangle dal Finder per aprire il menu."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メニューバーのアイコンが非表示の場合にメニューを開くには、FinderからRectangleを再起動してください。"
+            "value" : "メニューバーのアイコンが非表示の場合にメニューを開くには、FinderからJRectangleを再起動してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "메뉴 막대 아이콘이 숨겨져 있을 경우, Finder에서 Rectangle를 다시 시작하여 메뉴를 여십시오."
+            "value" : "메뉴 막대 아이콘이 숨겨져 있을 경우, Finder에서 JRectangle를 다시 시작하여 메뉴를 여십시오."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jei meniu juostos piktograma yra paslėpta, paleiskite Rectangle programą iš Finder, kad atidarytumėte meniu."
+            "value" : "Jei meniu juostos piktograma yra paslėpta, paleiskite JRectangle programą iš Finder, kad atidarytumėte meniu."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Når menyradikonet er skjult kan du starte Rectangle fra Finder for å åpne menyen."
+            "value" : "Når menyradikonet er skjult kan du starte JRectangle fra Finder for å åpne menyen."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Als het menubalk-pictogram verborgen is, start u Rectangle opnieuw vanuit Finder om het menu te openen."
+            "value" : "Als het menubalk-pictogram verborgen is, start u JRectangle opnieuw vanuit Finder om het menu te openen."
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Når menyradikonet er gøymd kan du starta Rectangle frå Finder for å opna menyen."
+            "value" : "Når menyradikonet er gøymd kan du starta JRectangle frå Finder for å opna menyen."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gdy ikona paska menu jest ukryta, ponownie uruchom Rectangle z Findera, aby otworzyć menu."
+            "value" : "Gdy ikona paska menu jest ukryta, ponownie uruchom JRectangle z Findera, aby otworzyć menu."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Com o ícone da barra de menus oculto, abra o Rectangle novamente pelo Finder para acessá-lo"
+            "value" : "Com o ícone da barra de menus oculto, abra o JRectangle novamente pelo Finder para acessá-lo"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quando o ícone da barra de menus estiver oculto, reinicie o Rectangle do Finder para abrir o menu."
+            "value" : "Quando o ícone da barra de menus estiver oculto, reinicie o JRectangle do Finder para abrir o menu."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dacă iconița din bara de meniu este ascunsă, repornește Rectangle din Finder"
+            "value" : "Dacă iconița din bara de meniu este ascunsă, repornește JRectangle din Finder"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Если значок строки меню скрыт, перезапустите программу Rectangle из Finder, чтобы открыть меню."
+            "value" : "Если значок строки меню скрыт, перезапустите программу JRectangle из Finder, чтобы открыть меню."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ak je ikona v lište skrytá, znovu spusti Rectangle z Findera"
+            "value" : "Ak je ikona v lište skrytá, znovu spusti JRectangle z Findera"
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "När menyradens ikon är dold, starta då Rectangle från Finder för att öppna menyn."
+            "value" : "När menyradens ikon är dold, starta då JRectangle från Finder för att öppna menyn."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menü simgesi gizlendiğinde, menüyü açmak için Rectangle'ı Finder ile yeniden açın."
+            "value" : "Menü simgesi gizlendiğinde, menüyü açmak için JRectangle'ı Finder ile yeniden açın."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Коли піктограма у рядку меню прихована, перезапустіть Rectangle з Finder для відкриття"
+            "value" : "Коли піктограма у рядку меню прихована, перезапустіть JRectangle з Finder для відкриття"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Khi biểu tượng trên thanh menu bị ẩn, khởi chạy Rectangle từ Finder để mở lại"
+            "value" : "Khi biểu tượng trên thanh menu bị ẩn, khởi chạy JRectangle từ Finder để mở lại"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "当菜单栏图标被隐藏时，从访达重新开启Rectangle以打开。"
+            "value" : "当菜单栏图标被隐藏时，从访达重新开启JRectangle以打开。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選單列圖示被隱藏時，從 Finder 重新啟動 Rectangle 來打開。"
+            "value" : "選單列圖示被隱藏時，從 Finder 重新啟動 JRectangle 來打開。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "選單列圖像被隱藏時，從Finder重新啟動Rectangle以開啟。"
+            "value" : "選單列圖像被隱藏時，從Finder重新啟動JRectangle以開啟。"
           }
         }
       }
@@ -44531,198 +44531,198 @@
         }
       }
     },
-    "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the Rectangle menu or executing the associated keyboard shortcut." : {
+    "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the JRectangle menu or executing the associated keyboard shortcut." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أثناء وجودك في Todo Mode ، يمكنك تحديث تخطيط Todo Mode عن طريق تحديد  'Reflow Todo ' في قائمة Rectangle أو تنفيذ اختصار لوحة المفاتيح المرتبط"
+            "value" : "أثناء وجودك في Todo Mode ، يمكنك تحديث تخطيط Todo Mode عن طريق تحديد  'Reflow Todo ' في قائمة JRectangle أو تنفيذ اختصار لوحة المفاتيح المرتبط"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mentre esteu al mode Todo, podeu actualitzar el disseny del mode TodoO seleccionant \"Redistribuir Todo\" al menú Rectangle o executant la drecera de teclat associada."
+            "value" : "Mentre esteu al mode Todo, podeu actualitzar el disseny del mode TodoO seleccionant \"Redistribuir Todo\" al menú JRectangle o executant la drecera de teclat associada."
           }
         },
         "ca-ES" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mentre esteu al mode Todo, podeu actualitzar el disseny del mode TodoO seleccionant \"Redistribuir Todo\" al menú Rectangle o executant la drecera de teclat associada."
+            "value" : "Mentre esteu al mode Todo, podeu actualitzar el disseny del mode TodoO seleccionant \"Redistribuir Todo\" al menú JRectangle o executant la drecera de teclat associada."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rozložení Todo módu můžete obnovit vybráním \"Zobrazit Todo\" v Rectangle menu nebo exekucí nastavené zkratky."
+            "value" : "Rozložení Todo módu můžete obnovit vybráním \"Zobrazit Todo\" v JRectangle menu nebo exekucí nastavené zkratky."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Du kannst im To-do-Modus die To-do-Anwendung neu ausrichten indem du \"To-do neu ausrichten\" im Rectangle-Menü auswählst oder die zugewiesene Tastenkombination ausführst."
+            "value" : "Du kannst im To-do-Modus die To-do-Anwendung neu ausrichten indem du \"To-do neu ausrichten\" im JRectangle-Menü auswählst oder die zugewiesene Tastenkombination ausführst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the Rectangle menu or executing the associated keyboard shortcut."
+            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the JRectangle menu or executing the associated keyboard shortcut."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En el modo 'Todo', puedes actualizar la disposición seleccionando \"Reorganizar 'Todo'\" en el menú de Rectangle o usando su atajo de teclado."
+            "value" : "En el modo 'Todo', puedes actualizar la disposición seleccionando \"Reorganizar 'Todo'\" en el menú de JRectangle o usando su atajo de teclado."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En el modo 'Todo', puedes actualizar la disposición seleccionando \"Reorganizar 'Todo'\" en el menú de Rectangle o usando su atajo de teclado."
+            "value" : "En el modo 'Todo', puedes actualizar la disposición seleccionando \"Reorganizar 'Todo'\" en el menú de JRectangle o usando su atajo de teclado."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "در حین حضور در حالت Todo، می‌توانید با انتخاب «Reflow Todo» در منوی Rectangle یا با اجرای میانبر صفحه‌کلید مربوطه، چیدمان حالت Todo را تازه کنید."
+            "value" : "در حین حضور در حالت Todo، می‌توانید با انتخاب «Reflow Todo» در منوی JRectangle یا با اجرای میانبر صفحه‌کلید مربوطه، چیدمان حالت Todo را تازه کنید."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lorsque vous êtes en mode Todo, vous pouvez rafraîchir la vue en sélectionnant « Rafraîchir Todo » dans le menu de Rectangle ou en utilisant le raccourci clavier associé."
+            "value" : "Lorsque vous êtes en mode Todo, vous pouvez rafraîchir la vue en sélectionnant « Rafraîchir Todo » dans le menu de JRectangle ou en utilisant le raccourci clavier associé."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "टूडू मोड में रहते हुए, आप Rectangle मेन्यू में \"टूडू फिर से व्यवस्थित करें\" चुनकर या उससे जुड़ा कीबोर्ड शॉर्टकट दबाकर टूडू मोड का लेआउट रीफ़्रेश कर सकते हैं।"
+            "value" : "टूडू मोड में रहते हुए, आप JRectangle मेन्यू में \"टूडू फिर से व्यवस्थित करें\" चुनकर या उससे जुड़ा कीबोर्ड शॉर्टकट दबाकर टूडू मोड का लेआउट रीफ़्रेश कर सकते हैं।"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Saat dalam Mode Todo, Anda dapat menyegarkan tata letak Mode Todo dengan memilih \"Alur Ulang Todo » di menu Rectangle menu atau menjalankan pintasan keyboard terkait."
+            "value" : "Saat dalam Mode Todo, Anda dapat menyegarkan tata letak Mode Todo dengan memilih \"Alur Ulang Todo » di menu JRectangle menu atau menjalankan pintasan keyboard terkait."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Durante la modalità In evidenza, puoi reimpostarla selezionando \"Reimposta In Evidenza\" nel menu di Rectangle o con l'abbreviazione da tastiera impostata."
+            "value" : "Durante la modalità In evidenza, puoi reimpostarla selezionando \"Reimposta In Evidenza\" nel menu di JRectangle o con l'abbreviazione da tastiera impostata."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ToDoモードのウインドウ配置を復元するには、ToDoモードのときに、Rectangleのメニューにある\"ToDoモードを再設定\"を選択するか、指定されたキーボードショートカットを押します。"
+            "value" : "ToDoモードのウインドウ配置を復元するには、ToDoモードのときに、JRectangleのメニューにある\"ToDoモードを再設定\"を選択するか、指定されたキーボードショートカットを押します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todo 모드를 사용하는 동안, Rectangle 메뉴에서 \"Todo 재배치\"를 클릭하거나 키보드 단축키를 사용해 Todo 모드 레이아웃을 새로고칠 수 있습니다."
+            "value" : "Todo 모드를 사용하는 동안, JRectangle 메뉴에서 \"Todo 재배치\"를 클릭하거나 키보드 단축키를 사용해 Todo 모드 레이아웃을 새로고칠 수 있습니다."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kai įjungtas Todo režimas, galite atnaujinti Todo režimo išdėstymą pasirinkdami „Atnaujinti Todo“ Rectangle meniu arba įvykdę susietą klaviatūros trumpinį."
+            "value" : "Kai įjungtas Todo režimas, galite atnaujinti Todo režimo išdėstymą pasirinkdami „Atnaujinti Todo“ JRectangle meniu arba įvykdę susietą klaviatūros trumpinį."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Når du er i Gjøreliste-modus kan du oppdatere Gjøreliste-oppsettet ved å velge \"Flytt om på Gjøreliste\" i Rectangle-menyen eller ved å benytte definerte tastatursnarveger."
+            "value" : "Når du er i Gjøreliste-modus kan du oppdatere Gjøreliste-oppsettet ved å velge \"Flytt om på Gjøreliste\" i JRectangle-menyen eller ved å benytte definerte tastatursnarveger."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the Rectangle menu or executing the associated keyboard shortcut."
+            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the JRectangle menu or executing the associated keyboard shortcut."
           }
         },
         "nn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Når du er i Gjereliste-modus kan du oppdatera Gjereliste-oppsettet ved å velja \"Flytt om på Gjereliste\" i Rectangle-menyen eller ved å nytta definerte tastatursnarvegar."
+            "value" : "Når du er i Gjereliste-modus kan du oppdatera Gjereliste-oppsettet ved å velja \"Flytt om på Gjereliste\" i JRectangle-menyen eller ved å nytta definerte tastatursnarvegar."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the Rectangle menu or executing the associated keyboard shortcut."
+            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the JRectangle menu or executing the associated keyboard shortcut."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No Modo Tarefas, você pode atualizar o layout escolhendo \"Reorganizar Modo Tarefas\" no menu do Rectangle ou usando o atalho de teclado correspondente."
+            "value" : "No Modo Tarefas, você pode atualizar o layout escolhendo \"Reorganizar Modo Tarefas\" no menu do JRectangle ou usando o atalho de teclado correspondente."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the Rectangle menu or executing the associated keyboard shortcut."
+            "value" : "While in Todo Mode, you can refresh the Todo Mode layout by selecting \"Reflow Todo\" in the JRectangle menu or executing the associated keyboard shortcut."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Din Modul Todo, poți reactualiza aspectul Modului Todo selectând \"Reflow Todo\" în meniul Rectangle sau folosind scurtătura asociată acestuia."
+            "value" : "Din Modul Todo, poți reactualiza aspectul Modului Todo selectând \"Reflow Todo\" în meniul JRectangle sau folosind scurtătura asociată acestuia."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "При включенном Todo режиме вы можете обновить положение окна Todo приложения выбрав \"Обновить положение Todo окна\" в меню Rectangle или при помощи соответствующей горячей клавиши."
+            "value" : "При включенном Todo режиме вы можете обновить положение окна Todo приложения выбрав \"Обновить положение Todo окна\" в меню JRectangle или при помощи соответствующей горячей клавиши."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V Todo režime môžeš obnoviť rozloženie Todo režimu vyberom \"Preusporiadať Todo\" v Rectangle menu alebo pomocou príslušnej skratky."
+            "value" : "V Todo režime môžeš obnoviť rozloženie Todo režimu vyberom \"Preusporiadať Todo\" v JRectangle menu alebo pomocou príslušnej skratky."
           }
         },
         "sv-SE" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "När du är i Att göra-läget kan du uppdatera Att göra-layouten genom att välja \"Ordna om Att göra\" i Rectangle-menyn eller genom att använda tilldelat tangentbordsgenväg."
+            "value" : "När du är i Att göra-läget kan du uppdatera Att göra-layouten genom att välja \"Ordna om Att göra\" i JRectangle-menyn eller genom att använda tilldelat tangentbordsgenväg."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todo Modu aktifken Rectangle menüsündeki  \"Todo'yu Yeniden Ayarla\" seçeneği ile veya tanımladığınız klavye kısayolu ile ekran düzenini tazeleyebilirsiniz."
+            "value" : "Todo Modu aktifken JRectangle menüsündeki  \"Todo'yu Yeniden Ayarla\" seçeneği ile veya tanımladığınız klavye kısayolu ile ekran düzenini tazeleyebilirsiniz."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Під час роботи в режимі Завдань ви можете оновити макет режиму Завдань, вибравши «Переформатувати вікна Завдань» у меню Rectangle або виконавши пов’язану комбінацію клавіш."
+            "value" : "Під час роботи в режимі Завдань ви можете оновити макет режиму Завдань, вибравши «Переформатувати вікна Завдань» у меню JRectangle або виконавши пов’язану комбінацію клавіш."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Khi ở chế độ Todo, bạn có thể làm mới bố cục của chế độ Todo bằng cách chọn \"Làm mới Todo\" trong menu của Rectangle hoặc ấn phím tắt tương ứng."
+            "value" : "Khi ở chế độ Todo, bạn có thể làm mới bố cục của chế độ Todo bằng cách chọn \"Làm mới Todo\" trong menu của JRectangle hoặc ấn phím tắt tương ứng."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在“待办模式”下，若要刷新待办模式布局，您可以从 Rectangle 菜单中选择“重新排列待办”，或使用对应的键盘快捷键。"
+            "value" : "在“待办模式”下，若要刷新待办模式布局，您可以从 JRectangle 菜单中选择“重新排列待办”，或使用对应的键盘快捷键。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在待辦模式下，若要重新整理待辦模式佈局，您可以從 Rectangle 選單中選擇「重新排列待辦」，或使用相應的鍵盤快速鍵。"
+            "value" : "在待辦模式下，若要重新整理待辦模式佈局，您可以從 JRectangle 選單中選擇「重新排列待辦」，或使用相應的鍵盤快速鍵。"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在待辦模式下，若要重新整理待辦模式佈局，你可以從Rectangle選單中選擇「重新排列待辦」，或使用相應的鍵盤快捷鍵"
+            "value" : "在待辦模式下，若要重新整理待辦模式佈局，你可以從JRectangle選單中選擇「重新排列待辦」，或使用相應的鍵盤快捷鍵"
           }
         }
       }

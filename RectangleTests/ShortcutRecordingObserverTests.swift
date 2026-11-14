@@ -9,14 +9,11 @@ class ShortcutRecordingObserverTests: XCTestCase {
     private func withRegisteredTodoShortcuts(
         _ assertions: (MASShortcutMonitor, MASShortcut, MASShortcut) throws -> Void
     ) throws {
-        let userDefaults = UserDefaults.standard
+        let userDefaults = JSONPreferences.shared
         let previousToggleShortcut = userDefaults.object(forKey: TodoManager.toggleDefaultsKey)
         let previousReflowShortcut = userDefaults.object(forKey: TodoManager.reflowDefaultsKey)
         let previousTodoEnabled = Defaults.todo.enabled
         let previousTodoModeEnabled = Defaults.todoMode.enabled
-        let binder = try XCTUnwrap(MASShortcutBinder.shared())
-        let previousBindingOptions = binder.bindingOptions
-        binder.bindingOptions = [NSBindingOption.valueTransformerName: MASDictionaryTransformerName]
 
         TodoManager.setShortcutBindingsSuspended(true)
         TodoManager.setShortcutBindingsSessionActive(true)
@@ -38,10 +35,9 @@ class ShortcutRecordingObserverTests: XCTestCase {
             Defaults.todo.enabled = previousTodoEnabled
             Defaults.todoMode.enabled = previousTodoModeEnabled
             TodoManager.setShortcutBindingsSuspended(false)
-            binder.bindingOptions = previousBindingOptions
         }
 
-        let monitor = try XCTUnwrap(binder.shortcutMonitor)
+        let monitor = try XCTUnwrap(MASShortcutMonitor.shared())
         let shortcuts = try availableTodoShortcuts(monitor: monitor)
         let transformer = try XCTUnwrap(
             ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName))

@@ -48,13 +48,13 @@ class SubsequentExecutionDefault: Default {
         set {
             storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(newValue.rawValue, forKey: key)
+                JSONPreferences.shared.set(newValue.rawValue, forKey: key)
             }
         }
     }
     
     init() {
-        let intValue = UserDefaults.standard.integer(forKey: key)
+        let intValue = JSONPreferences.shared.integer(forKey: key)
         storedValue = SubsequentExecutionMode(rawValue: intValue) ?? .resize
         initialized = true
     }

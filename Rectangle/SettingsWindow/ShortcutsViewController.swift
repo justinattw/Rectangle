@@ -127,6 +127,8 @@ final class ShortcutActionCellView: NSTableCellView {
     private var shortcutTrailingConstraint: NSLayoutConstraint?
     private var activePopover: NSPopover?
     private var currentConfig: ActionButtonConfig?
+    private var shortcutBinding: ShortcutViewBinding?
+    private var currentSpaceShortcutBinding: ShortcutViewBinding?
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -198,15 +200,15 @@ final class ShortcutActionCellView: NSTableCellView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        shortcutView.associatedUserDefaultsKey = nil
-        currentSpaceShortcutView.associatedUserDefaultsKey = nil
+        shortcutBinding = nil
+        currentSpaceShortcutBinding = nil
         activePopover?.close()
         activePopover = nil
         currentConfig = nil
     }
     
     func configure(with action: WindowAction, recordingObserver: ShortcutRecordingObserver) {
-        currentSpaceShortcutView.associatedUserDefaultsKey = nil
+        currentSpaceShortcutBinding = nil
         currentSpaceShortcutView.isHidden = true
         shortcutView.isHidden = false
         iconImageView.image = action.image
@@ -219,8 +221,8 @@ final class ShortcutActionCellView: NSTableCellView {
             shortcutView.shortcutValidator = MASShortcutValidator()
         }
         
-        shortcutView.associatedUserDefaultsKey = nil
-        shortcutView.setAssociatedUserDefaultsKey(action.name, withTransformerName: MASDictionaryTransformerName)
+        shortcutBinding = nil
+        shortcutBinding = ShortcutViewBinding(view: shortcutView, key: action.name)
         recordingObserver.observe([shortcutView])
         
         if let config = Self.actionButtonConfigs[action] {
@@ -243,7 +245,7 @@ final class ShortcutActionCellView: NSTableCellView {
 
     func configureKeyboardShortcut(title: String, icon: String, defaultsKey: String,
                                    recordingObserver: ShortcutRecordingObserver) {
-        shortcutView.associatedUserDefaultsKey = nil
+        shortcutBinding = nil
         shortcutView.isHidden = true
         currentSpaceShortcutView.isHidden = false
         titleLabel.stringValue = title
@@ -253,10 +255,8 @@ final class ShortcutActionCellView: NSTableCellView {
         currentConfig = nil
         currentSpaceShortcutView.shortcutValidator = Defaults.allowAnyShortcut.enabled
             ? PassthroughShortcutValidator() : MASShortcutValidator()
-        currentSpaceShortcutView.associatedUserDefaultsKey = nil
-        currentSpaceShortcutView.setAssociatedUserDefaultsKey(
-            defaultsKey, withTransformerName: MASDictionaryTransformerName
-        )
+        currentSpaceShortcutBinding = nil
+        currentSpaceShortcutBinding = ShortcutViewBinding(view: currentSpaceShortcutView, key: defaultsKey)
         recordingObserver.observe([currentSpaceShortcutView])
     }
 }

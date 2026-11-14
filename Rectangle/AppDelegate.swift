@@ -37,6 +37,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["JRECTANGLE_TESTING"] == "1" { return }
+        #endif
         Defaults.loadFromSupportDir()
         migrateShowEighthsInMenu()
 
@@ -148,7 +151,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         for app in runningApps {
             guard let bundleId = app.bundleIdentifier else { continue }
             if let conflictingAppName = conflictingAppsIds[bundleId] {
-                AlertUtil.oneButtonAlert(question: "Potential window manager conflict: \(conflictingAppName)", text: "Since \(conflictingAppName) might have some overlapping behavior with Rectangle, it's recommended that you either disable or quit \(conflictingAppName).")
+                AlertUtil.oneButtonAlert(question: "Potential window manager conflict: \(conflictingAppName)", text: "Since \(conflictingAppName) might have some overlapping behavior with JRectangle, it's recommended that you either disable or quit \(conflictingAppName).")
                 break
             }
         }
@@ -202,7 +205,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let displayNameString = displayNames.joined(separator: "\n")
         
         if !problemBundles.isEmpty {
-            AlertUtil.oneButtonAlert(question: "Known issues with installed applications", text: "\(displayNameString)\n\nThese applications have issues with the drag to screen edge to snap functionality in Rectangle.\n\nYou can either ignore the applications using the menu item in Rectangle, or disable drag to screen edge snapping in Rectangle preferences.")
+            AlertUtil.oneButtonAlert(question: "Known issues with installed applications", text: "\(displayNameString)\n\nThese applications have issues with the drag to screen edge to snap functionality in JRectangle.\n\nYou can either ignore the applications using the menu item in JRectangle, or disable drag to screen edge snapping in JRectangle preferences.")
             Defaults.notifiedOfProblemApps.enabled = true
         }
     }
@@ -423,7 +426,7 @@ extension AppDelegate: NSMenuDelegate {
 
     private func migrateShowEighthsInMenu() {
         let oldKey = "showEighthsInMenu"
-        let oldValue = UserDefaults.standard.integer(forKey: oldKey)
+        let oldValue = JSONPreferences.shared.integer(forKey: oldKey)
         if oldValue != 0 && Defaults.showAdditionalSizesInMenu.notSet {
             Defaults.showAdditionalSizesInMenu.enabled = (oldValue == 1)
         }
@@ -604,8 +607,8 @@ extension AppDelegate {
                 }
                 let alert = NSAlert()
                 alert.alertStyle = .warning
-                alert.messageText = String(localized: "Allow Rectangle URL action?")
-                alert.informativeText = String(localized: "An external source asked Rectangle to perform \"\(action)\" on app bundle id \"\(bundleId)\". Allow?")
+                alert.messageText = String(localized: "Allow JRectangle URL action?")
+                alert.informativeText = String(localized: "An external source asked JRectangle to perform \"\(action)\" on app bundle id \"\(bundleId)\". Allow?")
                 alert.addButton(withTitle: String(localized: "Allow"))
                 alert.addButton(withTitle: String(localized: "Cancel"))
                 NSApp.activate(ignoringOtherApps: true)

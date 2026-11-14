@@ -13,11 +13,11 @@ class MASShortcutMigration {
 
         for action in WindowAction.active {
             
-            if let dataValue = UserDefaults.standard.data(forKey: action.name) {
+            if let dataValue = JSONPreferences.shared.object(forKey: action.name) as? Data {
                 if let shortcut = dataTransformer.transformedValue(dataValue) {
                     
                     let dictValue = dictTransformer.reverseTransformedValue(shortcut)
-                    UserDefaults.standard.setValue(dictValue, forKey: action.name)
+                    JSONPreferences.shared.set(dictValue, forKey: action.name)
                 }
             }
             
@@ -25,21 +25,33 @@ class MASShortcutMigration {
         
     }
 
-    static func syncRenamedSideShortcutAliases(userDefaults: UserDefaults = .standard) {
+    static func syncRenamedSideShortcutAliases(userDefaults: UserDefaults? = nil) {
+        func object(_ key: String) -> Any? {
+            if let userDefaults { return userDefaults.object(forKey: key) }
+            return JSONPreferences.shared.object(forKey: key)
+        }
+        func set(_ value: Any, _ key: String) {
+            if let userDefaults { userDefaults.set(value, forKey: key) }
+            else { JSONPreferences.shared.set(value, forKey: key) }
+        }
+        func remove(_ key: String) {
+            if let userDefaults { userDefaults.removeObject(forKey: key) }
+            else { JSONPreferences.shared.removeObject(forKey: key) }
+        }
         for action in WindowAction.active {
             guard let aliasName = action.aliasName,
-                  let aliasValue = userDefaults.object(forKey: aliasName)
+                  let aliasValue = object(aliasName)
             else { continue }
 
-            if let currentValue = userDefaults.object(forKey: action.name) as? NSObject,
+            if let currentValue = object(action.name) as? NSObject,
                let aliasObject = aliasValue as? NSObject,
                currentValue.isEqual(aliasObject) {
-                userDefaults.removeObject(forKey: aliasName)
+                remove(aliasName)
                 continue
             }
 
-            userDefaults.set(aliasValue, forKey: action.name)
-            userDefaults.removeObject(forKey: aliasName)
+            set(aliasValue, action.name)
+            remove(aliasName)
         }
     }
     
