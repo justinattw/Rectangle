@@ -2,7 +2,17 @@
 
 English | [简体中文](README.zh-Hans.md)
 
-JRectangle is a personal fork of Rectangle, a window management app for macOS based on Spectacle.
+JRectangle is a personal fork of [Rectangle](https://github.com/rxhanson/Rectangle), a macOS window manager based on Spectacle.
+
+## What JRectangle adds
+
+- **Display profiles:** Override supported settings by display resolution, with inherited values and overrides shown in Settings.
+- **Window switching:** Option-Tab cycles visible windows on the current Space. The shortcut is configurable under **Behavior > Stacked Windows**.
+- **Movement and resizing:** Directional move shortcuts nudge windows by a configurable step. Width and height resize shortcuts are available in the main shortcut list.
+- **Stacking and margins:** Set horizontal and vertical overlap offsets and display-edge margins independently.
+- **Personal branding:** JRectangle has its own name and icon. Automatic and manual update checks have been removed.
+
+JRectangle retains Rectangle's existing snapping, tiling, stacked-window cycling and other window-management features.
 
 <img width="612" height="810" alt="image" src="https://github.com/user-attachments/assets/c088d1e2-3661-4041-ac30-95da89ac4a41" />
 
@@ -16,9 +26,9 @@ For macOS 10.13 and 10.14: [v0.73](https://github.com/rxhanson/Rectangle/release
 
 ## Installation
 
-You can download the latest dmg from <https://rectangleapp.com> or the [Releases page](https://github.com/rxhanson/Rectangle/releases).
+To install JRectangle, [build it from source](#build-and-run-from-source). The downloads at <https://rectangleapp.com>, the [upstream Releases page](https://github.com/rxhanson/Rectangle/releases), and the Homebrew cask below install the original Rectangle, not this fork.
 
-Or install with brew cask:
+To install the original Rectangle with Homebrew:
 
 ```bash
 brew install --cask rectangle
