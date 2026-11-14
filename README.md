@@ -27,7 +27,20 @@ For macOS 10.13 and 10.14: [v0.73](https://github.com/rxhanson/Rectangle/release
 
 ## Installation
 
-To install JRectangle, [build it from source](#build-and-run-from-source). The downloads at <https://rectangleapp.com>, the [upstream Releases page](https://github.com/rxhanson/Rectangle/releases), and the Homebrew cask below install the original Rectangle, not this fork.
+Install Xcode, then clone this repository and run:
+
+```bash
+git clone https://github.com/justinattw/Rectangle.git
+cd Rectangle
+make install
+open /Applications/JRectangle.app
+```
+
+`make install` builds the Release app and installs it in `/Applications`. Quit JRectangle before reinstalling; the installer keeps the previous app in a backup folder in `/Applications`. The installer requires write access to that folder. macOS may ask you to grant Accessibility permission again after a rebuild.
+
+Settings are stored per macOS account. Use **App Settings > Export** and **Import** to transfer them to another account or Mac.
+
+The downloads at <https://rectangleapp.com>, the [upstream Releases page](https://github.com/rxhanson/Rectangle/releases), and the Homebrew cask below install the original Rectangle, not this fork.
 
 To install the original Rectangle with Homebrew:
 
