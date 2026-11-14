@@ -48,9 +48,11 @@ class ShortcutManager {
     private let scheduler: ShortcutRebindScheduler
     private let todoSessionStateChanged: (Bool) -> Void
     private let heldShortcutRepeater = HeldShortcutRepeater()
+    private let desktopMoveManager = DesktopMoveManager()
     private var boundShortcutActions = Set<WindowAction>()
     private var shortcutIdentities = [WindowAction: ShortcutCycle.ShortcutIdentity]()
     private var currentSpaceSwitcherShortcutIdentity: ShortcutCycle.ShortcutIdentity?
+    private var desktopMoveShortcutIdentities = [String: ShortcutCycle.ShortcutIdentity]()
     private var isUpdatingShortcutBindings = false
     private var shortcutsSuspendedForRecording = false
     private var sessionIsActive: Bool
@@ -169,6 +171,17 @@ class ShortcutManager {
         } else {
             currentSpaceSwitcherShortcutIdentity = nil
         }
+        desktopMoveShortcutIdentities = desktopMoveIdentities()
+        for direction in DesktopMoveManager.Direction.allCases where desktopMoveShortcutIdentities[direction.defaultsKey] != nil {
+            bindingStore.bindShortcut(withDefaultsKey: direction.defaultsKey) { [weak self] in
+                guard let self else { return }
+                if self.ignoreShortcutsInMissionControlProvider() && self.missionControlActiveProvider() {
+                    NSSound.beep()
+                    return
+                }
+                self.desktopMoveManager.move(direction)
+            }
+        }
     }
 
     public func unbindShortcuts() {
@@ -180,6 +193,11 @@ class ShortcutManager {
         }
 
         heldShortcutRepeater.cancel()
+        desktopMoveManager.cancel()
+        for direction in DesktopMoveManager.Direction.allCases {
+            bindingStore.breakBinding(withDefaultsKey: direction.defaultsKey)
+        }
+        desktopMoveShortcutIdentities.removeAll()
         bindingStore.breakBinding(withDefaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey)
         currentSpaceSwitcherShortcutIdentity = nil
         boundShortcutActions.removeAll()
@@ -377,6 +395,7 @@ class ShortcutManager {
         ).map(ShortcutCycle.ShortcutIdentity.init)
         guard currentIdentities != shortcutIdentities
                 || currentSpaceSwitcherIdentity != currentSpaceSwitcherShortcutIdentity
+                || desktopMoveIdentities() != desktopMoveShortcutIdentities
         else { return }
 
         unbindShortcuts()
@@ -384,6 +403,15 @@ class ShortcutManager {
             bindShortcuts()
         } else {
             shortcutIdentities = currentIdentities
+        }
+
+    }
+
+    private func desktopMoveIdentities() -> [String: ShortcutCycle.ShortcutIdentity] {
+        DesktopMoveManager.Direction.allCases.reduce(into: [:]) { identities, direction in
+            if let shortcut = ShortcutCycle.shortcut(forDefaultsKey: direction.defaultsKey) {
+                identities[direction.defaultsKey] = ShortcutCycle.ShortcutIdentity(shortcut)
+            }
         }
     }
 

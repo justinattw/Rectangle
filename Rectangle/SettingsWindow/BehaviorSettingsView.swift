@@ -253,22 +253,6 @@ struct BehaviorSettingsView: View {
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Text("Cycle windows on this Space")
-                                Spacer()
-                                MASShortcutViewRepresentable(
-                                    defaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey,
-                                    validator: nil,
-                                    recordingObserver: viewModel.shortcutRecordingObserver
-                                )
-                                .frame(width: 160, height: 24)
-                            }
-                            Text("Cycles through visible windows on the current Space. Command-Tab remains macOS's app switcher.")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        Divider()
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
                                 Text("Cycle stacked windows")
                                 Spacer()
                                 windowActionShortcutView(.cycleStackedWindows)

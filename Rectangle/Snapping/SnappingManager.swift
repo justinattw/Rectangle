@@ -320,6 +320,7 @@ class SnappingManager {
     }
     
     func filter(event: NSEvent) -> Bool {
+        if event.cgEvent?.getIntegerValueField(.eventSourceUserData) == DesktopMoveManager.eventMarker { return false }
         switch event.type {
         case .leftMouseUp:
             dragPrevY = nil
@@ -357,6 +358,7 @@ class SnappingManager {
     }
     
     func handle(event: NSEvent) {
+        if event.cgEvent?.getIntegerValueField(.eventSourceUserData) == DesktopMoveManager.eventMarker { return }
         switch event.type {
         case .keyDown:
             if box?.waitingForPlacement == true { box?.orderOut(nil) }

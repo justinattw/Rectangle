@@ -7,7 +7,8 @@ JRectangle is a personal fork of [Rectangle](https://github.com/rxhanson/Rectang
 ## What JRectangle adds
 
 - **Display profiles:** Override supported settings by display resolution, with inherited values and overrides shown in Settings.
-- **Window switching:** Option-Tab cycles visible windows on the current Space. The shortcut is configurable under **Behavior > Stacked Windows**.
+- **Window switching:** Option-Tab cycles visible windows on the current Space. Configure it under **Shortcuts**; Command-Tab remains the macOS app switcher.
+- **Experimental desktop moves:** Assign shortcuts to move the focused window to the previous or next desktop.
 - **Movement and resizing:** Directional move shortcuts nudge windows by a configurable step. Width and height resize shortcuts are available in the main shortcut list.
 - **Stacking and margins:** Set horizontal and vertical overlap offsets and display-edge margins independently.
 - **Personal branding:** JRectangle has its own name and icon. Automatic and manual update checks have been removed.
@@ -52,6 +53,8 @@ Drag a window to the edge of the screen. When the mouse cursor reaches the edge 
 In **Behavior** > **Extras**, enable **Animate windows** for smooth window resizing, or in **Snap Areas**, enable **Blur footprint** for a blurred snap preview. Both are off by default. Animated snapping keeps the selected edge or center aligned when an app limits its window size or aspect ratio. Dragging a snapped window starts restoring its previous size as the window begins moving, and a quick release lets the remaining restore animation continue. Far-right title-bar grabs can still show visible jumps. Title-bar double-click maximize/restore follows the same animation setting and timing as snapping. Window animation has been tested in known scenarios, but remains experimental because repeatedly updating the window's size and position during the transition may cause issues in some edge cases.
 
 In **Shortcuts**, use the gear beside **Move Left** or **Larger Width** to set **Move and width resize step** for all four move shortcuts and width-only resize shortcuts. In **Behavior**, horizontal and vertical display edge margins are separate from **Gaps between windows**. Changing an edge margin sets both edges on that axis equally; existing asymmetric and notch-specific margins remain unchanged until edited. Existing main-screen-only and notch settings still apply.
+
+The experimental **Previous Desktop** and **Next Desktop** shortcuts are below the display shortcuts and are unassigned by default. They simulate dragging the focused window's title bar while switching desktops, and follow the window. Enable the default Control-Left and Control-Right Mission Control shortcuts in **System Settings > Keyboard > Keyboard Shortcuts > Mission Control**, and allow JRectangle to control System Events when prompted. Accessibility permission is also required. Release the shortcut and mouse buttons, and avoid moving the mouse during the transfer. The pointer may remain on the window's title bar after a move. Full-screen windows, windows without a usable title bar, customized system desktop shortcuts, and some apps are not supported. At the end of the desktop list there may be no adjacent desktop; macOS does not provide a public way to confirm that the move succeeded.
 
 The display profile picker lists connected resolutions and labels a connected built-in display. Select a resolution to edit its overrides; blue labels mark overridden settings, including collapsed sections. Reset removes the selected profile's overrides. Profiles with the same resolution share settings.
 

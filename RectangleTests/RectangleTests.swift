@@ -6752,6 +6752,22 @@ class SnappingManagerUnsnapRestoreTests: XCTestCase {
     }
 }
 
+class DesktopMoveShortcutTests: XCTestCase {
+    func testAcceptsOnlyEnabledDefaultSpaceShortcut() {
+        let control = Int(CGEventFlags.maskControl.rawValue)
+        func settings(enabled: Bool, key: Int, modifiers: Int) -> [String: Any] {
+            ["79": ["enabled": enabled, "value": ["parameters": [65535, key, modifiers]]]]
+        }
+
+        XCTAssertTrue(DesktopMoveManager.systemShortcutIsSupported(.previous, settings: settings(enabled: true, key: 123, modifiers: control)))
+        XCTAssertFalse(DesktopMoveManager.systemShortcutIsSupported(.previous, settings: settings(enabled: false, key: 123, modifiers: control)))
+        XCTAssertFalse(DesktopMoveManager.systemShortcutIsSupported(.previous, settings: settings(enabled: true, key: 124, modifiers: control)))
+        XCTAssertFalse(DesktopMoveManager.systemShortcutIsSupported(.previous, settings: settings(enabled: true, key: 123, modifiers: control | Int(CGEventFlags.maskShift.rawValue))))
+        XCTAssertFalse(DesktopMoveManager.systemShortcutIsSupported(.next, settings: settings(enabled: true, key: 123, modifiers: control)))
+        XCTAssertFalse(DesktopMoveManager.systemShortcutIsSupported(.previous, settings: [:]))
+    }
+}
+
 class ShortcutManagerSessionTests: XCTestCase {
 
     private final class ValueBox<Value> {

@@ -13,12 +13,23 @@ final class ShortcutItem: NSObject {
 }
 
 final class SpacerItem: NSObject {}
+final class CurrentSpaceShortcutItem: NSObject {}
+final class DesktopMoveShortcutItem: NSObject {
+    let direction: DesktopMoveManager.Direction
+
+    init(_ direction: DesktopMoveManager.Direction) {
+        self.direction = direction
+    }
+}
 
 final class ShortcutCategory: NSObject {
-    let items: [ShortcutItem]
+    let items: [Any]
     
-    init(actions: [WindowAction]) {
-        self.items = actions.map { ShortcutItem($0) }
+    init(actions: [WindowAction], includeCurrentSpaceSwitcher: Bool = false, includeDesktopMoves: Bool = false) {
+        let actionItems: [Any] = actions.map { ShortcutItem($0) }
+        let first: [Any] = includeCurrentSpaceSwitcher ? [CurrentSpaceShortcutItem()] : []
+        let last: [Any] = includeDesktopMoves ? DesktopMoveManager.Direction.allCases.map { DesktopMoveShortcutItem($0) } : []
+        self.items = first + actionItems + last
     }
 }
 
@@ -110,6 +121,7 @@ final class ShortcutActionCellView: NSTableCellView {
     let iconImageView = NSImageView()
     let titleLabel = NSTextField(labelWithString: "")
     let shortcutView = WindowActionShortcutView()
+    let currentSpaceShortcutView = MASShortcutView()
     let popoverButton = PopoverButton()
     
     private var shortcutTrailingConstraint: NSLayoutConstraint?
@@ -141,6 +153,8 @@ final class ShortcutActionCellView: NSTableCellView {
         iconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         shortcutView.translatesAutoresizingMaskIntoConstraints = false
+        currentSpaceShortcutView.translatesAutoresizingMaskIntoConstraints = false
+        currentSpaceShortcutView.isHidden = true
         
         popoverButton.translatesAutoresizingMaskIntoConstraints = false
         popoverButton.bezelStyle = .inline
@@ -150,6 +164,7 @@ final class ShortcutActionCellView: NSTableCellView {
         addSubview(titleLabel)
         addSubview(iconImageView)
         addSubview(shortcutView)
+        addSubview(currentSpaceShortcutView)
         addSubview(popoverButton)
         
         let trailingConstraint = shortcutView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -68)
@@ -160,6 +175,10 @@ final class ShortcutActionCellView: NSTableCellView {
             shortcutView.centerYAnchor.constraint(equalTo: centerYAnchor),
             shortcutView.widthAnchor.constraint(equalToConstant: 160),
             shortcutView.heightAnchor.constraint(equalToConstant: 19),
+            currentSpaceShortcutView.trailingAnchor.constraint(equalTo: shortcutView.trailingAnchor),
+            currentSpaceShortcutView.centerYAnchor.constraint(equalTo: shortcutView.centerYAnchor),
+            currentSpaceShortcutView.widthAnchor.constraint(equalTo: shortcutView.widthAnchor),
+            currentSpaceShortcutView.heightAnchor.constraint(equalTo: shortcutView.heightAnchor),
             
             popoverButton.leadingAnchor.constraint(equalTo: shortcutView.trailingAnchor, constant: 8),
             popoverButton.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -180,14 +199,19 @@ final class ShortcutActionCellView: NSTableCellView {
     override func prepareForReuse() {
         super.prepareForReuse()
         shortcutView.associatedUserDefaultsKey = nil
+        currentSpaceShortcutView.associatedUserDefaultsKey = nil
         activePopover?.close()
         activePopover = nil
         currentConfig = nil
     }
     
     func configure(with action: WindowAction, recordingObserver: ShortcutRecordingObserver) {
+        currentSpaceShortcutView.associatedUserDefaultsKey = nil
+        currentSpaceShortcutView.isHidden = true
+        shortcutView.isHidden = false
         iconImageView.image = action.image
         titleLabel.stringValue = action.settingsDisplayName ?? action.displayName ?? ""
+        titleLabel.toolTip = nil
         
         if Defaults.allowAnyShortcut.enabled {
             shortcutView.shortcutValidator = PassthroughShortcutValidator()
@@ -208,6 +232,32 @@ final class ShortcutActionCellView: NSTableCellView {
             self.currentConfig = nil
             popoverButton.isHidden = true
         }
+    }
+
+    func configureCurrentSpaceSwitcher(recordingObserver: ShortcutRecordingObserver) {
+        configureKeyboardShortcut(title: String(localized: "Cycle windows on this Space"),
+                                  icon: "square.on.square",
+                                  defaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey,
+                                  recordingObserver: recordingObserver)
+    }
+
+    func configureKeyboardShortcut(title: String, icon: String, defaultsKey: String,
+                                   recordingObserver: ShortcutRecordingObserver) {
+        shortcutView.associatedUserDefaultsKey = nil
+        shortcutView.isHidden = true
+        currentSpaceShortcutView.isHidden = false
+        titleLabel.stringValue = title
+        titleLabel.toolTip = title
+        iconImageView.image = NSImage(systemSymbolName: icon, accessibilityDescription: nil)
+        popoverButton.isHidden = true
+        currentConfig = nil
+        currentSpaceShortcutView.shortcutValidator = Defaults.allowAnyShortcut.enabled
+            ? PassthroughShortcutValidator() : MASShortcutValidator()
+        currentSpaceShortcutView.associatedUserDefaultsKey = nil
+        currentSpaceShortcutView.setAssociatedUserDefaultsKey(
+            defaultsKey, withTransformerName: MASDictionaryTransformerName
+        )
+        recordingObserver.observe([currentSpaceShortcutView])
     }
 }
 
@@ -300,11 +350,11 @@ class ShortcutsViewController: NSViewController {
     
     private func setupGroups() {
         let standardCategories: [ShortcutCategory] = [
-            ShortcutCategory(actions: [.moveLeft, .moveRight, .moveUp, .moveDown]),
+            ShortcutCategory(actions: [.moveLeft, .moveRight, .moveUp, .moveDown], includeCurrentSpaceSwitcher: true),
             ShortcutCategory(actions: [.leftHalf, .rightHalf, .centerHalf, .topHalf, .bottomHalf]),
             ShortcutCategory(actions: [.topLeft, .topRight, .bottomLeft, .bottomRight]),
             ShortcutCategory(actions: [.maximize, .almostMaximize, .maximizeHeight, .largerWidth, .smallerWidth, .largerHeight, .smallerHeight, .center, .restore]),
-            ShortcutCategory(actions: [.nextDisplay, .previousDisplay])
+            ShortcutCategory(actions: [.nextDisplay, .previousDisplay], includeDesktopMoves: true)
         ]
         
         let moreCategories: [ShortcutCategory] = [
@@ -400,6 +450,22 @@ extension ShortcutsViewController: NSOutlineViewDelegate {
             let cell = outlineView.makeView(withIdentifier: ShortcutActionCellView.identifier, owner: self) as? ShortcutActionCellView ?? ShortcutActionCellView()
             cell.identifier = ShortcutActionCellView.identifier
             cell.configure(with: shortcutItem.action, recordingObserver: shortcutRecordingObserver)
+            return cell
+        }
+
+        if item is CurrentSpaceShortcutItem {
+            let cell = outlineView.makeView(withIdentifier: ShortcutActionCellView.identifier, owner: self) as? ShortcutActionCellView ?? ShortcutActionCellView()
+            cell.identifier = ShortcutActionCellView.identifier
+            cell.configureCurrentSpaceSwitcher(recordingObserver: shortcutRecordingObserver)
+            return cell
+        }
+
+        if let item = item as? DesktopMoveShortcutItem {
+            let cell = outlineView.makeView(withIdentifier: ShortcutActionCellView.identifier, owner: self) as? ShortcutActionCellView ?? ShortcutActionCellView()
+            cell.identifier = ShortcutActionCellView.identifier
+            cell.configureKeyboardShortcut(title: item.direction.title, icon: item.direction.icon,
+                                           defaultsKey: item.direction.defaultsKey,
+                                           recordingObserver: shortcutRecordingObserver)
             return cell
         }
         
