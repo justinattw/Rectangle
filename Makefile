@@ -5,8 +5,9 @@ APP := $(BUILD_DIR)/Build/Products/Release/JRectangle.app
 .PHONY: build install
 
 build:
-	xcodebuild -project Rectangle.xcodeproj -scheme Rectangle \
-		-configuration Release -destination 'platform=macOS' \
+	@echo "Building JRectangle..."
+	@xcodebuild -quiet -project Rectangle.xcodeproj -scheme Rectangle \
+		-configuration Release -destination "platform=macOS,arch=$$(uname -m)" \
 		-derivedDataPath "$(BUILD_DIR)" build
 
 install: build
