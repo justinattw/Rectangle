@@ -21,10 +21,6 @@ JRectangle retains Rectangle's existing snapping, tiling, stacked-window cycling
 
 JRectangle supports macOS v14+.
 
-For macOS 10.15 - 13: [v1.100](https://github.com/rxhanson/Rectangle/releases/tag/v1.100)
-
-For macOS 10.13 and 10.14: [v0.73](https://github.com/rxhanson/Rectangle/releases/tag/v0.73)
-
 ## Installation
 
 Install Xcode, then clone this repository and run:
@@ -39,14 +35,6 @@ open /Applications/JRectangle.app
 `make install` builds the Release app and installs it in `/Applications`. Quit JRectangle before reinstalling; the installer keeps the previous app in a backup folder in `/Applications`. The installer requires write access to that folder. macOS may ask you to grant Accessibility permission again after a rebuild.
 
 Settings are stored per macOS account. Use **App Settings > Export** and **Import** to transfer them to another account or Mac.
-
-The downloads at <https://rectangleapp.com>, the [upstream Releases page](https://github.com/rxhanson/Rectangle/releases), and the Homebrew cask below install the original Rectangle, not this fork.
-
-To install the original Rectangle with Homebrew:
-
-```bash
-brew install --cask rectangle
-```
 
 ## How to use it
 
