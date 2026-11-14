@@ -11,8 +11,8 @@ enum OverlapOffsetGeometry {
     static let axScanTimeout: Float = 0.25
 
     static func applyOverlapOffsetIfNeeded(_ rect: CGRect, windowId: CGWindowID?, screen: NSScreen) -> CGRect {
-        let overlapOffset = CGFloat(Defaults.cyclingOverlapOffsetSize.value)
-        guard overlapOffset > 0 else { return rect }
+        let overlapOffset = Defaults.overlapOffset
+        guard overlapOffset.dx > 0 || overlapOffset.dy > 0 else { return rect }
 
         guard let windowId else { return rect }
 
@@ -82,14 +82,23 @@ enum OverlapOffsetGeometry {
     /// there anyway would push the window flush against that edge, which both
     /// hides the window underneath again and eats any gap on that side.
     static func offsetStep(for rect: CGRect, in screenFrame: CGRect, by offset: CGFloat) -> CGVector {
-        CGVector(dx: rect.maxX + offset <= screenFrame.maxX ? offset : 0,
-                 dy: rect.maxY + offset <= screenFrame.maxY ? offset : 0)
+        offsetStep(for: rect, in: screenFrame, by: CGVector(dx: offset, dy: offset))
+    }
+
+    static func offsetStep(for rect: CGRect, in screenFrame: CGRect, by offset: CGVector) -> CGVector {
+        CGVector(dx: offset.dx > 0 && rect.maxX + offset.dx <= screenFrame.maxX ? offset.dx : 0,
+                 dy: offset.dy > 0 && rect.maxY + offset.dy <= screenFrame.maxY ? offset.dy : 0)
     }
 
     /// Whether the window has room to shift at all. A window sized to the
     /// whole visible frame (a maximized window with no gaps) does not, so the
     /// caller can skip scanning for overlaps entirely.
     static func canOffset(_ rect: CGRect, in screenFrame: CGRect, by offset: CGFloat) -> Bool {
+        let step = offsetStep(for: rect, in: screenFrame, by: offset)
+        return step.dx != 0 || step.dy != 0
+    }
+
+    static func canOffset(_ rect: CGRect, in screenFrame: CGRect, by offset: CGVector) -> Bool {
         let step = offsetStep(for: rect, in: screenFrame, by: offset)
         return step.dx != 0 || step.dy != 0
     }
@@ -103,7 +112,17 @@ enum OverlapOffsetGeometry {
                              offset: CGFloat,
                              maxCascade: Int,
                              tolerance: CGFloat = 4) -> CGRect {
-        guard offset > 0 else { return rect }
+        cascadedRect(rect, occupiedTopLefts: occupiedTopLefts, screenFrame: screenFrame,
+                     offset: CGVector(dx: offset, dy: offset), maxCascade: maxCascade, tolerance: tolerance)
+    }
+
+    static func cascadedRect(_ rect: CGRect,
+                             occupiedTopLefts: [CGPoint],
+                             screenFrame: CGRect,
+                             offset: CGVector,
+                             maxCascade: Int,
+                             tolerance: CGFloat = 4) -> CGRect {
+        guard offset.dx > 0 || offset.dy > 0 else { return rect }
         var candidate = rect
         for _ in 0..<max(0, maxCascade) {
             let corner = topLeft(of: candidate)

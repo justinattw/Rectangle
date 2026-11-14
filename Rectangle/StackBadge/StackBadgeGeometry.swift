@@ -64,7 +64,7 @@ enum StackBadgeGeometry {
     /// the member's size are clustered, so a denser group of other sizes at
     /// the same corner can't claim it.
     static func stackAnchor(for member: Int, among frames: [CGRect], cascadeRange: CGFloat,
-                            tolerance: CGFloat, sizeTolerance: CGFloat?) -> CGRect? {
+                            tolerance: CGFloat, sizeTolerance: CGFloat?, verticalRange: CGFloat? = nil) -> CGRect? {
         guard frames.indices.contains(member) else { return nil }
         let reference = frames[member]
         let pool = frames.indices.filter { index in
@@ -74,7 +74,7 @@ enum StackBadgeGeometry {
         let origins = pool.map { frames[$0].origin }
         guard let poolMember = pool.firstIndex(of: member),
               let anchor = clusterAnchor(containing: poolMember, among: origins,
-                                         cascadeRange: cascadeRange, tolerance: tolerance)
+                                         cascadeRange: cascadeRange, tolerance: tolerance, verticalRange: verticalRange)
         else { return nil }
         return CGRect(origin: origins[anchor], size: reference.size)
     }
@@ -84,9 +84,9 @@ enum StackBadgeGeometry {
     /// given, within it of the anchor's size. Without it, any size counts, so
     /// a maximized window sharing a half's corner is stacked with the half.
     static func stackMembers(anchor: CGRect, among frames: [CGRect], cascadeRange: CGFloat,
-                             tolerance: CGFloat, sizeTolerance: CGFloat?) -> [Int] {
+                             tolerance: CGFloat, sizeTolerance: CGFloat?, verticalRange: CGFloat? = nil) -> [Int] {
         clusterIndices(anchoredAt: anchor.origin, among: frames.map { $0.origin },
-                       cascadeRange: cascadeRange, tolerance: tolerance)
+                       cascadeRange: cascadeRange, tolerance: tolerance, verticalRange: verticalRange)
             .filter { index in
                 guard let sizeTolerance else { return true }
                 return isSameSize(frames[index], as: anchor, tolerance: sizeTolerance)
@@ -97,21 +97,22 @@ enum StackBadgeGeometry {
     /// frames near a corner: the one the cycle shortcuts would cycle from the
     /// front window of the cascade there, the window the user can see.
     static func sameSizeStackIndices(among frames: [CGRect], cascadeRange: CGFloat,
-                                     tolerance: CGFloat, sizeTolerance: CGFloat) -> [Int] {
-        let hovered = stackIndices(among: frames.map { $0.origin }, cascadeRange: cascadeRange, tolerance: tolerance)
+                                     tolerance: CGFloat, sizeTolerance: CGFloat, verticalRange: CGFloat? = nil) -> [Int] {
+        let hovered = stackIndices(among: frames.map { $0.origin }, cascadeRange: cascadeRange,
+                                   tolerance: tolerance, verticalRange: verticalRange)
         guard let front = hovered.first,
               let anchor = stackAnchor(for: front, among: frames, cascadeRange: cascadeRange,
-                                       tolerance: tolerance, sizeTolerance: sizeTolerance)
+                                       tolerance: tolerance, sizeTolerance: sizeTolerance, verticalRange: verticalRange)
         else { return [] }
         return stackMembers(anchor: anchor, among: frames, cascadeRange: cascadeRange,
-                            tolerance: tolerance, sizeTolerance: sizeTolerance)
+                            tolerance: tolerance, sizeTolerance: sizeTolerance, verticalRange: verticalRange)
     }
 
     /// How far from a stack's corner a window's origin can sit and still be in
     /// the stack: every cascade step the overlap offset can take, plus
     /// `tolerance` for rounding.
     static func cascadeRange(offsetSize: CGFloat, maxCascade: Int, tolerance: CGFloat) -> CGFloat {
-        max(offsetSize, 1) * CGFloat(min(5, max(1, maxCascade))) + tolerance
+        max(offsetSize, 0) * CGFloat(min(5, max(1, maxCascade))) + tolerance
     }
 
     /// The indices of the window origins (AX coordinates) that form a
@@ -121,11 +122,12 @@ enum StackBadgeGeometry {
     /// symmetric. Every origin is tried as the stack's left anchor and the
     /// densest cluster wins, so neither unrelated neighbors in a gap-widened
     /// candidate box nor an unrelated leftmost outlier can distort the count.
-    static func stackIndices(among origins: [CGPoint], cascadeRange: CGFloat, tolerance: CGFloat) -> [Int] {
+    static func stackIndices(among origins: [CGPoint], cascadeRange: CGFloat, tolerance: CGFloat,
+                             verticalRange: CGFloat? = nil) -> [Int] {
         var best = [Int]()
         for anchor in origins {
             let cluster = clusterIndices(anchoredAt: anchor, among: origins,
-                                         cascadeRange: cascadeRange, tolerance: tolerance)
+                                         cascadeRange: cascadeRange, tolerance: tolerance, verticalRange: verticalRange)
             if cluster.count > best.count {
                 best = cluster
             }
@@ -136,12 +138,12 @@ enum StackBadgeGeometry {
     /// The indices of the origins in the cascade stack whose left anchor is
     /// `anchor`.
     static func clusterIndices(anchoredAt anchor: CGPoint, among origins: [CGPoint],
-                               cascadeRange: CGFloat, tolerance: CGFloat) -> [Int] {
+                               cascadeRange: CGFloat, tolerance: CGFloat, verticalRange: CGFloat? = nil) -> [Int] {
         origins.indices.filter { index in
             let dx = origins[index].x - anchor.x
             let dy = origins[index].y - anchor.y
             return dx >= -tolerance && dx <= cascadeRange
-                && dy >= -cascadeRange && dy <= cascadeRange
+                && dy >= -(verticalRange ?? cascadeRange) && dy <= (verticalRange ?? cascadeRange)
         }
     }
 
@@ -149,11 +151,11 @@ enum StackBadgeGeometry {
     /// `stackIndices` chooses: the densest cluster that includes it, the
     /// earliest anchor winning a tie.
     static func clusterAnchor(containing member: Int, among origins: [CGPoint],
-                              cascadeRange: CGFloat, tolerance: CGFloat) -> Int? {
+                              cascadeRange: CGFloat, tolerance: CGFloat, verticalRange: CGFloat? = nil) -> Int? {
         var best: (anchor: Int, count: Int)?
         for anchor in origins.indices {
             let cluster = clusterIndices(anchoredAt: origins[anchor], among: origins,
-                                         cascadeRange: cascadeRange, tolerance: tolerance)
+                                         cascadeRange: cascadeRange, tolerance: tolerance, verticalRange: verticalRange)
             guard cluster.contains(member) else { continue }
             if cluster.count > best?.count ?? 0 {
                 best = (anchor, cluster.count)

@@ -7706,6 +7706,7 @@
       }
     },
     "Check for updates automatically" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -7902,6 +7903,7 @@
       }
     },
     "Check for Updates…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -11566,6 +11568,12 @@
           }
         }
       }
+    },
+    "Display profile" : {
+
+    },
+    "Distance to shift a window when it lands on an occupied position. Changes apply to the next overlapping window action." : {
+
     },
     "do nothing" : {
       "extractionState" : "manual",
@@ -26653,6 +26661,9 @@
         }
       }
     },
+    "Offset between stacked windows" : {
+
+    },
     "Offset window position on overlap" : {
       "localizations" : {
         "en" : {
@@ -31086,6 +31097,9 @@
           }
         }
       }
+    },
+    "Reset" : {
+
     },
     "Resize adjacent windows when cycling side or corner shortcuts" : {
       "localizations" : {
@@ -42105,6 +42119,7 @@
       }
     },
     "Update Available…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

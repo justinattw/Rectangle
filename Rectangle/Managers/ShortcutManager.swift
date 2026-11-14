@@ -1,6 +1,7 @@
 /// ShortcutManager.swift
 
 import Cocoa
+import Carbon.HIToolbox
 import CoreGraphics
 import MASShortcut
 
@@ -46,8 +47,10 @@ class ShortcutManager {
     private let windowUnderCursorProvider: (MouseButtonPress) -> AccessibilityElement?
     private let scheduler: ShortcutRebindScheduler
     private let todoSessionStateChanged: (Bool) -> Void
+    private let heldShortcutRepeater = HeldShortcutRepeater()
     private var boundShortcutActions = Set<WindowAction>()
     private var shortcutIdentities = [WindowAction: ShortcutCycle.ShortcutIdentity]()
+    private var currentSpaceSwitcherShortcutIdentity: ShortcutCycle.ShortcutIdentity?
     private var isUpdatingShortcutBindings = false
     private var shortcutsSuspendedForRecording = false
     private var sessionIsActive: Bool
@@ -147,9 +150,24 @@ class ShortcutManager {
                 bindingStore.bindShortcut(withDefaultsKey: representativeAction.name, toAction: { [weak self] in
                     self?.executeCycle(group)
                 })
+            } else if ShortcutRepeatPolicy.shouldRepeat(representativeAction) {
+                bindingStore.bindShortcut(withDefaultsKey: representativeAction.name, toAction: { [weak self] in
+                    self?.heldShortcutRepeater.start(shortcut: group.shortcut) {
+                        representativeAction.post()
+                    }
+                })
             } else {
                 bindingStore.bindShortcut(withDefaultsKey: representativeAction.name, toAction: representativeAction.post)
             }
+        }
+
+        if let shortcut = ShortcutCycle.shortcut(forDefaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey) {
+            currentSpaceSwitcherShortcutIdentity = ShortcutCycle.ShortcutIdentity(shortcut)
+            bindingStore.bindShortcut(withDefaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey) {
+                CurrentSpaceWindowSwitcher.cycle()
+            }
+        } else {
+            currentSpaceSwitcherShortcutIdentity = nil
         }
     }
 
@@ -161,6 +179,9 @@ class ShortcutManager {
             bindingStore.breakBinding(withDefaultsKey: action.name)
         }
 
+        heldShortcutRepeater.cancel()
+        bindingStore.breakBinding(withDefaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey)
+        currentSpaceSwitcherShortcutIdentity = nil
         boundShortcutActions.removeAll()
         mouseButtonBindingStore.breakAllBindings()
     }
@@ -175,11 +196,12 @@ class ShortcutManager {
     deinit {
         notificationCenter.removeObserver(self)
         workspaceNotificationCenter.removeObserver(self)
+        heldShortcutRepeater.cancel()
     }
 
     private func registerDefaults() {
 
-        let defaultShortcuts = WindowAction.active.reduce(into: [String: MASShortcut]()) { dict, windowAction in
+        var defaultShortcuts = WindowAction.active.reduce(into: [String: MASShortcut]()) { dict, windowAction in
             guard let defaultShortcut = Defaults.alternateDefaultShortcuts.enabled
                 ? windowAction.alternateDefault
                 : windowAction.spectacleDefault
@@ -187,6 +209,10 @@ class ShortcutManager {
             let shortcut = MASShortcut(keyCode: defaultShortcut.keyCode, modifierFlags: NSEvent.ModifierFlags(rawValue: defaultShortcut.modifierFlags))
             dict[windowAction.name] = shortcut
         }
+        defaultShortcuts[CurrentSpaceWindowSwitcher.shortcutDefaultsKey] = MASShortcut(
+            keyCode: Int(kVK_Tab),
+            modifierFlags: .option
+        )
 
         bindingStore.registerDefaultShortcuts(defaultShortcuts)
     }
@@ -346,7 +372,12 @@ class ShortcutManager {
         MASShortcutMigration.syncRenamedSideShortcutAliases()
         let currentShortcuts = shortcutsProvider()
         let currentIdentities = ShortcutCycle.shortcutIdentities(shortcutsByAction: currentShortcuts)
-        guard currentIdentities != shortcutIdentities else { return }
+        let currentSpaceSwitcherIdentity = ShortcutCycle.shortcut(
+            forDefaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey
+        ).map(ShortcutCycle.ShortcutIdentity.init)
+        guard currentIdentities != shortcutIdentities
+                || currentSpaceSwitcherIdentity != currentSpaceSwitcherShortcutIdentity
+        else { return }
 
         unbindShortcuts()
         if !appDisabledProvider() {
@@ -499,5 +530,93 @@ struct ShortcutCycle {
     static func isStale(lastAction: RectangleAction?, currentWindowRect: CGRect?) -> Bool {
         guard let lastAction, let currentWindowRect else { return false }
         return currentWindowRect != lastAction.rect
+    }
+}
+
+enum ShortcutRepeatPolicy {
+    static func shouldRepeat(_ action: WindowAction) -> Bool {
+        switch action {
+        case .moveLeft, .moveRight, .moveUp, .moveDown,
+             .larger, .smaller, .largerWidth, .smallerWidth, .largerHeight, .smallerHeight:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+private final class HeldShortcutRepeater {
+    private static let initialDelay: TimeInterval = 0.35
+    private static let repeatInterval: TimeInterval = 0.1
+    private static let pollInterval: DispatchTimeInterval = .milliseconds(20)
+
+    private var shortcut: MASShortcut?
+    private var identity: ShortcutCycle.ShortcutIdentity?
+    private var timer: DispatchSourceTimer?
+    private var startedAt: TimeInterval = 0
+    private var lastRepeatAt: TimeInterval = 0
+    private var repeatAction: (() -> Void)?
+
+    func start(shortcut: MASShortcut, action: @escaping () -> Void) {
+        let newIdentity = ShortcutCycle.ShortcutIdentity(shortcut)
+        guard identity != newIdentity else { return }
+
+        cancel()
+        self.shortcut = shortcut
+        identity = newIdentity
+        repeatAction = action
+        startedAt = ProcessInfo.processInfo.systemUptime
+        lastRepeatAt = startedAt
+        action()
+
+        let timer = DispatchSource.makeTimerSource(queue: .main)
+        timer.schedule(deadline: .now() + Self.pollInterval, repeating: Self.pollInterval)
+        timer.setEventHandler { [weak self] in self?.repeatIfHeld() }
+        self.timer = timer
+        timer.resume()
+    }
+
+    func cancel() {
+        timer?.setEventHandler {}
+        timer?.cancel()
+        timer = nil
+        shortcut = nil
+        identity = nil
+        repeatAction = nil
+    }
+
+    private func repeatIfHeld() {
+        guard let shortcut, Self.isHeld(shortcut) else {
+            cancel()
+            return
+        }
+
+        let now = ProcessInfo.processInfo.systemUptime
+        guard now - startedAt >= Self.initialDelay,
+              now - lastRepeatAt >= Self.repeatInterval
+        else { return }
+
+        lastRepeatAt = now
+        repeatAction?()
+    }
+
+    private static func isHeld(_ shortcut: MASShortcut) -> Bool {
+        let state = CGEventSourceStateID.hidSystemState
+        guard CGEventSource.keyState(state, key: CGKeyCode(truncatingIfNeeded: shortcut.keyCode)) else {
+            return false
+        }
+
+        let currentFlags = CGEventSource.flagsState(state)
+        let requiredModifiers = shortcut.modifierFlags
+        let modifiers: [(NSEvent.ModifierFlags, CGEventFlags)] = [
+            (.command, .maskCommand),
+            (.option, .maskAlternate),
+            (.control, .maskControl),
+            (.shift, .maskShift),
+            (.function, .maskSecondaryFn)
+        ]
+        return modifiers.allSatisfy { modifier, eventFlag in
+            !requiredModifiers.contains(modifier) || currentFlags.contains(eventFlag)
+        }
     }
 }

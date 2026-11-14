@@ -133,7 +133,7 @@ final class TileSettingsView: NSView, NSTextFieldDelegate {
 
 final class WidthSettingsView: NSView, NSTextFieldDelegate {
 
-    private let widthStepLabel = NSTextField(labelWithString: String(localized: "Width Step (px)"))
+    private let widthStepLabel = NSTextField(labelWithString: String(localized: "Move and width resize step (px)"))
     private let widthStepTextField = NSTextField()
 
     override init(frame frameRect: NSRect) {
@@ -150,7 +150,13 @@ final class WidthSettingsView: NSView, NSTextFieldDelegate {
         widthStepTextField.formatter = integerFormatter
         widthStepTextField.alignment = .right
         widthStepTextField.delegate = self
-        widthStepTextField.integerValue = Int(Defaults.widthStepSize.value)
+        refreshValue()
+        Notification.Name.displayBehaviorProfileChanged.onPost { [weak self] _ in
+            self?.refreshValue()
+        }
+        Notification.Name.moveStepChanged.onPost { [weak self] _ in
+            self?.refreshValue()
+        }
         widthStepTextField.translatesAutoresizingMaskIntoConstraints = false
         widthStepTextField.widthAnchor.constraint(equalToConstant: 60).isActive = true
 
@@ -172,6 +178,30 @@ final class WidthSettingsView: NSView, NSTextFieldDelegate {
 
     func controlTextDidChange(_ obj: Notification) {
         let val = max(1, widthStepTextField.integerValue)
-        Defaults.widthStepSize.value = Float(val)
+        let profileID = DisplayProfileSelectionModel.shared.selectedProfileID
+        if profileID == BehaviorProfileStore.defaultProfileID {
+            Defaults.widthStepSize.value = Float(val)
+        } else {
+            BehaviorProfileStore.setOverride(CodableDefault(float: Float(val)),
+                                             for: Defaults.widthStepSize.key, profileID: profileID)
+        }
+        refreshLabelColor(profileID: profileID)
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        Notification.Name.moveStepChanged.post()
+    }
+
+    private func refreshValue() {
+        let profileID = DisplayProfileSelectionModel.shared.selectedProfileID
+        widthStepTextField.integerValue = BehaviorProfileContext.withProfileID(profileID) {
+            Int(Defaults.widthStepSize.value)
+        }
+        refreshLabelColor(profileID: profileID)
+    }
+
+    private func refreshLabelColor(profileID: String) {
+        widthStepLabel.textColor = BehaviorProfileStore.override(for: Defaults.widthStepSize.key, profileID: profileID) != nil
+            ? .systemBlue : .labelColor
     }
 }

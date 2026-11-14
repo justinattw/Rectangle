@@ -434,6 +434,11 @@ enum MenuBarUtil {
 }
 
 extension NSScreen {
+    var behaviorProfileID: String {
+        let pixelWidth = Int((frame.width * backingScaleFactor).rounded())
+        let pixelHeight = Int((frame.height * backingScaleFactor).rounded())
+        return "\(pixelWidth)x\(pixelHeight)"
+    }
 
     func adjustedVisibleFrame(_ ignoreTodo: Bool = false, _ ignoreStage: Bool = false) -> CGRect {
         let screens = NSScreen.screens

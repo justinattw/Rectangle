@@ -36,18 +36,26 @@ enum SubsequentExecutionMode: Int {
 class SubsequentExecutionDefault: Default {
     public private(set) var key: String = "subsequentExecutionMode"
     private var initialized = false
+    private var storedValue: SubsequentExecutionMode
     
     var value: SubsequentExecutionMode {
-        didSet {
+        get {
+            guard let rawValue = BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.int else {
+                return storedValue
+            }
+            return SubsequentExecutionMode(rawValue: rawValue) ?? .resize
+        }
+        set {
+            storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(value.rawValue, forKey: key)
+                UserDefaults.standard.set(newValue.rawValue, forKey: key)
             }
         }
     }
     
     init() {
         let intValue = UserDefaults.standard.integer(forKey: key)
-        value = SubsequentExecutionMode(rawValue: intValue) ?? .resize
+        storedValue = SubsequentExecutionMode(rawValue: intValue) ?? .resize
         initialized = true
     }
     

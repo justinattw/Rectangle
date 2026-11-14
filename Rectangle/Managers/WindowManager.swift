@@ -110,6 +110,10 @@ class WindowManager {
             Logger.log("Unable to obtain usable screens")
             return
         }
+
+        let profileID = sourceScreens.currentScreen.behaviorProfileID
+        let previousProfileID = BehaviorProfileContext.setCurrentProfileID(profileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
         
         let pendingDestination = windowAnimator.destination(for: frontmostWindowElement)
         let currentWindowRect = pendingDestination ?? frontmostWindowElement.frame
@@ -164,7 +168,11 @@ class WindowManager {
         }
 
         if Defaults.cyclingOverlapOffset.userEnabled, action.overlapOffsetApplies {
-            calcResult.rect = OverlapOffsetGeometry.applyOverlapOffsetIfNeeded(calcResult.rect, windowId: windowId, screen: calcResult.screen)
+            calcResult.rect = OverlapOffsetGeometry.applyOverlapOffsetIfNeeded(
+                calcResult.rect,
+                windowId: windowId,
+                screen: calcResult.screen
+            )
         }
 
         let willResize = action.resizes || calcResult.rect.size != currentNormalizedRect.size
@@ -215,6 +223,8 @@ class WindowManager {
             && (!isMovedAcrossDisplays || parameters.source == .dragToSnap)
         
         let completeMove = { [self] (animatedFrame: CGRect?) in
+            let previousProfileID = BehaviorProfileContext.setCurrentProfileID(profileID)
+            defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
             var waitsForRetry = false
             defer { if !waitsForRetry { parameters.completion?() } }
             guard executionID == currentExecutionID else { return }
@@ -233,6 +243,8 @@ class WindowManager {
                         Logger.log("Final attempt to adjust across displays.")
                         waitsForRetry = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(25)) { [weak self] in
+                            let previousProfileID = BehaviorProfileContext.setCurrentProfileID(profileID)
+                            defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
                             defer { parameters.completion?() }
                             guard let self, self.executionID == currentExecutionID else { return }
                             let finalRect = self.apply(result: resultParameters)

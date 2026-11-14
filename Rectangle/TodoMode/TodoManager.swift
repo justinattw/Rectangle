@@ -285,7 +285,15 @@ class TodoManager {
     static func changeSidebarWidthUnit(to unit: TodoSidebarWidthUnit) {
         if let visibleFrameWidth = TodoManager.todoScreen?.adjustedVisibleFrame(true).width {
             let newValue = TodoManager.convert(width: Defaults.todoSidebarWidth.cgFloat, toUnit: unit, visibleFrameWidth: visibleFrameWidth)
-            Defaults.todoSidebarWidth.value = Float(newValue)
+            if let profileID = BehaviorProfileContext.currentProfileID {
+                BehaviorProfileStore.setOverride(
+                    CodableDefault(float: Float(newValue)),
+                    for: Defaults.todoSidebarWidth.key,
+                    profileID: profileID
+                )
+            } else {
+                Defaults.todoSidebarWidth.value = Float(newValue)
+            }
         }
     }
     

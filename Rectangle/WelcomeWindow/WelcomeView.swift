@@ -12,7 +12,6 @@ struct WelcomeView: View {
             Text("Welcome to Rectangle!")
                 .font(.largeTitle)
                 .bold()
-            
             Text("Please select your default shortcuts and behavior")
                 .font(.body)
                 .foregroundColor(.secondary)

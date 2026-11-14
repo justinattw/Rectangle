@@ -569,6 +569,10 @@ enum WindowAction: Int, Codable {
             String(localized: "Larger Width")
         case .smallerWidth:
             String(localized: "Smaller Width")
+        case .largerHeight:
+            String(localized: "Larger Height")
+        case .smallerHeight:
+            String(localized: "Smaller Height")
         case .topVerticalThird:
             String(localized: "Top Third")
         case .middleVerticalThird:
@@ -641,7 +645,7 @@ enum WindowAction: Int, Codable {
              .halveHeightUp, .halveHeightDown, .halveWidthLeft, .halveWidthRight,
              .specified, .reverseAll, .tileAll, .cascadeAll, .leftTodo, .rightTodo,
              .cascadeActiveApp, .tileActiveApp,
-             .centerProminently, .largerHeight, .smallerHeight,
+             .centerProminently,
              .displayOne, .displayTwo, .displayThree, .displayFour, .displayFive,
              .displaySix, .displaySeven, .displayEight, .displayNine:
             nil
@@ -669,7 +673,7 @@ enum WindowAction: Int, Codable {
         case .center, .centerProminently, .nextDisplay, .previousDisplay,
              .displayOne, .displayTwo, .displayThree, .displayFour, .displayFive,
              .displaySix, .displaySeven, .displayEight, .displayNine: return false
-        case .moveUp, .moveDown, .moveLeft, .moveRight: return Defaults.resizeOnDirectionalMove.enabled
+        case .moveUp, .moveDown, .moveLeft, .moveRight: return false
         default: return true
         }
     }

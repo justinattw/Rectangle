@@ -2675,6 +2675,14 @@ class StackBadgeGeometryTests: XCTestCase {
         XCTAssertEqual(indices.sorted(), [0, 1])
     }
 
+    func testStackClusterUsesIndependentAxisRanges() {
+        let origins = [CGPoint(x: 100, y: 100), CGPoint(x: 130, y: 100), CGPoint(x: 100, y: 115)]
+        XCTAssertEqual(StackBadgeGeometry.stackIndices(among: origins, cascadeRange: 34, tolerance: 4,
+                                                       verticalRange: 4).sorted(), [0, 1])
+        XCTAssertEqual(StackBadgeGeometry.stackIndices(among: origins, cascadeRange: 4, tolerance: 4,
+                                                       verticalRange: 19).sorted(), [0, 2])
+    }
+
     func testStackClusterAcceptsDownwardCascade() {
         // Edge clamping can flip the cascade direction locally; both must count.
         let origins = [CGPoint(x: 100, y: 100), CGPoint(x: 111, y: 111)]
@@ -2872,7 +2880,7 @@ class StackCycleTests: XCTestCase {
         // Clamped to 1...5 cascade steps, and at least 1pt per step.
         XCTAssertEqual(StackBadgeGeometry.cascadeRange(offsetSize: 11, maxCascade: 9, tolerance: 4), 59)
         XCTAssertEqual(StackBadgeGeometry.cascadeRange(offsetSize: 11, maxCascade: 0, tolerance: 4), 15)
-        XCTAssertEqual(StackBadgeGeometry.cascadeRange(offsetSize: 0, maxCascade: 1, tolerance: 4), 5)
+        XCTAssertEqual(StackBadgeGeometry.cascadeRange(offsetSize: 0, maxCascade: 1, tolerance: 4), 4)
     }
 
     // MARK: - Ring order
@@ -3188,6 +3196,44 @@ class OverlapOffsetGeometryTests: XCTestCase {
                                            maxCascade: maxCascade)
     }
 
+    func testIndependentOffsetsAndZeroAxis() {
+        let rect = CGRect(x: 100, y: 100, width: 400, height: 300)
+        let occupied = [OverlapOffsetGeometry.topLeft(of: rect)]
+        XCTAssertEqual(OverlapOffsetGeometry.cascadedRect(rect, occupiedTopLefts: occupied, screenFrame: screen,
+                                                          offset: CGVector(dx: 30, dy: 8), maxCascade: 1).origin,
+                       CGPoint(x: 130, y: 108))
+        XCTAssertEqual(OverlapOffsetGeometry.cascadedRect(rect, occupiedTopLefts: occupied, screenFrame: screen,
+                                                          offset: CGVector(dx: 0, dy: 8), maxCascade: 1).origin,
+                       CGPoint(x: 100, y: 108))
+        XCTAssertEqual(OverlapOffsetGeometry.cascadedRect(rect, occupiedTopLefts: occupied, screenFrame: screen,
+                                                          offset: CGVector.zero, maxCascade: 1), rect)
+    }
+
+    func testLegacyOffsetAndProfileOverrides() {
+        let savedProfiles = Defaults.displayBehaviorProfiles.typedValue
+        let legacy = Defaults.cyclingOverlapOffsetSize.value
+        let horizontal = Defaults.cyclingOverlapOffsetHorizontal.value
+        let vertical = Defaults.cyclingOverlapOffsetVertical.value
+        defer {
+            Defaults.displayBehaviorProfiles.typedValue = savedProfiles
+            Defaults.cyclingOverlapOffsetSize.value = legacy
+            Defaults.cyclingOverlapOffsetHorizontal.value = horizontal
+            Defaults.cyclingOverlapOffsetVertical.value = vertical
+        }
+        Defaults.cyclingOverlapOffsetSize.value = 16
+        Defaults.cyclingOverlapOffsetHorizontal.value = -1
+        Defaults.cyclingOverlapOffsetVertical.value = -1
+        BehaviorProfileContext.withProfileID(nil) {
+            XCTAssertEqual(Defaults.overlapOffset, CGVector(dx: 16, dy: 16))
+        }
+        let profile = "overlap-axis-test"
+        BehaviorProfileStore.setOverride(CodableDefault(float: 25), for: Defaults.cyclingOverlapOffsetSize.key, profileID: profile)
+        BehaviorProfileStore.setOverride(CodableDefault(double: 0), for: Defaults.cyclingOverlapOffsetHorizontal.key, profileID: profile)
+        BehaviorProfileContext.withProfileID(profile) {
+            XCTAssertEqual(Defaults.overlapOffset, CGVector(dx: 0, dy: 25))
+        }
+    }
+
     /// A maximized window with no gaps fills the visible frame, so there is
     /// nowhere to shift it - and the caller skips the window scan entirely.
     func testMaximizedWithoutGapsCannotOffset() {
@@ -3418,6 +3464,59 @@ class StackBadgeSizeAgnosticTests: XCTestCase {
 
     func testWindowAtAnotherCornerIsNotInTheCluster() {
         XCTAssertEqual(stack([corner, CGPoint(x: 900, y: 0)]).count, 1)
+    }
+}
+
+class MoveByStepCalculationTests: XCTestCase {
+    private let visibleFrame = CGRect(x: 0, y: 0, width: 1000, height: 800)
+    private let windowRect = CGRect(x: 300, y: 200, width: 400, height: 300)
+
+    func testDirectionalMovesUseTheWidthStepAndPreserveWindowSize() {
+        BehaviorProfileContext.withProfileID(nil) {
+            let originalWidthStep = Defaults.widthStepSize.value
+            defer { Defaults.widthStepSize.value = originalWidthStep }
+            Defaults.widthStepSize.value = 45
+
+            XCTAssertFalse(WindowAction.moveLeft.resizes)
+            XCTAssertFalse(WindowAction.moveRight.resizes)
+            XCTAssertFalse(WindowAction.moveUp.resizes)
+            XCTAssertFalse(WindowAction.moveDown.resizes)
+            XCTAssertEqual(result(for: .moveLeft), CGRect(x: 255, y: 200, width: 400, height: 300))
+            XCTAssertEqual(result(for: .moveRight), CGRect(x: 345, y: 200, width: 400, height: 300))
+            XCTAssertEqual(result(for: .moveUp), CGRect(x: 300, y: 245, width: 400, height: 300))
+            XCTAssertEqual(result(for: .moveDown), CGRect(x: 300, y: 155, width: 400, height: 300))
+        }
+    }
+
+    func testDirectionalMoveStopsAtVisibleFrameEdges() {
+        BehaviorProfileContext.withProfileID(nil) {
+            let originalWidthStep = Defaults.widthStepSize.value
+            defer { Defaults.widthStepSize.value = originalWidthStep }
+            Defaults.widthStepSize.value = 30
+
+            XCTAssertEqual(result(for: .moveLeft, from: CGRect(x: 10, y: 200, width: 400, height: 300)),
+                           CGRect(x: 0, y: 200, width: 400, height: 300))
+            XCTAssertEqual(result(for: .moveUp, from: CGRect(x: 300, y: 480, width: 400, height: 300)),
+                           CGRect(x: 300, y: 500, width: 400, height: 300))
+        }
+
+        func testDirectionalMoveUsesDisplayProfileStep() {
+            let savedProfiles = Defaults.displayBehaviorProfiles.typedValue
+            defer { Defaults.displayBehaviorProfiles.typedValue = savedProfiles }
+            let profile = "move-step-test"
+            BehaviorProfileStore.setOverride(CodableDefault(float: 75), for: Defaults.widthStepSize.key, profileID: profile)
+            BehaviorProfileContext.withProfileID(profile) {
+                XCTAssertEqual(result(for: .moveRight), CGRect(x: 375, y: 200, width: 400, height: 300))
+            }
+        }
+    }
+
+    private func result(for action: WindowAction, from rect: CGRect? = nil) -> CGRect {
+        let params = RectCalculationParameters(window: Window(id: 1, rect: rect ?? windowRect),
+                                               visibleFrameOfScreen: visibleFrame,
+                                               action: action,
+                                               lastAction: nil)
+        return WindowCalculationFactory.moveLeftRightCalculation.calculateRect(params).rect
     }
 }
 
@@ -4980,6 +5079,37 @@ class ActiveSideSplitRatiosCooperativeTests: XCTestCase {
         XCTAssertEqual(Defaults.verticalSplitRatio.value, savedVertical, accuracy: 0.001)
         XCTAssertNotEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screenFrame), savedHorizontal / 100.0)
         XCTAssertNotEqual(ActiveSideSplitRatios.shared.verticalRatio(for: screenFrame), savedVertical / 100.0)
+    }
+
+    func testCooperativeRatiosAreIsolatedByBehaviorProfile() {
+        let savedProfiles = Defaults.displayBehaviorProfiles.typedValue
+        let savedCooperativeResize = Defaults.cooperativeCornerResize.enabled
+        let firstProfile = "test-profile-one"
+        let secondProfile = "test-profile-two"
+        defer {
+            Defaults.displayBehaviorProfiles.typedValue = savedProfiles
+            Defaults.cooperativeCornerResize.enabled = savedCooperativeResize
+            ActiveSideSplitRatios.shared.resetAll()
+        }
+
+        Defaults.cooperativeCornerResize.enabled = true
+        BehaviorProfileStore.setOverride(CodableDefault(float: 70),
+                                         for: Defaults.horizontalSplitRatio.key,
+                                         profileID: firstProfile)
+        BehaviorProfileStore.setOverride(CodableDefault(float: 30),
+                                         for: Defaults.horizontalSplitRatio.key,
+                                         profileID: secondProfile)
+
+        BehaviorProfileContext.withProfileID(firstProfile) {
+            ActiveSideSplitRatios.shared.recordSideAction(.leftHalf,
+                                                          targetFrame: CGRect(x: 0, y: 0, width: 400, height: 900),
+                                                          screenFrame: screenFrame)
+            XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screenFrame), 1.0 / 3.0, accuracy: 0.001)
+        }
+
+        BehaviorProfileContext.withProfileID(secondProfile) {
+            XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screenFrame), 0.30, accuracy: 0.001)
+        }
     }
 
     func testGapIsIncludedWhenDerivingAchievedSplit() throws {
@@ -7826,6 +7956,60 @@ class ShortcutCycleTests: XCTestCase {
         XCTAssertNotNil(ShortcutCycle.shortcut(for: .centerThird, userDefaults: userDefaults))
         XCTAssertEqual(groups.map(\.actions), [[.centerHalf, .centerThird]])
         XCTAssertEqual(groups.first?.representativeAction, .centerHalf)
+    }
+}
+
+final class ShortcutRepeatPolicyTests: XCTestCase {
+    func testOnlyMoveAndSizeActionsRepeatWhileHeld() {
+        let repeatable: [WindowAction] = [
+            .moveLeft, .moveRight, .moveUp, .moveDown,
+            .larger, .smaller, .largerWidth, .smallerWidth, .largerHeight, .smallerHeight
+        ]
+        let nonRepeatable: [WindowAction] = [.leftHalf, .maximize, .cycleStackedWindows]
+
+        XCTAssertTrue(repeatable.allSatisfy(ShortcutRepeatPolicy.shouldRepeat))
+        XCTAssertFalse(nonRepeatable.contains(where: ShortcutRepeatPolicy.shouldRepeat))
+    }
+}
+
+final class CurrentSpaceWindowSwitcherTests: XCTestCase {
+    func testRaiseDispatchUsesMainThreadOnlyForOwnProcess() {
+        let ownRaise = expectation(description: "Own window runs on the main thread")
+        let otherRaise = expectation(description: "Other window runs off the main thread")
+        let ownPID = ProcessInfo.processInfo.processIdentifier
+        StackCycleManager.dispatchRaise(for: ownPID) {
+            XCTAssertTrue(Thread.isMainThread)
+            ownRaise.fulfill()
+        }
+        StackCycleManager.dispatchRaise(for: ownPID == 1 ? 2 : 1) {
+            XCTAssertFalse(Thread.isMainThread)
+            otherRaise.fulfill()
+        }
+        wait(for: [ownRaise, otherRaise], timeout: 2)
+    }
+
+    func testEligibleWindowsIncludesJRectangleAndOtherVisibleApps() {
+        let windows = [
+            WindowInfo(id: 1, level: kCGNormalWindowLevel, frame: .zero,
+                       pid: ProcessInfo.processInfo.processIdentifier, processName: "JRectangle"),
+            WindowInfo(id: 2, level: kCGNormalWindowLevel, frame: .zero,
+                       pid: 123, processName: "Other App"),
+            WindowInfo(id: 3, level: kCGNormalWindowLevel, frame: .zero,
+                       pid: 456, processName: "Transparent", alpha: 0),
+        ]
+
+        XCTAssertEqual(CurrentSpaceWindowSwitcher.eligibleWindows(from: windows).map(\.id), [1, 2])
+    }
+
+    func testNextIndexStartsAtFrontmostCandidateAndWraps() {
+        XCTAssertEqual(CurrentSpaceWindowSwitcher.nextIndex(after: nil, count: 3), 0)
+        XCTAssertEqual(CurrentSpaceWindowSwitcher.nextIndex(after: 1, count: 3), 2)
+        XCTAssertEqual(CurrentSpaceWindowSwitcher.nextIndex(after: 2, count: 3), 0)
+    }
+
+    func testNextIndexRequiresMultipleWindows() {
+        XCTAssertNil(CurrentSpaceWindowSwitcher.nextIndex(after: nil, count: 0))
+        XCTAssertNil(CurrentSpaceWindowSwitcher.nextIndex(after: 0, count: 1))
     }
 }
 

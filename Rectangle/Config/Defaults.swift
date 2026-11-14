@@ -75,7 +75,6 @@ class Defaults {
     static let footprintBlur = BoolDefault(key: "footprintBlur")
     static let blurAppearance = IntEnumDefault<BlurAppearance>(key: "blurAppearance", defaultValue: .system)
 
-    static let SUEnableAutomaticChecks = BoolDefault(key: "SUEnableAutomaticChecks")
     static let todo = OptionalBoolDefault(key: "todo")
     static let todoMode = BoolDefault(key: "todoMode")
     static let todoApplication = StringDefault(key: "todoApplication")
@@ -89,6 +88,21 @@ class Defaults {
     static let centerHalfCycles = OptionalBoolDefault(key: "centerHalfCycles")
     static let cyclingOverlapOffset = OptionalBoolDefault(key: "cyclingOverlapOffset")
     static let cyclingOverlapOffsetSize = FloatDefault(key: "cyclingOverlapOffsetSize", defaultValue: 11)
+    static let cyclingOverlapOffsetHorizontal = DoubleDefault(key: "cyclingOverlapOffsetHorizontal", defaultValue: -1)
+    static let cyclingOverlapOffsetVertical = DoubleDefault(key: "cyclingOverlapOffsetVertical", defaultValue: -1)
+    static var overlapOffset: CGVector {
+        func resolved(_ axis: DoubleDefault) -> CGFloat {
+            let profileID = BehaviorProfileContext.currentProfileID
+            let axisOverride = BehaviorProfileStore.override(for: axis.key, profileID: profileID)
+            let legacyOverride = BehaviorProfileStore.override(for: cyclingOverlapOffsetSize.key, profileID: profileID)
+            if axisOverride == nil, let value = legacyOverride?.float {
+                return CGFloat(max(0, value))
+            }
+            let value = axis.value
+            return CGFloat(max(0, value < 0 ? Double(cyclingOverlapOffsetSize.value) : value))
+        }
+        return CGVector(dx: resolved(cyclingOverlapOffsetHorizontal), dy: resolved(cyclingOverlapOffsetVertical))
+    }
     static let cyclingOverlapMaxCascade = IntDefault(key: "cyclingOverlapMaxCascade", defaultValue: 1)
     static let stackBadge = OptionalBoolDefault(key: "stackBadge")
     static let stackSameSizeOnly = OptionalBoolDefault(key: "stackSameSizeOnly")
@@ -106,6 +120,10 @@ class Defaults {
     static let cornerSnapAreaSize = FloatDefault(key: "cornerSnapAreaSize", defaultValue: 20)
     static let shortEdgeSnapAreaSize = FloatDefault(key: "shortEdgeSnapAreaSize", defaultValue: 145)
     static let cascadeAllDeltaSize = FloatDefault(key: "cascadeAllDeltaSize", defaultValue: 30)
+    static let displayBehaviorProfiles = JSONDefault<[String: [String: CodableDefault]]>(
+        key: "displayBehaviorProfiles",
+        defaultValue: [:]
+    )
     static let sixthsSnapArea = OptionalBoolDefault(key: "sixthsSnapArea")
     static let stageSize = FloatDefault(key: "stageSize", defaultValue: 190)
     static let dragFromStage = OptionalBoolDefault(key: "dragFromStage")
@@ -194,7 +212,6 @@ class Defaults {
         footprintColor,
         footprintBlur,
         blurAppearance,
-        SUEnableAutomaticChecks,
         todo,
         todoMode,
         todoApplication,
@@ -243,13 +260,16 @@ class Defaults {
         showAdditionalSizesInMenu,
         cyclingOverlapOffset,
         cyclingOverlapOffsetSize,
+        cyclingOverlapOffsetHorizontal,
+        cyclingOverlapOffsetVertical,
         cyclingOverlapMaxCascade,
         stackBadge,
         stackSameSizeOnly,
         moveFixedSizeToEdge,
         greenButtonOverride,
         mouseButtonShortcutsUseWindowUnderCursor,
-        ignoreShortcutsInMissionControl
+        ignoreShortcutsInMissionControl,
+        displayBehaviorProfiles
     ]
 }
 
@@ -269,6 +289,66 @@ struct CodableDefault: Codable {
     }
 }
 
+enum BehaviorProfileStore {
+    static let defaultProfileID = "default"
+
+    static var profileIDs: [String] {
+        (Defaults.displayBehaviorProfiles.typedValue ?? [:]).keys.sorted()
+    }
+
+    static func overrideCount(for profileID: String) -> Int {
+        Defaults.displayBehaviorProfiles.typedValue?[profileID]?.count ?? 0
+    }
+
+    static func override(for key: String, profileID: String?) -> CodableDefault? {
+        guard let profileID, profileID != defaultProfileID else { return nil }
+        return Defaults.displayBehaviorProfiles.typedValue?[profileID]?[key]
+    }
+
+    static func setOverride(_ value: CodableDefault, for key: String, profileID: String) {
+        guard profileID != defaultProfileID else { return }
+        var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
+        var profile = profiles[profileID] ?? [:]
+        profile[key] = value
+        profiles[profileID] = profile
+        Defaults.displayBehaviorProfiles.typedValue = profiles
+        Notification.Name.displayBehaviorProfileOverridesChanged.post()
+    }
+
+    static func reset(profileID: String) {
+        guard profileID != defaultProfileID else { return }
+        var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
+        profiles.removeValue(forKey: profileID)
+        Defaults.displayBehaviorProfiles.typedValue = profiles
+        Notification.Name.displayBehaviorProfileOverridesChanged.post()
+    }
+}
+
+enum BehaviorProfileContext {
+    private static let key = "com.knollsoft.Rectangle.behaviorProfileID"
+
+    static var currentProfileID: String? {
+        Thread.current.threadDictionary[key] as? String
+    }
+
+    @discardableResult
+    static func setCurrentProfileID(_ profileID: String?) -> String? {
+        let previous = currentProfileID
+        if let profileID, profileID != BehaviorProfileStore.defaultProfileID {
+            Thread.current.threadDictionary[key] = profileID
+        } else {
+            Thread.current.threadDictionary.removeObject(forKey: key)
+        }
+        return previous
+    }
+
+    static func withProfileID<T>(_ profileID: String?, perform: () throws -> T) rethrows -> T {
+        let previous = setCurrentProfileID(profileID)
+        defer { _ = setCurrentProfileID(previous) }
+        return try perform()
+    }
+}
+
 protocol Default {
     var key: String { get }
     func load(from codable: CodableDefault)
@@ -278,11 +358,16 @@ protocol Default {
 class BoolDefault: Default {
     public private(set) var key: String
     private var initialized = false
+    private var storedEnabled: Bool
     
     var enabled: Bool {
-        didSet {
+        get {
+            BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.bool ?? storedEnabled
+        }
+        set {
+            storedEnabled = newValue
             if initialized {
-                UserDefaults.standard.set(enabled, forKey: key)
+                UserDefaults.standard.set(newValue, forKey: key)
             }
         }
     }
@@ -290,9 +375,9 @@ class BoolDefault: Default {
     init(key: String, defaultValue: Bool = false) {
         self.key = key
         if UserDefaults.standard.object(forKey: key) == nil {
-            enabled = defaultValue
+            storedEnabled = defaultValue
         } else {
-            enabled = UserDefaults.standard.bool(forKey: key)
+            storedEnabled = UserDefaults.standard.bool(forKey: key)
         }
         initialized = true
     }
@@ -311,13 +396,21 @@ class BoolDefault: Default {
 class OptionalBoolDefault: Default {
     public private(set) var key: String
     private var initialized = false
+    private var storedEnabled: Bool?
     
     var enabled: Bool? {
-        didSet {
+        get {
+            if let value = BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.int {
+                return value == 1 ? true : value == 2 ? false : nil
+            }
+            return storedEnabled
+        }
+        set {
+            storedEnabled = newValue
             if initialized {
-                if enabled == true {
+                if newValue == true {
                     UserDefaults.standard.set(1, forKey: key)
-                } else if enabled == false {
+                } else if newValue == false {
                     UserDefaults.standard.set(2, forKey: key)
                 } else {
                     UserDefaults.standard.set(0, forKey: key)
@@ -390,11 +483,16 @@ class StringDefault: Default {
 class FloatDefault: Default {
     public private(set) var key: String
     private var initialized = false
+    private var storedValue: Float
     
     var value: Float {
-        didSet {
+        get {
+            BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.float ?? storedValue
+        }
+        set {
+            storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(value, forKey: key)
+                UserDefaults.standard.set(newValue, forKey: key)
             }
         }
     }
@@ -403,9 +501,9 @@ class FloatDefault: Default {
 
     init(key: String, defaultValue: Float = 0) {
         self.key = key
-        value = UserDefaults.standard.float(forKey: key)
-        if(defaultValue != 0 && value == 0) {
-            value = defaultValue
+        storedValue = UserDefaults.standard.float(forKey: key)
+        if defaultValue != 0 && storedValue == 0 {
+            storedValue = defaultValue
         }
         initialized = true
     }
@@ -425,11 +523,19 @@ class DoubleDefault: Default {
     public private(set) var key: String
     private var initialized = false
     private let defaultValue: Double
+    private var storedValue: Double
 
     var value: Double {
-        didSet {
+        get {
+            if let profileValue = BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID) {
+                return profileValue.double ?? profileValue.float.map(Double.init) ?? storedValue
+            }
+            return storedValue
+        }
+        set {
+            storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(value, forKey: key)
+                UserDefaults.standard.set(newValue, forKey: key)
             }
         }
     }
@@ -438,9 +544,9 @@ class DoubleDefault: Default {
         self.key = key
         self.defaultValue = defaultValue
         if UserDefaults.standard.object(forKey: key) == nil {
-            value = defaultValue
+            storedValue = defaultValue
         } else {
-            value = UserDefaults.standard.double(forKey: key)
+            storedValue = UserDefaults.standard.double(forKey: key)
         }
         initialized = true
     }
@@ -585,16 +691,21 @@ class JSONDefault<T: Codable>: StringDefault {
 class IntEnumDefault<E: RawRepresentable>: Default where E.RawValue == Int {
     public private(set) var key: String
     private let invalidValueFallback: E
+    private var storedValue: E
 
-    var _value: E
     var value: E {
         set {
-            if newValue != _value {
-                _value = newValue
-                UserDefaults.standard.set(_value.rawValue, forKey: key)
+            if newValue != storedValue {
+                storedValue = newValue
+                UserDefaults.standard.set(storedValue.rawValue, forKey: key)
             }
         }
-        get { _value }
+        get {
+            guard let rawValue = BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.int else {
+                return storedValue
+            }
+            return E(rawValue: rawValue) ?? invalidValueFallback
+        }
     }
 
     init(key: String, defaultValue: E, invalidValueFallback: E? = nil) {
@@ -602,17 +713,17 @@ class IntEnumDefault<E: RawRepresentable>: Default where E.RawValue == Int {
         let invalidValueFallback = invalidValueFallback ?? defaultValue
         self.invalidValueFallback = invalidValueFallback
         if UserDefaults.standard.object(forKey: key) == nil {
-            _value = defaultValue
+            storedValue = defaultValue
         } else {
             let intValue = UserDefaults.standard.integer(forKey: key)
-            _value = E(rawValue: intValue) ?? invalidValueFallback
+            storedValue = E(rawValue: intValue) ?? invalidValueFallback
         }
     }
 
     func load(from codable: CodableDefault) {
-        if let intValue = codable.int, _value.rawValue != intValue {
-            _value = E(rawValue: intValue) ?? invalidValueFallback
-            UserDefaults.standard.set(_value.rawValue, forKey: key)
+        if let intValue = codable.int, storedValue.rawValue != intValue {
+            storedValue = E(rawValue: intValue) ?? invalidValueFallback
+            UserDefaults.standard.set(storedValue.rawValue, forKey: key)
         }
     }
     

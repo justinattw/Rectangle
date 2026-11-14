@@ -6,43 +6,74 @@ import AppKit
 @Observable
 final class BehaviorSettingsViewModel {
     let shortcutRecordingObserver = ShortcutRecordingObserver()
+    private var selectedProfileID: String {
+        DisplayProfileSelectionModel.shared.selectedProfileID
+    }
+    private var isLoadingProfile = false
+
+    private func persistProfiledValue(_ value: CodableDefault, key: String, updateDefault: () -> Void) {
+        guard !isLoadingProfile else { return }
+        if selectedProfileID == BehaviorProfileStore.defaultProfileID {
+            updateDefault()
+        } else {
+            BehaviorProfileStore.setOverride(value, for: key, profileID: selectedProfileID)
+        }
+    }
 
     // MARK: - Window Behavior & Cycle Settings
     var subsequentExecutionMode: SubsequentExecutionMode {
         didSet {
-            Defaults.subsequentExecutionMode.value = subsequentExecutionMode
+            persistProfiledValue(CodableDefault(int: subsequentExecutionMode.rawValue), key: Defaults.subsequentExecutionMode.key) {
+                Defaults.subsequentExecutionMode.value = subsequentExecutionMode
+            }
         }
     }
     
     var selectedCycleSizes: Set<CycleSize> = []
     var cornerCycleExpansionAxis: CornerCycleExpansionAxis {
         didSet {
-            Defaults.cornerCycleExpansionAxis.value = cornerCycleExpansionAxis
+            persistProfiledValue(CodableDefault(int: cornerCycleExpansionAxis.rawValue), key: Defaults.cornerCycleExpansionAxis.key) {
+                Defaults.cornerCycleExpansionAxis.value = cornerCycleExpansionAxis
+            }
         }
     }
     
     var cooperativeCornerResize: Bool {
         didSet {
-            Defaults.cooperativeCornerResize.enabled = cooperativeCornerResize
+            persistProfiledValue(CodableDefault(bool: cooperativeCornerResize), key: Defaults.cooperativeCornerResize.key) {
+                Defaults.cooperativeCornerResize.enabled = cooperativeCornerResize
+            }
         }
     }
     
     var gapSize: Double
+    var overlapHorizontal: Double = 11
+    var overlapVertical: Double = 11
+    var edgeHorizontal: Double = 0
+    var edgeVertical: Double = 0
+    var horizontalEdgesDiffer = false
+    var verticalEdgesDiffer = false
     var skipGapTopEdge: Bool {
         didSet {
-            Defaults.skipGapTopEdge.enabled = skipGapTopEdge
+            persistProfiledValue(CodableDefault(bool: skipGapTopEdge), key: Defaults.skipGapTopEdge.key) {
+                Defaults.skipGapTopEdge.enabled = skipGapTopEdge
+            }
         }
     }
     
     var moveCursorAcrossDisplays: Bool {
         didSet {
-            Defaults.moveCursorAcrossDisplays.enabled = moveCursorAcrossDisplays
+            persistProfiledValue(CodableDefault(int: moveCursorAcrossDisplays ? 1 : 2), key: Defaults.moveCursorAcrossDisplays.key) {
+                Defaults.moveCursorAcrossDisplays.enabled = moveCursorAcrossDisplays
+            }
         }
     }
     
     var centerAcrossDisplays: Bool {
         didSet {
-            Defaults.centerAcrossDisplays.enabled = centerAcrossDisplays
+            persistProfiledValue(CodableDefault(int: centerAcrossDisplays ? 1 : 2), key: Defaults.centerAcrossDisplays.key) {
+                Defaults.centerAcrossDisplays.enabled = centerAcrossDisplays
+            }
         }
     }
     
@@ -60,7 +91,9 @@ final class BehaviorSettingsViewModel {
     
     var autoMaximize: Bool {
         didSet {
-            Defaults.autoMaximize.enabled = autoMaximize
+            persistProfiledValue(CodableDefault(int: autoMaximize ? 1 : 2), key: Defaults.autoMaximize.key) {
+                Defaults.autoMaximize.enabled = autoMaximize
+            }
         }
     }
     
@@ -101,23 +134,32 @@ final class BehaviorSettingsViewModel {
     
     var todoSidebarWidth: Float {
         didSet {
-            Defaults.todoSidebarWidth.value = todoSidebarWidth
+            persistProfiledValue(CodableDefault(float: todoSidebarWidth), key: Defaults.todoSidebarWidth.key) {
+                Defaults.todoSidebarWidth.value = todoSidebarWidth
+            }
         }
     }
     
     var todoSidebarWidthUnit: TodoSidebarWidthUnit {
         didSet {
-            Defaults.todoSidebarWidthUnit.value = todoSidebarWidthUnit
-            TodoManager.refreshTodoScreen()
-            TodoManager.changeSidebarWidthUnit(to: todoSidebarWidthUnit)
-            todoSidebarWidth = Defaults.todoSidebarWidth.value
-            TodoManager.moveAllIfNeeded(false)
+            guard !isLoadingProfile else { return }
+            persistProfiledValue(CodableDefault(int: todoSidebarWidthUnit.rawValue), key: Defaults.todoSidebarWidthUnit.key) {
+                Defaults.todoSidebarWidthUnit.value = todoSidebarWidthUnit
+            }
+            BehaviorProfileContext.withProfileID(selectedProfileID) {
+                TodoManager.refreshTodoScreen()
+                TodoManager.changeSidebarWidthUnit(to: todoSidebarWidthUnit)
+                todoSidebarWidth = Defaults.todoSidebarWidth.value
+                TodoManager.moveAllIfNeeded(false)
+            }
         }
     }
     
     var todoSidebarSide: TodoSidebarSide {
         didSet {
-            Defaults.todoSidebarSide.value = todoSidebarSide
+            persistProfiledValue(CodableDefault(int: todoSidebarSide.rawValue), key: Defaults.todoSidebarSide.key) {
+                Defaults.todoSidebarSide.value = todoSidebarSide
+            }
             TodoManager.moveAllIfNeeded(false)
         }
     }
@@ -128,8 +170,12 @@ final class BehaviorSettingsViewModel {
             Notification.Name.showAdditionalSizesInMenuChanged.post()
         }
     }
-    var cyclingOverlapOffset: Bool {
-        didSet { Defaults.cyclingOverlapOffset.enabled = cyclingOverlapOffset }
+    var cyclingOverlapOffset = false {
+        didSet {
+            persistProfiledValue(CodableDefault(int: cyclingOverlapOffset ? 1 : 2), key: Defaults.cyclingOverlapOffset.key) {
+                Defaults.cyclingOverlapOffset.enabled = cyclingOverlapOffset
+            }
+        }
     }
     var stackBadge: Bool {
         didSet {
@@ -138,25 +184,37 @@ final class BehaviorSettingsViewModel {
         }
     }
     var stackSameSizeOnly: Bool {
-        didSet { Defaults.stackSameSizeOnly.enabled = stackSameSizeOnly }
+        didSet {
+            persistProfiledValue(CodableDefault(int: stackSameSizeOnly ? 1 : 2), key: Defaults.stackSameSizeOnly.key) {
+                Defaults.stackSameSizeOnly.enabled = stackSameSizeOnly
+            }
+        }
     }
     /// Mirrors the App Settings restriction toggle, so the window action
     /// recorders here pick up a change made while Settings is open.
     var allowAnyShortcut = Defaults.allowAnyShortcut.enabled
     var horizontalSplitRatio: Float {
         didSet {
-            Defaults.horizontalSplitRatio.value = horizontalSplitRatio
+            persistProfiledValue(CodableDefault(float: horizontalSplitRatio), key: Defaults.horizontalSplitRatio.key) {
+                Defaults.horizontalSplitRatio.value = horizontalSplitRatio
+            }
             ActiveSideSplitRatios.shared.resetAll()
         }
     }
     var verticalSplitRatio: Float {
         didSet {
-            Defaults.verticalSplitRatio.value = verticalSplitRatio
+            persistProfiledValue(CodableDefault(float: verticalSplitRatio), key: Defaults.verticalSplitRatio.key) {
+                Defaults.verticalSplitRatio.value = verticalSplitRatio
+            }
             ActiveSideSplitRatios.shared.resetAll()
         }
     }
     var halvesPreserveOtherAxisSize: Bool {
-        didSet { Defaults.halvesPreserveOtherAxisSize.enabled = halvesPreserveOtherAxisSize }
+        didSet {
+            persistProfiledValue(CodableDefault(bool: halvesPreserveOtherAxisSize), key: Defaults.halvesPreserveOtherAxisSize.key) {
+                Defaults.halvesPreserveOtherAxisSize.enabled = halvesPreserveOtherAxisSize
+            }
+        }
     }
     var mouseButtonShortcutsUseWindowUnderCursor: Bool {
         didSet { Defaults.mouseButtonShortcutsUseWindowUnderCursor.enabled = mouseButtonShortcutsUseWindowUnderCursor }
@@ -192,6 +250,13 @@ final class BehaviorSettingsViewModel {
         self.cooperativeCornerResize = Defaults.cooperativeCornerResize.enabled
         
         self.gapSize = Double(Defaults.gapSize.value)
+        let overlap = Defaults.overlapOffset
+        self.overlapHorizontal = Double(overlap.dx)
+        self.overlapVertical = Double(overlap.dy)
+        self.edgeHorizontal = Double(Defaults.screenEdgeGapLeft.value)
+        self.edgeVertical = Double(Defaults.screenEdgeGapTop.value)
+        self.horizontalEdgesDiffer = Defaults.screenEdgeGapLeft.value != Defaults.screenEdgeGapRight.value
+        self.verticalEdgesDiffer = Defaults.screenEdgeGapTop.value != Defaults.screenEdgeGapBottom.value
         self.skipGapTopEdge = Defaults.skipGapTopEdge.enabled
         
         self.moveCursorAcrossDisplays = Defaults.moveCursorAcrossDisplays.userEnabled
@@ -229,10 +294,14 @@ final class BehaviorSettingsViewModel {
         self.showMinimumWindowSizeWarning = Defaults.showMinimumWindowSizeWarning.userEnabled
         
         setupObservers()
+        reloadFromDefaults()
     }
     
     private func setupObservers() {
         Notification.Name.configImported.onPost { [weak self] _ in
+            self?.reloadFromDefaults()
+        }
+        Notification.Name.displayBehaviorProfileChanged.onPost { [weak self] _ in
             self?.reloadFromDefaults()
         }
         Notification.Name.stackBadgeChanged.onPost { [weak self] _ in
@@ -247,13 +316,26 @@ final class BehaviorSettingsViewModel {
     }
     
     func reloadFromDefaults() {
+        let previousProfileID = BehaviorProfileContext.setCurrentProfileID(selectedProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
+        isLoadingProfile = true
+        defer { isLoadingProfile = false }
+
         self.subsequentExecutionMode = Defaults.subsequentExecutionMode.value
-        let isCycleChanged = Defaults.cycleSizesIsChanged.enabled
+        let hasCycleSizeOverride = BehaviorProfileStore.override(for: Defaults.selectedCycleSizes.key, profileID: selectedProfileID) != nil
+        let isCycleChanged = hasCycleSizeOverride || Defaults.cycleSizesIsChanged.enabled
         self.selectedCycleSizes = isCycleChanged ? Defaults.selectedCycleSizes.value : CycleSize.defaultSizes
         self.cornerCycleExpansionAxis = Defaults.cornerCycleExpansionAxis.value
         self.cooperativeCornerResize = Defaults.cooperativeCornerResize.enabled
         
         self.gapSize = Double(Defaults.gapSize.value)
+        let overlap = Defaults.overlapOffset
+        self.overlapHorizontal = Double(overlap.dx)
+        self.overlapVertical = Double(overlap.dy)
+        self.edgeHorizontal = Double(Defaults.screenEdgeGapLeft.value)
+        self.edgeVertical = Double(Defaults.screenEdgeGapTop.value)
+        self.horizontalEdgesDiffer = Defaults.screenEdgeGapLeft.value != Defaults.screenEdgeGapRight.value
+        self.verticalEdgesDiffer = Defaults.screenEdgeGapTop.value != Defaults.screenEdgeGapBottom.value
         self.skipGapTopEdge = Defaults.skipGapTopEdge.enabled
         
         self.moveCursorAcrossDisplays = Defaults.moveCursorAcrossDisplays.userEnabled
@@ -297,6 +379,20 @@ final class BehaviorSettingsViewModel {
         Binding(
             get: { self.selectedCycleSizes.contains(size) },
             set: { isChecked in
+                if self.selectedProfileID != BehaviorProfileStore.defaultProfileID {
+                    if isChecked {
+                        self.selectedCycleSizes.insert(size)
+                    } else {
+                        self.selectedCycleSizes.remove(size)
+                    }
+                    BehaviorProfileStore.setOverride(
+                        CodableDefault(int: self.selectedCycleSizes.toBits()),
+                        for: Defaults.selectedCycleSizes.key,
+                        profileID: self.selectedProfileID
+                    )
+                    return
+                }
+
                 if !Defaults.cycleSizesIsChanged.enabled {
                     Defaults.selectedCycleSizes.value = CycleSize.defaultSizes
                 }
@@ -313,25 +409,51 @@ final class BehaviorSettingsViewModel {
     }
     
     // MARK: - Action Handlers
+    func commitOverlapHorizontal() {
+        persistProfiledValue(CodableDefault(double: overlapHorizontal), key: Defaults.cyclingOverlapOffsetHorizontal.key) {
+            Defaults.cyclingOverlapOffsetHorizontal.value = overlapHorizontal
+        }
+    }
+
+    func commitOverlapVertical() {
+        persistProfiledValue(CodableDefault(double: overlapVertical), key: Defaults.cyclingOverlapOffsetVertical.key) {
+            Defaults.cyclingOverlapOffsetVertical.value = overlapVertical
+        }
+    }
+
+    func commitEdgeHorizontal() {
+        for setting in [Defaults.screenEdgeGapLeft, Defaults.screenEdgeGapRight] {
+            persistProfiledValue(CodableDefault(float: Float(edgeHorizontal)), key: setting.key) {
+                setting.value = Float(edgeHorizontal)
+            }
+        }
+        horizontalEdgesDiffer = false
+    }
+
+    func commitEdgeVertical() {
+        for setting in [Defaults.screenEdgeGapTop, Defaults.screenEdgeGapBottom] {
+            persistProfiledValue(CodableDefault(float: Float(edgeVertical)), key: setting.key) {
+                setting.value = Float(edgeVertical)
+            }
+        }
+        verticalEdgesDiffer = false
+    }
+
     func commitGapSize() {
-        if Float(gapSize) != Defaults.gapSize.value {
+        persistProfiledValue(CodableDefault(float: Float(gapSize)), key: Defaults.gapSize.key) {
             Defaults.gapSize.value = Float(gapSize)
         }
     }
-    
+
     func commitStageSize() {
         let value: Float = stageSize == 0 ? -1 : Float(stageSize)
-        if value != Defaults.stageSize.value {
+        persistProfiledValue(CodableDefault(float: value), key: Defaults.stageSize.key) {
             Defaults.stageSize.value = value
         }
     }
     
     func commitTodoWidth() {
         TodoManager.moveAllIfNeeded(false)
-    }
-    
-    func checkForUpdates() {
-        AppDelegate.instance.updaterController?.checkForUpdates(nil)
     }
     
     private func handleDoubleClickTitleBarToggle(_ enabled: Bool) {

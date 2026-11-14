@@ -86,7 +86,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         assertWritten(neighborId, before: focusedId)
         assertHistory(focused, action: .bottomLeft, count: 2)
         assertHistory(neighbor, action: .topLeft, count: 1)
-        XCTAssertEqual(ActiveSideSplitRatios.shared.verticalRatio(for: screen.frame), 300.0 / 900.0, accuracy: 0.001)
+        XCTAssertEqual(verticalRatio(), 300.0 / 900.0, accuracy: 0.001)
     }
 
     func testRepeatedSideActionCyclesAndOrdersWritesByDirection() {
@@ -102,7 +102,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         assertWritten(neighborId, before: focusedId)
         assertHistory(focused, action: .leftHalf, count: 2)
         assertHistory(neighbor, action: .rightHalf, count: 2)
-        XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame), 800.0 / 1200.0, accuracy: 0.001)
+        XCTAssertEqual(horizontalRatio(), 800.0 / 1200.0, accuracy: 0.001)
 
         // Shrinking: the focused window gives up the room first.
         writes = []
@@ -112,7 +112,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         assertWritten(focusedId, before: neighborId)
         assertHistory(focused, action: .leftHalf, count: 3)
         assertHistory(neighbor, action: .rightHalf, count: 3)
-        XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame), 400.0 / 1200.0, accuracy: 0.001)
+        XCTAssertEqual(horizontalRatio(), 400.0 / 1200.0, accuracy: 0.001)
     }
 
     func testSideSwitchMovesWindowWithoutResizingNeighbor() {
@@ -147,7 +147,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         assertHistory(focused, action: .leftHalf, count: 2)
         // Advanced once by the first pass, and not again by the correction.
         XCTAssertEqual(history(of: neighbor)?.count, 2)
-        XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame), 700.0 / 1200.0, accuracy: 0.001)
+        XCTAssertEqual(horizontalRatio(), 700.0 / 1200.0, accuracy: 0.001)
     }
 
     func testFocusedMinimumTriggersSettlingPassThatPreservesHistoryCounts() {
@@ -170,7 +170,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         // Advanced once by the first pass, and not again by settling.
         assertHistory(neighbor, action: .rightHalf, count: 3)
         XCTAssertEqual(history(of: neighbor)?.rect, neighbor.frame)
-        XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame), 500.0 / 1200.0, accuracy: 0.001)
+        XCTAssertEqual(horizontalRatio(), 500.0 / 1200.0, accuracy: 0.001)
     }
 
     func testWritesMatchingAndAdjacentWindowsInOrderOfDirection() {
@@ -225,8 +225,10 @@ final class CooperativeResizeExecutionTests: XCTestCase {
     func testFinalFrameIsReadAgainAfterCleanupMovesTheFocusedWindow() {
         // The ratio puts the right half directly beside the window left behind, so the
         // cleanup that shrinks that window also grows the focused one.
-        ActiveSideSplitRatios.shared.recordSideAction(.leftHalf, targetFrame: CGRect(x: 0, y: 0, width: 500, height: 900),
-                                                      screenFrame: screen.frame)
+        BehaviorProfileContext.withProfileID(screen.behaviorProfileID) {
+            ActiveSideSplitRatios.shared.recordSideAction(.leftHalf, targetFrame: CGRect(x: 0, y: 0, width: 500, height: 900),
+                                                          screenFrame: screen.frame)
+        }
         let focused = window(focusedId, CGRect(x: 0, y: 0, width: 500, height: 900))
         let stacked = window(stackedId, CGRect(x: 0, y: 0, width: 500, height: 900))
         seedHistory(focused, action: .leftHalf)
@@ -280,7 +282,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         XCTAssertEqual(manager.postProcessCount, 0)
         assertHistory(focused, action: .leftHalf, count: 1)
         XCTAssertEqual(history(of: focused)?.rect, focused.frame)
-        XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame), 598.0 / 1200.0, accuracy: 0.001)
+        XCTAssertEqual(horizontalRatio(), 598.0 / 1200.0, accuracy: 0.001)
     }
 
     func testFeatureOffLeavesNeighborAloneAndRecordsNoSideRatio() {
@@ -297,19 +299,21 @@ final class CooperativeResizeExecutionTests: XCTestCase {
 
         // A move made while off must not affect the split once the feature is on.
         Defaults.cooperativeCornerResize.enabled = true
-        XCTAssertEqual(ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame), 0.5, accuracy: 0.001)
+        XCTAssertEqual(horizontalRatio(), 0.5, accuracy: 0.001)
     }
 
-    func testDifferentNonCooperativeActionIsNotARepeat() {
-        let savedResizeOnDirectionalMove = Defaults.resizeOnDirectionalMove.enabled
-        defer { Defaults.resizeOnDirectionalMove.enabled = savedResizeOnDirectionalMove }
-        Defaults.resizeOnDirectionalMove.enabled = true
-        let fullScreen = CGRect(x: 0, y: 0, width: 1200, height: 900)
-        let rightSide = CGRect(x: 600, y: 0, width: 600, height: 900)
+    func testDirectionalMovesNudgeWithoutResizing() {
+        BehaviorProfileContext.withProfileID(nil) {
+            let savedSizeOffset = Defaults.sizeOffset.value
+            defer { Defaults.sizeOffset.value = savedSizeOffset }
+            Defaults.sizeOffset.value = 30
+            let fullScreen = CGRect(x: 0, y: 0, width: 1200, height: 900)
+            let rightSide = CGRect(x: 600, y: 0, width: 600, height: 900)
 
-        assertFirstPress(of: .centerHalf, after: .maximize, from: fullScreen, landsAt: CGRect(x: 300, y: 0, width: 600, height: 900))
-        assertFirstPress(of: .moveLeft, after: .maximize, from: fullScreen, landsAt: CGRect(x: 0, y: 0, width: 600, height: 900))
-        assertFirstPress(of: .moveLeft, after: .moveRight, from: rightSide, landsAt: CGRect(x: 0, y: 0, width: 600, height: 900))
+            assertFirstPress(of: .centerHalf, after: .maximize, from: fullScreen, landsAt: CGRect(x: 300, y: 0, width: 600, height: 900))
+            assertFirstPress(of: .moveLeft, after: .maximize, from: fullScreen, landsAt: fullScreen)
+            assertFirstPress(of: .moveLeft, after: .moveRight, from: rightSide, landsAt: CGRect(x: 570, y: 0, width: 600, height: 900))
+        }
     }
 
     func testSameNonCooperativeActionStillCycles() {
@@ -545,6 +549,18 @@ final class CooperativeResizeExecutionTests: XCTestCase {
         window.getWindowId().flatMap { AppDelegate.windowHistory.lastRectangleActions[$0] }
     }
 
+    private func horizontalRatio() -> Float {
+        BehaviorProfileContext.withProfileID(screen.behaviorProfileID) {
+            ActiveSideSplitRatios.shared.horizontalRatio(for: screen.frame)
+        }
+    }
+
+    private func verticalRatio() -> Float {
+        BehaviorProfileContext.withProfileID(screen.behaviorProfileID) {
+            ActiveSideSplitRatios.shared.verticalRatio(for: screen.frame)
+        }
+    }
+
     private func assertFrame(_ window: FakeWindow, _ expected: CGRect, file: StaticString = #filePath, line: UInt = #line) {
         XCTAssertEqual(window.frame.screenFlipped, expected, file: file, line: line)
     }
@@ -631,6 +647,7 @@ final class CooperativeResizeExecutionTests: XCTestCase {
 
         override var frame: NSRect { testFrame }
         override var visibleFrame: NSRect { testFrame }
+        override var backingScaleFactor: CGFloat { 1 }
         override var safeAreaInsets: NSEdgeInsets { NSEdgeInsetsZero }
         override var hash: Int { ObjectIdentifier(self).hashValue }
         // AppKit's equality implementation requires a real display ID.

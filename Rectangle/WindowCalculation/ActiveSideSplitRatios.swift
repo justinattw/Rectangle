@@ -7,12 +7,14 @@ final class ActiveSideSplitRatios {
     static let shared = ActiveSideSplitRatios()
 
     private struct ScreenKey: Hashable {
+        let profileID: String
         let minX: Int
         let minY: Int
         let width: Int
         let height: Int
 
-        init(_ frame: CGRect) {
+        init(_ frame: CGRect, profileID: String) {
+            self.profileID = profileID
             minX = Self.keyPart(frame.minX)
             minY = Self.keyPart(frame.minY)
             width = Self.keyPart(frame.width)
@@ -29,19 +31,27 @@ final class ActiveSideSplitRatios {
         var vertical: Float?
     }
 
+    private struct ConfiguredRatios {
+        let horizontalPercent: Float
+        let verticalPercent: Float
+    }
+
     private var ratiosByScreen = [ScreenKey: SplitRatios]()
-    private var configuredHorizontalPercent: Float
-    private var configuredVerticalPercent: Float
+    private var configuredRatiosByProfile: [String: ConfiguredRatios]
 
     private init() {
-        configuredHorizontalPercent = Defaults.horizontalSplitRatio.value
-        configuredVerticalPercent = Defaults.verticalSplitRatio.value
+        configuredRatiosByProfile = [
+            BehaviorProfileStore.defaultProfileID: ConfiguredRatios(
+                horizontalPercent: Defaults.horizontalSplitRatio.value,
+                verticalPercent: Defaults.verticalSplitRatio.value
+            )
+        ]
     }
 
     func horizontalRatio(for screenFrame: CGRect) -> Float {
         if Defaults.cooperativeCornerResize.enabled {
             resetChangedConfiguredDefaults()
-            return ratiosByScreen[ScreenKey(screenFrame)]?.horizontal ?? configuredHorizontalRatio
+            return ratiosByScreen[screenKey(screenFrame)]?.horizontal ?? configuredHorizontalRatio
         }
         return Defaults.horizontalSplitRatio.value / 100.0
     }
@@ -49,7 +59,7 @@ final class ActiveSideSplitRatios {
     func verticalRatio(for screenFrame: CGRect) -> Float {
         if Defaults.cooperativeCornerResize.enabled {
             resetChangedConfiguredDefaults()
-            return ratiosByScreen[ScreenKey(screenFrame)]?.vertical ?? configuredVerticalRatio
+            return ratiosByScreen[screenKey(screenFrame)]?.vertical ?? configuredVerticalRatio
         }
         return Defaults.verticalSplitRatio.value / 100.0
     }
@@ -124,12 +134,11 @@ final class ActiveSideSplitRatios {
 
     func resetAll() {
         ratiosByScreen.removeAll()
-        configuredHorizontalPercent = Defaults.horizontalSplitRatio.value
-        configuredVerticalPercent = Defaults.verticalSplitRatio.value
+        configuredRatiosByProfile[currentProfileID] = currentConfiguredRatios
     }
 
     func reset(for screenFrame: CGRect) {
-        ratiosByScreen.removeValue(forKey: ScreenKey(screenFrame))
+        ratiosByScreen.removeValue(forKey: screenKey(screenFrame))
     }
 
     private var configuredHorizontalRatio: Float {
@@ -161,25 +170,42 @@ final class ActiveSideSplitRatios {
     }
 
     private func updateRatios(for screenFrame: CGRect, update: (inout SplitRatios) -> Void) {
-        let key = ScreenKey(screenFrame)
+        let key = screenKey(screenFrame)
         var splitRatios = ratiosByScreen[key] ?? SplitRatios()
         update(&splitRatios)
         ratiosByScreen[key] = splitRatios
     }
 
+    private func screenKey(_ frame: CGRect) -> ScreenKey {
+        ScreenKey(frame, profileID: currentProfileID)
+    }
+
     private func resetChangedConfiguredDefaults() {
+        let profileID = currentProfileID
         let currentHorizontalPercent = Defaults.horizontalSplitRatio.value
         let currentVerticalPercent = Defaults.verticalSplitRatio.value
+        let configuredRatios = configuredRatiosByProfile[profileID] ?? currentConfiguredRatios
 
-        if abs(currentHorizontalPercent - configuredHorizontalPercent) > CycleSize.matchingTolerance {
+        if abs(currentHorizontalPercent - configuredRatios.horizontalPercent) > CycleSize.matchingTolerance {
             resetHorizontalRatios()
-            configuredHorizontalPercent = currentHorizontalPercent
         }
 
-        if abs(currentVerticalPercent - configuredVerticalPercent) > CycleSize.matchingTolerance {
+        if abs(currentVerticalPercent - configuredRatios.verticalPercent) > CycleSize.matchingTolerance {
             resetVerticalRatios()
-            configuredVerticalPercent = currentVerticalPercent
         }
+
+        configuredRatiosByProfile[profileID] = currentConfiguredRatios
+    }
+
+    private var currentProfileID: String {
+        BehaviorProfileContext.currentProfileID ?? BehaviorProfileStore.defaultProfileID
+    }
+
+    private var currentConfiguredRatios: ConfiguredRatios {
+        ConfiguredRatios(
+            horizontalPercent: Defaults.horizontalSplitRatio.value,
+            verticalPercent: Defaults.verticalSplitRatio.value
+        )
     }
 
     private func resetHorizontalRatios() {

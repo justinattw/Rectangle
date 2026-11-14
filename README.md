@@ -1,8 +1,8 @@
-# Rectangle
+# JRectangle
 
 English | [简体中文](README.zh-Hans.md)
 
-Rectangle is a window management app for macOS based on Spectacle.
+JRectangle is a personal fork of Rectangle, a window management app for macOS based on Spectacle.
 
 <img width="612" height="810" alt="image" src="https://github.com/user-attachments/assets/c088d1e2-3661-4041-ac30-95da89ac4a41" />
 
@@ -41,6 +41,10 @@ Drag a window to the edge of the screen. When the mouse cursor reaches the edge 
 
 In **Behavior** > **Extras**, enable **Animate windows** for smooth window resizing, or in **Snap Areas**, enable **Blur footprint** for a blurred snap preview. Both are off by default. Animated snapping keeps the selected edge or center aligned when an app limits its window size or aspect ratio. Dragging a snapped window starts restoring its previous size as the window begins moving, and a quick release lets the remaining restore animation continue. Far-right title-bar grabs can still show visible jumps. Title-bar double-click maximize/restore follows the same animation setting and timing as snapping. Window animation has been tested in known scenarios, but remains experimental because repeatedly updating the window's size and position during the transition may cause issues in some edge cases.
 
+In **Shortcuts**, use the gear beside **Move Left** or **Larger Width** to set **Move and width resize step** for all four move shortcuts and width-only resize shortcuts. In **Behavior**, horizontal and vertical display edge margins are separate from **Gaps between windows**. Changing an edge margin sets both edges on that axis equally; existing asymmetric and notch-specific margins remain unchanged until edited. Existing main-screen-only and notch settings still apply.
+
+The display profile picker lists connected resolutions and labels a connected built-in display. Select a resolution to edit its overrides; blue labels mark overridden settings, including collapsed sections. Reset removes the selected profile's overrides. Profiles with the same resolution share settings.
+
 ### Tile windows in rows or columns
 
 In **Behavior** > **Extras**, enable **Show Extra shortcuts in menu** to include Rows and Columns in the **Tiling** submenu. Their keyboard shortcuts remain available when the submenu is hidden.
@@ -62,6 +66,8 @@ The Todo window is excluded using the same rules as Rectangle's other multi-wind
 When several windows are snapped to the same area, such as three windows on the left half, only the front one is visible. In Settings > **Behavior** > **Stacked Windows**, assign keys to **Cycle stacked windows** and **Cycle stacked windows backward**. Each press brings forward one window from the stack that the focused window belongs to.
 
 A window is in the stack when it sits at the same position as the window focused at the first press, or is offset from it by **Offset window position on overlap**, whatever its size. With **Only stack windows of the same size** on, it must also be the same size (within 24 points in width and height, so terminal windows that snap to whole character cells still count), so a maximized window that shares a corner with a half is not in that half's stack. The stacked window list follows the same setting. **Cycle stacked windows** first brings forward the window at the back of the stack; **Cycle stacked windows backward** first brings forward the window just behind the front one. Repeated presses visit every window in the stack. Pressing either shortcut while a window outside the stack is focused starts over from that window's stack. When the focused window has nothing stacked with it, Rectangle beeps.
+
+Set horizontal and vertical overlap offsets independently in **Stacked Windows**. A window only moves on an axis when there is enough room inside the usable display area.
 
 ### Mouse button shortcuts
 
@@ -236,19 +242,40 @@ If you would like to contribute to localization, all of the translations are hel
 
 Pull requests for new localizations or improvements on existing localizations are welcome.
 
-### Running the app in Xcode (for developers)
+### Build and run from source
 
-Rectangle uses [Swift Package Manager](https://www.swift.org/package-manager/) to install Sparkle and MASShortcut.
+You need Xcode and a Mac that can run the app (macOS 14 or later). JRectangle uses Swift Package Manager for MASShortcut; Xcode resolves this dependency when you open the project. Update checks have been removed from this fork.
 
-The original repository for MASShortcut was archived, so Rectangle uses my [fork](https://github.com/rxhanson/MASShortcut). If you want to make any changes that involve MASShortcut, please make a pull request on my fork. 
+1. Open `Rectangle.xcodeproj` in Xcode.
+1. Select the **Rectangle** scheme and **My Mac** as the run destination.
+1. Choose the **Debug** configuration, then press **⌘R** to build and run.
+1. Grant JRectangle permission under **System Settings > Privacy & Security > Accessibility** when macOS prompts you.
 
-Debug builds use the bundle identifier `com.knollsoft.Rectangle.debug`, so a build from Xcode gets its own Accessibility permission and preferences instead of sharing the installed copy's. Quit the installed Rectangle while running a Debug build, since both respond to the same shortcuts and window drags. Use the `.debug` identifier with `defaults` and `tccutil`. For example, an ad-hoc signed build needs its permission granted again after rebuilding, and `tccutil reset Accessibility com.knollsoft.Rectangle.debug` clears the stale entry.
+Debug builds use the separate bundle identifier `com.knollsoft.Rectangle.debug` and ad-hoc signing, so they keep their own preferences and Accessibility permission without needing a developer certificate. Quit any installed copy of Rectangle before running the Debug build; otherwise both copies will respond to the same shortcuts and window drags. After granting permission, enable the Debug build in Accessibility if it is not already enabled. macOS may require you to grant Accessibility permission again after rebuilding.
 
-Due to the addition of the Liquid Glass icon with a fallback for older versions of macOS, there will be a build failure on macOS versions < 26. You can delete the "Asset Catalog Other Flags" to build locally on versions < 26 (but don't check that change in if you create a pull request).
+You can also build and launch the Debug app from Terminal:
+
+```bash
+xcodebuild -project Rectangle.xcodeproj \
+  -scheme Rectangle \
+  -configuration Debug \
+  -destination 'platform=macOS' \
+  -derivedDataPath build \
+  build
+open build/Build/Products/Debug/Rectangle.app
+```
+
+If an ad-hoc signed rebuild stops responding to shortcuts, remove its old Accessibility entry in System Settings and grant permission again. To clear the entry from Terminal:
+
+```bash
+tccutil reset Accessibility com.knollsoft.Rectangle.debug
+```
+
+Rectangle's icon uses a Liquid Glass asset with a fallback for older macOS versions. If asset compilation fails on a Mac running an older macOS version, remove **Asset Catalog Other Flags** from the project build settings locally; do not include that change in a pull request.
 
 ## Credits
 
-As mentioned above, Rectangle uses a forked version of [MASShortcut](https://github.com/rxhanson/MASShortcut), which still works great, and it uses [Sparkle](https://sparkle-project.org) for updates. 
+As mentioned above, Rectangle uses a forked version of [MASShortcut](https://github.com/rxhanson/MASShortcut), which still works great.
 
 The Big Sur variant of the Rectangle app icon was created by Giovanni Maria Cusaro (@gmcusaro). The Liquid Glass variant of the app icon was created by [Alexander Käßner](https://www.alexkaessner.de) (@alexkaessner).
 

@@ -49,6 +49,7 @@ struct BehaviorSettingsView: View {
             Section {
                 HStack {
                     Text("Repeated commands")
+                        .foregroundColor(overrideColor(Defaults.subsequentExecutionMode.key))
                     Spacer()
                     Picker("", selection: $viewModel.subsequentExecutionMode) {
                         ForEach(SubsequentExecutionMode.ordered, id: \.self) { mode in
@@ -67,9 +68,11 @@ struct BehaviorSettingsView: View {
                                     .toggleStyle(.checkbox)
                             }
                         }
+                        .foregroundColor(overrideColor(Defaults.selectedCycleSizes.key))
                         
                         HStack(spacing: 12) {
                             Text("Cyclic corner shortcuts expand")
+                                .foregroundColor(overrideColor(Defaults.cornerCycleExpansionAxis.key))
                             Spacer()
                             Picker("", selection: $viewModel.cornerCycleExpansionAxis) {
                                 Text("horizontally").tag(CornerCycleExpansionAxis.horizontal)
@@ -82,6 +85,7 @@ struct BehaviorSettingsView: View {
                         if viewModel.showCooperativeCornerResize {
                             Toggle("Resize adjacent windows when cycling side or corner shortcuts", isOn: $viewModel.cooperativeCornerResize)
                                 .toggleStyle(.switch)
+                                .foregroundColor(overrideColor(Defaults.cooperativeCornerResize.key))
                         }
                     }
                     .padding(.leading, 4)
@@ -94,6 +98,8 @@ struct BehaviorSettingsView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text("Gaps between windows")
+                            .foregroundColor(overrideColor(Defaults.gapSize.key))
+                        Spacer(minLength: 8)
                         Slider(
                             value: $viewModel.gapSize,
                             in: 0...100,
@@ -101,6 +107,7 @@ struct BehaviorSettingsView: View {
                                 if !editing { viewModel.commitGapSize() }
                             }
                         )
+                        .frame(width: 120)
                         Text("\(Int(viewModel.gapSize)) px")
                             .frame(width: 45, alignment: .trailing)
                     }
@@ -108,11 +115,35 @@ struct BehaviorSettingsView: View {
                     if viewModel.gapSize > 0 {
                         Toggle("Remove top gap when snapping to top edge", isOn: $viewModel.skipGapTopEdge)
                             .toggleStyle(.switch)
+                            .foregroundColor(overrideColor(Defaults.skipGapTopEdge.key))
                     }
+                    HStack {
+                        Text("Horizontal display edge margins")
+                            .foregroundColor(overrideColor(Defaults.screenEdgeGapLeft.key, Defaults.screenEdgeGapRight.key))
+                        Spacer(minLength: 8)
+                        Slider(value: pixelBinding($viewModel.edgeHorizontal), in: 0...100,
+                               onEditingChanged: { if !$0 { viewModel.commitEdgeHorizontal() } })
+                            .frame(width: 120)
+                        Text("\(Int(viewModel.edgeHorizontal)) px").frame(width: 45, alignment: .trailing)
+                    }
+                    HStack {
+                        Text("Vertical display edge margins")
+                            .foregroundColor(overrideColor(Defaults.screenEdgeGapTop.key, Defaults.screenEdgeGapBottom.key))
+                        Spacer(minLength: 8)
+                        Slider(value: pixelBinding($viewModel.edgeVertical), in: 0...100,
+                               onEditingChanged: { if !$0 { viewModel.commitEdgeVertical() } })
+                            .frame(width: 120)
+                        Text("\(Int(viewModel.edgeVertical)) px").frame(width: 45, alignment: .trailing)
+                    }
+                    if viewModel.horizontalEdgesDiffer || viewModel.verticalEdgesDiffer {
+                        Text("Some existing edge margins differ. Changing an axis sets both edges equally.")
+                            .font(.caption).foregroundColor(.secondary)
+                    }
+                    Text("A separately configured notch margin and main-screen-only setting still apply.")
+                        .font(.caption).foregroundColor(.secondary)
                 }
             }
-            
-            
+
             // MARK: - Maximize
             Section {
                 CustomDisclosureGroup {
@@ -145,9 +176,12 @@ struct BehaviorSettingsView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Divider()
                         Toggle("Move cursor along with window across displays", isOn: $viewModel.moveCursorAcrossDisplays)
+                            .foregroundColor(overrideColor(Defaults.moveCursorAcrossDisplays.key))
                         Toggle("Preserve maximize state when moving across displays", isOn: $viewModel.autoMaximize)
+                            .foregroundColor(overrideColor(Defaults.autoMaximize.key))
                         VStack(alignment: .leading, spacing: 2) {
                             Toggle("Center windows when moving across displays", isOn: $viewModel.centerAcrossDisplays)
+                                .foregroundColor(overrideColor(Defaults.centerAcrossDisplays.key))
                             Text("When off, window-to-screen edges are preserved where applicable.")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -157,6 +191,8 @@ struct BehaviorSettingsView: View {
                     .padding(.leading, 12)
                 } label: {
                     Label("Across Display Settings", systemImage: "display.2")
+                        .foregroundColor(overrideColor(Defaults.moveCursorAcrossDisplays.key, Defaults.autoMaximize.key,
+                                                       Defaults.centerAcrossDisplays.key))
                 }
             }
 
@@ -167,13 +203,35 @@ struct BehaviorSettingsView: View {
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
                             Toggle("Offset window position on overlap", isOn: $viewModel.cyclingOverlapOffset)
-                            Text("This leaves a little space showing the window below and is best with gaps between windows")
+                                .foregroundColor(overrideColor(Defaults.cyclingOverlapOffset.key))
+                            Text("When enabled, newly placed windows shift slightly if another window already occupies that position.")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
+                            HStack {
+                                Text("Horizontal overlap offset")
+                                    .foregroundColor(overrideColor(Defaults.cyclingOverlapOffsetHorizontal.key, Defaults.cyclingOverlapOffsetSize.key))
+                                Spacer(minLength: 8)
+                                Slider(value: pixelBinding($viewModel.overlapHorizontal), in: 0...100,
+                                       onEditingChanged: { if !$0 { viewModel.commitOverlapHorizontal() } })
+                                    .frame(width: 120)
+                                Text("\(Int(viewModel.overlapHorizontal)) px").frame(width: 45, alignment: .trailing)
+                            }
+                            HStack {
+                                Text("Vertical overlap offset")
+                                    .foregroundColor(overrideColor(Defaults.cyclingOverlapOffsetVertical.key, Defaults.cyclingOverlapOffsetSize.key))
+                                Spacer(minLength: 8)
+                                Slider(value: pixelBinding($viewModel.overlapVertical), in: 0...100,
+                                       onEditingChanged: { if !$0 { viewModel.commitOverlapVertical() } })
+                                    .frame(width: 120)
+                                Text("\(Int(viewModel.overlapVertical)) px").frame(width: 45, alignment: .trailing)
+                            }
+                            Text("Offsets only apply where there is room within the display's usable area.")
+                                .font(.caption).foregroundColor(.secondary)
                         }
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
                             Toggle("Only stack windows of the same size", isOn: $viewModel.stackSameSizeOnly)
+                                .foregroundColor(overrideColor(Defaults.stackSameSizeOnly.key))
                             Text("For the window list and the cycle shortcuts. When off, windows stacked at the same top-left position count whatever their size")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
@@ -191,6 +249,22 @@ struct BehaviorSettingsView: View {
                             MASShortcutViewRepresentable(defaultsKey: StackBadgeManager.toggleDefaultsKey, validator: nil,
                                                          recordingObserver: viewModel.shortcutRecordingObserver)
                                 .frame(width: 160, height: 24)
+                        }
+                        Divider()
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("Cycle windows on this Space")
+                                Spacer()
+                                MASShortcutViewRepresentable(
+                                    defaultsKey: CurrentSpaceWindowSwitcher.shortcutDefaultsKey,
+                                    validator: nil,
+                                    recordingObserver: viewModel.shortcutRecordingObserver
+                                )
+                                .frame(width: 160, height: 24)
+                            }
+                            Text("Cycles through visible windows on the current Space. Command-Tab remains macOS's app switcher.")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
                         }
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
@@ -213,6 +287,9 @@ struct BehaviorSettingsView: View {
                     .padding(.leading, 12)
                 } label: {
                     Label("Stacked Windows", systemImage: "square.on.square")
+                        .foregroundColor(overrideColor(Defaults.cyclingOverlapOffset.key,
+                                                       Defaults.cyclingOverlapOffsetSize.key, Defaults.cyclingOverlapOffsetHorizontal.key,
+                                                       Defaults.cyclingOverlapOffsetVertical.key, Defaults.stackSameSizeOnly.key))
                 }
             }
 
@@ -226,6 +303,7 @@ struct BehaviorSettingsView: View {
                             .foregroundColor(.secondary)
                         HStack {
                             Text("Horizontal (L/R, %)")
+                                .foregroundColor(overrideColor(Defaults.horizontalSplitRatio.key))
                             Spacer()
 
                             if viewModel.selectedHSplitPreset == nil {
@@ -247,6 +325,7 @@ struct BehaviorSettingsView: View {
 
                         HStack {
                             Text("Vertical (T/B, %)")
+                                .foregroundColor(overrideColor(Defaults.verticalSplitRatio.key))
                             Spacer()
 
                             if viewModel.selectedVSplitPreset == nil {
@@ -270,6 +349,7 @@ struct BehaviorSettingsView: View {
                     .padding(.leading, 12)
                 } label: {
                     Label("Side Split Ratio", systemImage: "rectangle.split.2x1")
+                        .foregroundColor(overrideColor(Defaults.horizontalSplitRatio.key, Defaults.verticalSplitRatio.key))
                 }
             }
             
@@ -286,6 +366,7 @@ struct BehaviorSettingsView: View {
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack {
                                     Text("Todo app width")
+                                        .foregroundColor(overrideColor(Defaults.todoSidebarWidth.key, Defaults.todoSidebarWidthUnit.key))
                                     Spacer()
                                     HStack(spacing: 4) {
                                         TextField("", value: $viewModel.todoSidebarWidth, format: .number)
@@ -304,6 +385,7 @@ struct BehaviorSettingsView: View {
                                 
                                 HStack {
                                     Text("Todo side")
+                                        .foregroundColor(overrideColor(Defaults.todoSidebarSide.key))
                                     Spacer()
                                     Picker("", selection: $viewModel.todoSidebarSide) {
                                         Text("Left").tag(TodoSidebarSide.left)
@@ -341,6 +423,8 @@ struct BehaviorSettingsView: View {
                 } label: {
                     HStack(spacing: 6) {
                         Label("Todo Mode", systemImage: "list.bullet.rectangle.portrait")
+                            .foregroundColor(overrideColor(Defaults.todoSidebarWidth.key, Defaults.todoSidebarWidthUnit.key,
+                                                           Defaults.todoSidebarSide.key))
                         
                         Button(action: { showTodoInfoPopover.toggle() }) {
                             Image(systemName: "info.circle")
@@ -362,6 +446,8 @@ struct BehaviorSettingsView: View {
                             Divider()
                             HStack {
                                 Text("Recent apps area")
+                                    .foregroundColor(overrideColor(Defaults.stageSize.key))
+                                Spacer(minLength: 8)
                                 Slider(
                                     value: $viewModel.stageSize,
                                     in: 0...400,
@@ -369,6 +455,7 @@ struct BehaviorSettingsView: View {
                                         if !editing { viewModel.commitStageSize() }
                                     }
                                 )
+                                .frame(width: 120)
                                 Text("\(Int(viewModel.stageSize)) px")
                                     .frame(width: 45, alignment: .trailing)
                             }
@@ -380,6 +467,7 @@ struct BehaviorSettingsView: View {
                         .padding(.leading, 12)
                     } label: {
                         Label("Stage Manager", systemImage: "squares.leading.rectangle")
+                            .foregroundColor(overrideColor(Defaults.stageSize.key))
                     }
                 }
             }
@@ -391,6 +479,7 @@ struct BehaviorSettingsView: View {
                         Divider()
                         Toggle("Animate windows", isOn: $viewModel.experimentalAnimations)
                         Toggle("Preserve side axis size for half actions, similar to Windows", isOn: $viewModel.halvesPreserveOtherAxisSize)
+                            .foregroundColor(overrideColor(Defaults.halvesPreserveOtherAxisSize.key))
                         Toggle("Show warning when windows cannot be resized small enough", isOn: $viewModel.showMinimumWindowSizeWarning)
                         Toggle("Show *Extra* shortcuts in menu", isOn: $viewModel.showAdditionalSizesInMenu)
                         VStack(alignment: .leading, spacing: 2) {
@@ -412,6 +501,7 @@ struct BehaviorSettingsView: View {
                     .padding(.leading, 12)
                 } label: {
                     Label("Extras", systemImage: "ellipsis.viewfinder")
+                        .foregroundColor(overrideColor(Defaults.halvesPreserveOtherAxisSize.key))
                 }
             }
         }
@@ -419,6 +509,17 @@ struct BehaviorSettingsView: View {
         .frame(width: 500)
         .animation(.easeInOut(duration: 0.2), value: viewModel.todoEnabled)
         .animation(.easeInOut(duration: 0.2), value: viewModel.subsequentExecutionMode)
+    }
+
+    private func overrideColor(_ keys: String...) -> Color {
+        let selection = DisplayProfileSelectionModel.shared
+        _ = selection.overrideCount
+        return keys.contains { BehaviorProfileStore.override(for: $0, profileID: selection.selectedProfileID) != nil }
+            ? .blue : .primary
+    }
+
+    private func pixelBinding(_ value: Binding<Double>) -> Binding<Double> {
+        Binding(get: { value.wrappedValue }, set: { value.wrappedValue = $0.rounded() })
     }
 
     /// A recorder for a window action's shortcut, validated like the ones on

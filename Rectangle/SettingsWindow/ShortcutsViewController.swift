@@ -102,6 +102,7 @@ final class ShortcutActionCellView: NSTableCellView {
     static let identifier = NSUserInterfaceItemIdentifier("ShortcutActionCell")
     
     static var actionButtonConfigs: [WindowAction: ActionButtonConfig] = [
+        .moveLeft: ActionButtonConfig(iconName: "gear", view: WidthSettingsView()),
         .largerWidth: ActionButtonConfig(iconName: "gear", view: WidthSettingsView()),
         .tileRows: ActionButtonConfig(iconName: "gear", view: TileSettingsView())
     ]
@@ -299,9 +300,10 @@ class ShortcutsViewController: NSViewController {
     
     private func setupGroups() {
         let standardCategories: [ShortcutCategory] = [
+            ShortcutCategory(actions: [.moveLeft, .moveRight, .moveUp, .moveDown]),
             ShortcutCategory(actions: [.leftHalf, .rightHalf, .centerHalf, .topHalf, .bottomHalf]),
             ShortcutCategory(actions: [.topLeft, .topRight, .bottomLeft, .bottomRight]),
-            ShortcutCategory(actions: [.maximize, .almostMaximize, .maximizeHeight, .larger, .smaller, .center, .restore]),
+            ShortcutCategory(actions: [.maximize, .almostMaximize, .maximizeHeight, .largerWidth, .smallerWidth, .largerHeight, .smallerHeight, .center, .restore]),
             ShortcutCategory(actions: [.nextDisplay, .previousDisplay])
         ]
         
@@ -312,13 +314,11 @@ class ShortcutsViewController: NSViewController {
             ]),
             ShortcutCategory(actions: [
                 .topLeftSixth, .topCenterSixth, .topRightSixth, .bottomLeftSixth, .bottomCenterSixth, .bottomRightSixth
-            ]),
-            ShortcutCategory(actions: [.moveLeft, .moveRight, .moveUp, .moveDown])
+            ])
         ]
         
         let extraCategories: [ShortcutCategory] = [
             ShortcutCategory(actions: [.tileRows, .tileColumns]),
-            ShortcutCategory(actions: [.largerWidth, .smallerWidth]),
             ShortcutCategory(actions: [.topVerticalThird, .middleVerticalThird, .bottomVerticalThird, .topVerticalTwoThirds, .bottomVerticalTwoThirds]),
             ShortcutCategory(actions: [.firstVerticalSixth, .secondVerticalSixth, .thirdVerticalSixth, .fourthVerticalSixth, .fifthVerticalSixth, .lastVerticalSixth]),
             ShortcutCategory(actions: [.topLeftEighth, .topCenterLeftEighth, .topCenterRightEighth, .topRightEighth, .bottomLeftEighth, .bottomCenterLeftEighth, .bottomCenterRightEighth, .bottomRightEighth]),

@@ -212,16 +212,17 @@ class StackBadgeManager {
         else { return }
         dwellFired = true
 
-        let zone = Self.hoverZone + CGFloat(Defaults.gapSize.value)
-
         guard visibleUIFrames.isEmpty,
               let screen = (NSScreen.screens.first { NSPointInRect(location, $0.frame) })
         else { return }
-        let screenFrame = screen.adjustedVisibleFrame()
-        let corners = StackBadgeGeometry.cornerPoints(in: screenFrame)
-        guard let corner = StackBadgeGeometry.corner(near: location, in: corners, zone: zone) else { return }
 
-        query(corner: corner, screenFrame: screenFrame)
+        BehaviorProfileContext.withProfileID(screen.behaviorProfileID) {
+            let zone = Self.hoverZone + CGFloat(Defaults.gapSize.value)
+            let screenFrame = screen.adjustedVisibleFrame()
+            let corners = StackBadgeGeometry.cornerPoints(in: screenFrame)
+            guard let corner = StackBadgeGeometry.corner(near: location, in: corners, zone: zone) else { return }
+            query(corner: corner, screenFrame: screenFrame)
+        }
     }
 
     private func isInsideVisibleUI(_ location: CGPoint) -> Bool {
@@ -231,19 +232,24 @@ class StackBadgeManager {
     private func query(corner: CGPoint, screenFrame: CGRect) {
         let cornerAX = corner.screenFlipped
         let tolerance: CGFloat = 4
-        let cascadeRange = StackBadgeGeometry.cascadeRange(offsetSize: CGFloat(Defaults.cyclingOverlapOffsetSize.value),
+        let offset = Defaults.overlapOffset
+        let cascadeRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dx,
                                                            maxCascade: Defaults.cyclingOverlapMaxCascade.value,
                                                            tolerance: tolerance)
+        let verticalRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dy,
+                                                            maxCascade: Defaults.cyclingOverlapMaxCascade.value,
+                                                            tolerance: tolerance)
 
         let gap = CGFloat(Defaults.gapSize.value)
         let candidateRange = gap + cascadeRange
+        let verticalCandidateRange = gap + verticalRange
 
         let candidates = WindowUtil.getWindowList().filter { info in
             guard info.level == kCGNormalWindowLevel else { return false }
             let dx = info.frame.origin.x - cornerAX.x
             let dy = info.frame.origin.y - cornerAX.y
             return dx >= -tolerance && dx <= candidateRange
-                && dy >= -candidateRange && dy <= candidateRange
+                && dy >= -verticalCandidateRange && dy <= verticalCandidateRange
         }
 
         // ...and the stack is the densest cascade cluster among them, so the
@@ -255,7 +261,7 @@ class StackBadgeManager {
         var stacked = StackBadgeGeometry
             .stackIndices(among: candidates.map { $0.frame.origin },
                           cascadeRange: cascadeRange,
-                          tolerance: tolerance)
+                          tolerance: tolerance, verticalRange: verticalRange)
             .map { candidates[$0] }
 
         // Unless the user has limited stacks to one size: then the list shows
@@ -268,7 +274,8 @@ class StackBadgeManager {
                 .sameSizeStackIndices(among: visible.map { $0.frame },
                                       cascadeRange: cascadeRange,
                                       tolerance: tolerance,
-                                      sizeTolerance: StackBadgeGeometry.sizeTolerance)
+                                      sizeTolerance: StackBadgeGeometry.sizeTolerance,
+                                      verticalRange: verticalRange)
                 .map { visible[$0] }
         }
 

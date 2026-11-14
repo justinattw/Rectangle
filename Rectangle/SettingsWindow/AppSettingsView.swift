@@ -43,19 +43,6 @@ struct AppSettingsView: View {
             }
             
             Section {
-                HStack {
-                    Button(viewModel.hasPendingUpdate ? "Update Available…" : "Check for Updates…") {
-                        viewModel.checkForUpdates()
-                    }
-                    Spacer()
-                    Text(viewModel.versionString)
-                        .foregroundColor(.secondary)
-                        .font(.callout)
-                }
-                Toggle("Check for updates automatically", isOn: $viewModel.checkForUpdatesAutomatically)
-            }
-
-            Section {
                 Toggle("Remove keyboard shortcut restrictions", isOn: $viewModel.allowAnyShortcut)
             }
 
@@ -78,7 +65,10 @@ struct AppSettingsView: View {
                 Button("Restore Default Shortcuts & Snap Areas") {
                     viewModel.restoreDefaults()
                 }
-                
+
+                Text(viewModel.versionString)
+                    .foregroundColor(.secondary)
+                    .font(.caption)
             }
         }
         .formStyle(.grouped)

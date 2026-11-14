@@ -354,9 +354,10 @@ class MultiWindowManager {
             return
         }
 
-        let screenFrame = screens.currentScreen.adjustedVisibleFrame().screenFlipped
-
-        let delta = CGFloat(Defaults.cascadeAllDeltaSize.value)
+        let (screenFrame, delta) = BehaviorProfileContext.withProfileID(screens.currentScreen.behaviorProfileID) {
+            (screens.currentScreen.adjustedVisibleFrame().screenFlipped,
+             CGFloat(Defaults.cascadeAllDeltaSize.value))
+        }
 
         for (ind, w) in windows.enumerated() {
             cascadeWindow(w, screenFrame: screenFrame, delta: delta, index: ind)
@@ -385,9 +386,10 @@ class MultiWindowManager {
             return
         }
 
-        let screenFrame = screens.currentScreen.adjustedVisibleFrame().screenFlipped
-
-        let delta = CGFloat(Defaults.cascadeAllDeltaSize.value)
+        let (screenFrame, delta) = BehaviorProfileContext.withProfileID(screens.currentScreen.behaviorProfileID) {
+            (screens.currentScreen.adjustedVisibleFrame().screenFlipped,
+             CGFloat(Defaults.cascadeAllDeltaSize.value))
+        }
 
         // keep windows with a pid equal to the front window's pid
         var filtered = windows.filter(hasFrontWindowPid(_:))

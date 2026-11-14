@@ -50,15 +50,23 @@ enum StackCycleManager {
             return
         }
 
+        let profileID = ScreenDetection().detectScreens(using: windowElement)?.currentScreen.behaviorProfileID
+        let previousProfileID = BehaviorProfileContext.setCurrentProfileID(profileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
+
         let ownPid = ProcessInfo.processInfo.processIdentifier
         let todoId = Defaults.todo.userEnabled ? TodoManager.getTodoWindowId() : nil
         let windows = WindowUtil.getWindowList(forceRefresh: true).filter { info in
             info.level == kCGNormalWindowLevel && info.alpha > 0 && info.pid != ownPid && info.id != todoId
         }
 
-        let cascadeRange = StackBadgeGeometry.cascadeRange(offsetSize: CGFloat(Defaults.cyclingOverlapOffsetSize.value),
+        let offset = Defaults.overlapOffset
+        let cascadeRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dx,
                                                            maxCascade: Defaults.cyclingOverlapMaxCascade.value,
                                                            tolerance: tolerance)
+        let verticalRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dy,
+                                                            maxCascade: Defaults.cyclingOverlapMaxCascade.value,
+                                                            tolerance: tolerance)
         let sameSizeOnly = Defaults.stackSameSizeOnly.userEnabled
         if sameSizeOnly != sessionSameSizeOnly {
             session = nil
@@ -68,14 +76,15 @@ enum StackCycleManager {
         let frames = windows.map { $0.frame }
         let stackFor = { (anchor: CGRect) -> [CGWindowID] in
             StackBadgeGeometry.stackMembers(anchor: anchor, among: frames, cascadeRange: cascadeRange,
-                                            tolerance: tolerance, sizeTolerance: sizeTolerance)
+                                            tolerance: tolerance, sizeTolerance: sizeTolerance, verticalRange: verticalRange)
                 .map { windows[$0].id }
         }
 
         // Only a window this action could raise can anchor a stack.
         guard let focusedIndex = (windows.firstIndex { $0.id == focusedId }),
               let anchor = StackBadgeGeometry.stackAnchor(for: focusedIndex, among: frames, cascadeRange: cascadeRange,
-                                                          tolerance: tolerance, sizeTolerance: sizeTolerance),
+                                                          tolerance: tolerance, sizeTolerance: sizeTolerance,
+                                                          verticalRange: verticalRange),
               let focus = sessionFocus(window: focusedId, isFocused: windowIsFocused, stack: stackFor(anchor)),
               let next = nextSession(focused: focus, freshAnchor: anchor,
                                      previous: session, forward: forward,
@@ -186,17 +195,17 @@ enum StackCycleManager {
         return finishedRaise != latestRaise
     }
 
-    /// Raises the window off the main thread with AX timeouts, so an
+    /// Raises other apps' windows off the main thread with AX timeouts, so an
     /// unresponsive app can't hang the shortcut. Only the latest request
     /// runs: when presses outpace an app, the raises they queued would only
     /// be covered by the next one, and running them late would pull windows
     /// forward after the user has moved on. For the same reason, the app is
     /// only activated if the user is still among the cycle's apps.
-    private static func raise(_ window: WindowInfo, cycleApps: Set<pid_t>) {
+    fileprivate static func raise(_ window: WindowInfo, cycleApps: Set<pid_t>) {
         let generation = beginRaise()
         let pid = window.pid
         let windowId = window.id
-        raiseQueue.async {
+        dispatchRaise(for: pid) {
             guard isLatestRaise(generation) else { return }
             let appElement = AccessibilityElement(pid)
             appElement.setMessagingTimeout(axTimeout)
@@ -222,5 +231,62 @@ enum StackCycleManager {
                 NSRunningApplication(processIdentifier: pid)?.activate()
             }
         }
+
+    }
+
+    static func dispatchRaise(for pid: pid_t, work: @escaping () -> Void) {
+        // Local AX requests can invoke AppKit synchronously.
+        let queue = pid == ProcessInfo.processInfo.processIdentifier ? DispatchQueue.main : raiseQueue
+        queue.async(execute: work)
+    }
+}
+
+enum CurrentSpaceWindowSwitcher {
+    static let shortcutDefaultsKey = "cycleWindowsOnCurrentSpace"
+
+    private struct Session {
+        let windowIDs: [CGWindowID]
+        var cursorIndex: Int
+        var lastPressAt: TimeInterval
+    }
+
+    private static let sessionTimeout: TimeInterval = 1
+    private static var session: Session?
+
+    static func cycle() {
+        // WindowUtil's default list contains only windows visible on the active Space.
+        let windows = eligibleWindows(from: WindowUtil.getWindowList(forceRefresh: true))
+        let visibleWindowIDs = windows.map(\.id)
+        guard visibleWindowIDs.count > 1 else {
+            session = nil
+            return
+        }
+
+        let now = ProcessInfo.processInfo.systemUptime
+        let focusedWindowID = AccessibilityElement.getFrontWindowElement()?.getWindowId()
+        let continuingSession = session.flatMap {
+            now - $0.lastPressAt <= sessionTimeout && Set($0.windowIDs) == Set(visibleWindowIDs) ? $0 : nil
+        }
+        let ring = continuingSession?.windowIDs ?? visibleWindowIDs
+        let currentIndex = continuingSession?.cursorIndex ?? focusedWindowID.flatMap { ring.firstIndex(of: $0) }
+        guard let nextIndex = nextIndex(after: currentIndex, count: ring.count),
+              let selectedWindow = windows.first(where: { $0.id == ring[nextIndex] })
+        else {
+            session = nil
+            return
+        }
+
+        session = Session(windowIDs: ring, cursorIndex: nextIndex, lastPressAt: now)
+        StackCycleManager.raise(selectedWindow, cycleApps: Set(windows.map(\.pid)))
+    }
+
+    static func eligibleWindows(from windows: [WindowInfo]) -> [WindowInfo] {
+        windows.filter { $0.level == kCGNormalWindowLevel && $0.alpha > 0 }
+    }
+
+    static func nextIndex(after currentIndex: Int?, count: Int) -> Int? {
+        guard count > 1 else { return nil }
+        guard let currentIndex else { return 0 }
+        return (currentIndex + 1) % count
     }
 }

@@ -1,8 +1,8 @@
 [English](README.md) | 简体中文
 
-# Rectangle
+# JRectangle
 
-Rectangle 是一款基于 Spectacle 的 macOS 窗口管理应用。
+JRectangle 是 Rectangle 的个人分支版本，一款基于 Spectacle 的 macOS 窗口管理应用。
 
 <img width="612" height="810" alt="Rectangle 的设置窗口（键盘快捷键）" src="https://github.com/user-attachments/assets/7db283bc-febb-4b83-87ca-20b9139352d4" />
 
@@ -263,7 +263,7 @@ Rectangle 的界面刻意保持简洁。如果想添加「键盘快捷键」标�
 
 ### 在 Xcode 中运行应用（面向开发者）
 
-Rectangle 使用 [Swift Package Manager](https://www.swift.org/package-manager/) 来安装 Sparkle 和 MASShortcut。
+Rectangle 使用 [Swift Package Manager](https://www.swift.org/package-manager/) 来安装 MASShortcut。
 
 MASShortcut 的原始仓库已被归档，因此 Rectangle 使用的是我的[复刻版本](https://github.com/rxhanson/MASShortcut)。如果要做任何涉及 MASShortcut 的改动，请向我的复刻版本提交拉取请求。
 
@@ -273,7 +273,7 @@ Debug 构建使用 bundle identifier `com.knollsoft.Rectangle.debug`，因此从
 
 ## 致谢
 
-如上所述，Rectangle 使用了 [MASShortcut](https://github.com/rxhanson/MASShortcut) 的一个复刻版本（至今仍运行良好），并使用 [Sparkle](https://sparkle-project.org) 实现更新功能。
+如上所述，Rectangle 使用了 [MASShortcut](https://github.com/rxhanson/MASShortcut) 的一个复刻版本（至今仍运行良好）。
 
 Rectangle 应用图标的 Big Sur 版本由 Giovanni Maria Cusaro（@gmcusaro）设计。应用图标的 Liquid Glass 版本由 [Alexander Käßner](https://www.alexkaessner.de)（@alexkaessner）设计。
 

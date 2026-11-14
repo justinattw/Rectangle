@@ -120,18 +120,26 @@ extension Set where Element == CycleSize {
 class CycleSizesDefault: Default {
     public private(set) var key: String = "selectedCycleSizes"
     private var initialized = false
+    private var storedValue: Set<CycleSize>
     
     var value: Set<CycleSize> {
-        didSet {
+        get {
+            guard let bits = BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.int else {
+                return storedValue
+            }
+            return CycleSize.fromBits(bits: bits)
+        }
+        set {
+            storedValue = newValue
             if initialized {
-                UserDefaults.standard.set(value.toBits(), forKey: key)
+                UserDefaults.standard.set(newValue.toBits(), forKey: key)
             }
         }
     }
     
     init() {
         let bits = UserDefaults.standard.integer(forKey: key)
-        value = CycleSize.fromBits(bits: bits)
+        storedValue = CycleSize.fromBits(bits: bits)
         initialized = true
     }
 
