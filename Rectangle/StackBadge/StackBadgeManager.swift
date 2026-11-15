@@ -80,6 +80,14 @@ class StackBadgeManager {
         ) { [weak self] _ in
             self?.toggleListening()
         }
+        for name in [Notification.Name.activeDisplayProfileChanged, .displayBehaviorProfileOverridesChanged] {
+            name.onPost { [weak self] _ in
+                BehaviorProfileContext.withActiveProfile {
+                    self?.dismiss()
+                    self?.toggleListening()
+                }
+            }
+        }
         NotificationCenter.default.addObserver(
             forName: .configImported,
             object: nil, queue: .main
@@ -219,7 +227,15 @@ class StackBadgeManager {
         BehaviorProfileContext.withProfileID(screen.behaviorProfileID) {
             let zone = Self.hoverZone + CGFloat(Defaults.gapSize.value)
             let screenFrame = screen.adjustedVisibleFrame()
-            let corners = StackBadgeGeometry.cornerPoints(in: screenFrame)
+            let stackCorners = AppDelegate.windowHistory.stackPlacements.values
+                .map { OverlapOffsetGeometry.topLeft(of: $0.frame.screenFlipped) }
+                .filter { screenFrame.contains($0) }
+            let rightCorners = Defaults.stackSameSizeOnly.userEnabled ? [] : WindowUtil.getWindowList()
+                .filter { $0.level == kCGNormalWindowLevel && $0.alpha > 0
+                    && StackBadgeGeometry.usesRightEdge($0.frame, in: screenFrame.screenFlipped) }
+                .map { OverlapOffsetGeometry.topLeft(of: $0.frame.screenFlipped) }
+                .filter { screenFrame.contains($0) }
+            let corners = StackBadgeGeometry.cornerPoints(in: screenFrame) + stackCorners + rightCorners
             guard let corner = StackBadgeGeometry.corner(near: location, in: corners, zone: zone) else { return }
             query(corner: corner, screenFrame: screenFrame)
         }
@@ -233,22 +249,25 @@ class StackBadgeManager {
         let cornerAX = corner.screenFlipped
         let tolerance: CGFloat = 4
         let offset = Defaults.overlapOffset
-        let cascadeRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dx,
+        let windows = WindowUtil.getWindowList()
+        let span = AppDelegate.windowHistory.stackSpan(near: cornerAX,
+            frames: Dictionary(uniqueKeysWithValues: windows.map { ($0.id, $0.frame) }))
+        let cascadeRange = max(span.dx + tolerance, StackBadgeGeometry.cascadeRange(offsetSize: offset.dx,
                                                            maxCascade: Defaults.cyclingOverlapMaxCascade.value,
-                                                           tolerance: tolerance)
-        let verticalRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dy,
+                                                           tolerance: tolerance))
+        let verticalRange = max(span.dy + tolerance, StackBadgeGeometry.cascadeRange(offsetSize: offset.dy,
                                                             maxCascade: Defaults.cyclingOverlapMaxCascade.value,
-                                                            tolerance: tolerance)
+                                                            tolerance: tolerance))
 
         let gap = CGFloat(Defaults.gapSize.value)
         let candidateRange = gap + cascadeRange
         let verticalCandidateRange = gap + verticalRange
 
-        let candidates = WindowUtil.getWindowList().filter { info in
+        let candidates = windows.filter { info in
             guard info.level == kCGNormalWindowLevel else { return false }
             let dx = info.frame.origin.x - cornerAX.x
             let dy = info.frame.origin.y - cornerAX.y
-            return dx >= -tolerance && dx <= candidateRange
+            return dx >= -candidateRange && dx <= candidateRange
                 && dy >= -verticalCandidateRange && dy <= verticalCandidateRange
         }
 
@@ -277,6 +296,46 @@ class StackBadgeManager {
                                       sizeTolerance: StackBadgeGeometry.sizeTolerance,
                                       verticalRange: verticalRange)
                 .map { visible[$0] }
+        }
+
+        let ownPid = ProcessInfo.processInfo.processIdentifier
+        let visible = windows.filter { $0.level == kCGNormalWindowLevel && $0.alpha > 0 && $0.pid != ownPid }
+        let windowFrames = Dictionary(uniqueKeysWithValues: visible.map { ($0.id, $0.frame) })
+        let recordedAnchor = visible.first {
+            abs($0.frame.minX - cornerAX.x) <= tolerance && abs($0.frame.minY - cornerAX.y) <= tolerance
+                && AppDelegate.windowHistory.stackPlacements[$0.id] != nil
+        }
+        let reference = recordedAnchor ?? stacked.first(where: { $0.alpha > 0 && $0.pid != ownPid })
+        let recordedMembers = reference.flatMap {
+            AppDelegate.windowHistory.stackMembers(for: $0.id, frames: windowFrames,
+                                                  sameSizeOnly: Defaults.stackSameSizeOnly.userEnabled)
+        }
+        if !Defaults.stackSameSizeOnly.userEnabled, let reference,
+           StackBadgeGeometry.usesRightEdge(AppDelegate.windowHistory.stackPlacements[reference.id]?.base.screenFlipped
+                                           ?? reference.frame, in: screenFrame.screenFlipped) {
+            let rightCandidates = visible.filter { info in
+                recordedMembers?.contains(info.id) == true
+                    || StackBadgeGeometry.usesRightEdge(AppDelegate.windowHistory.stackPlacements[info.id]?.base.screenFlipped
+                                                       ?? info.frame, in: screenFrame.screenFlipped)
+            }
+            if let member = rightCandidates.firstIndex(where: { $0.id == reference.id }),
+               let anchor = StackBadgeGeometry.stackAnchor(for: member, among: rightCandidates.map(\.frame),
+                                                           cascadeRange: cascadeRange, tolerance: tolerance,
+                                                           sizeTolerance: nil, verticalRange: verticalRange,
+                                                           rightAligned: true) {
+                stacked = StackBadgeGeometry.stackMembers(anchor: anchor, among: rightCandidates.map(\.frame),
+                                                          cascadeRange: cascadeRange, tolerance: tolerance,
+                                                          sizeTolerance: nil, verticalRange: verticalRange,
+                                                          rightAligned: true)
+                    .map { rightCandidates[$0] }
+            }
+        }
+        if let recordedMembers, let reference {
+            let members = recordedMembers.union(stacked.map(\.id))
+            stacked = visible.filter {
+                members.contains($0.id) && (!Defaults.stackSameSizeOnly.userEnabled
+                    || StackBadgeGeometry.isSameSize($0.frame, as: reference.frame))
+            }
         }
 
         guard stacked.count >= 2,

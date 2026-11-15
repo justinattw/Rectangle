@@ -89,9 +89,16 @@ class Defaults {
     static let cyclingOverlapOffsetSize = FloatDefault(key: "cyclingOverlapOffsetSize", defaultValue: 11)
     static let cyclingOverlapOffsetHorizontal = DoubleDefault(key: "cyclingOverlapOffsetHorizontal", defaultValue: -1)
     static let cyclingOverlapOffsetVertical = DoubleDefault(key: "cyclingOverlapOffsetVertical", defaultValue: -1)
+    static let stackOffsetX = DoubleDefault(key: "stackOffsetX", defaultValue: 11)
+    static let stackOffsetY = DoubleDefault(key: "stackOffsetY", defaultValue: 11)
+    static let stackFitToSnapArea = BoolDefault(key: "stackFitToSnapArea")
     static var overlapOffset: CGVector {
-        func resolved(_ axis: DoubleDefault) -> CGFloat {
+        func resolved(_ axis: DoubleDefault, signed: DoubleDefault) -> CGFloat {
             let profileID = BehaviorProfileContext.currentProfileID
+            if BehaviorProfileStore.override(for: signed.key, profileID: profileID) != nil
+                || JSONPreferences.shared.object(forKey: signed.key) != nil {
+                return CGFloat(signed.value)
+            }
             let axisOverride = BehaviorProfileStore.override(for: axis.key, profileID: profileID)
             let legacyOverride = BehaviorProfileStore.override(for: cyclingOverlapOffsetSize.key, profileID: profileID)
             if axisOverride == nil, let value = legacyOverride?.float {
@@ -100,7 +107,8 @@ class Defaults {
             let value = axis.value
             return CGFloat(max(0, value < 0 ? Double(cyclingOverlapOffsetSize.value) : value))
         }
-        return CGVector(dx: resolved(cyclingOverlapOffsetHorizontal), dy: resolved(cyclingOverlapOffsetVertical))
+        return CGVector(dx: resolved(cyclingOverlapOffsetHorizontal, signed: stackOffsetX),
+                        dy: resolved(cyclingOverlapOffsetVertical, signed: stackOffsetY))
     }
     static let cyclingOverlapMaxCascade = IntDefault(key: "cyclingOverlapMaxCascade", defaultValue: 1)
     static let stackBadge = OptionalBoolDefault(key: "stackBadge")
@@ -272,11 +280,12 @@ class Defaults {
         greenButtonOverride,
         mouseButtonShortcutsUseWindowUnderCursor,
         ignoreShortcutsInMissionControl,
-        displayBehaviorProfiles
+        displayBehaviorProfiles,
+        stackOffsetX, stackOffsetY, stackFitToSnapArea
     ]
 }
 
-struct CodableDefault: Codable {
+struct CodableDefault: Codable, Equatable {
     let bool: Bool?
     let int: Int?
     let float: Float?
@@ -312,32 +321,148 @@ enum BehaviorProfileStore {
         guard profileID != defaultProfileID else { return }
         var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
         var profile = profiles[profileID] ?? [:]
-        profile[key] = value
+        if matchesDefault(value, for: key) {
+            profile.removeValue(forKey: key)
+        } else {
+            profile[key] = value
+        }
         profiles[profileID] = profile
         Defaults.displayBehaviorProfiles.typedValue = profiles
-        Notification.Name.displayBehaviorProfileOverridesChanged.post()
+        notifyChanges()
+    }
+
+    static func removeRedundantOverrides() {
+        guard !JSONPreferences.shared.isPerformingBatch,
+              JSONPreferences.shared.object(forKey: "displayBehaviorProfiles") != nil else { return }
+        let profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
+        var normalized = profiles
+        for (profileID, values) in profiles {
+            normalized[profileID] = values.filter { !matchesDefault($0.value, for: $0.key) }
+        }
+        guard normalized != profiles else { return }
+        Defaults.displayBehaviorProfiles.typedValue = normalized
+        notifyChanges()
+    }
+
+    private static func matchesDefault(_ value: CodableDefault, for key: String) -> Bool {
+        BehaviorProfileContext.withProfileID(defaultProfileID) {
+            if key.hasPrefix("shortcut:") {
+                guard let string = value.string,
+                      let shortcut = try? JSONDecoder().decode(Shortcut.self, from: Data(string.utf8)) else { return false }
+                let inherited = ShortcutPreferences.shared.shortcut(for: String(key.dropFirst("shortcut:".count)))
+                if shortcut.keyCode < 0 { return inherited == nil }
+                guard let inherited else { return false }
+                return ShortcutCycle.ShortcutIdentity(shortcut.toMASSHortcut()) == ShortcutCycle.ShortcutIdentity(inherited)
+            }
+            guard key != "displayBehaviorProfiles",
+                  let setting = Defaults.array.first(where: { $0.key == key }) else { return false }
+            if key == Defaults.selectedCycleSizes.key {
+                return value.int == Set(CycleSize.sortedSelectedSizes()).toBits()
+            }
+            if let string = value.string {
+                let data = Data(string.utf8)
+                if key == Defaults.landscapeSnapAreas.key {
+                    return (try? JSONDecoder().decode([Directional: SnapAreaConfig].self, from: data))
+                        == (Defaults.landscapeSnapAreas.typedValue ?? SnapAreaModel.defaultLandscape)
+                }
+                if key == Defaults.portraitSnapAreas.key {
+                    return (try? JSONDecoder().decode([Directional: SnapAreaConfig].self, from: data))
+                        == (Defaults.portraitSnapAreas.typedValue ?? SnapAreaModel.defaultPortrait)
+                }
+                if let setting = setting as? JSONDefault<Set<String>> {
+                    return (try? JSONDecoder().decode(Set<String>.self, from: data)) == setting.typedValue
+                }
+            }
+            let inherited: CodableDefault
+            if key == Defaults.stackOffsetX.key {
+                inherited = CodableDefault(double: Double(Defaults.overlapOffset.dx))
+            } else if key == Defaults.stackOffsetY.key {
+                inherited = CodableDefault(double: Double(Defaults.overlapOffset.dy))
+            } else {
+                inherited = setting.toCodable()
+            }
+            if setting is OptionalBoolDefault, inherited.int == 0, let int = value.int {
+                let enabledWhenUnset: Set<String> = ["windowSnapping", "unsnapRestore",
+                                                    "unsnapRestoreFromSizeChange", "autoMaximize"]
+                return int == (enabledWhenUnset.contains(key) ? 1 : 2) || int == 0
+            }
+            if let lhs = value.string, let rhs = inherited.string,
+               let leftJSON = try? JSONSerialization.jsonObject(with: Data(lhs.utf8), options: .fragmentsAllowed),
+               let rightJSON = try? JSONSerialization.jsonObject(with: Data(rhs.utf8), options: .fragmentsAllowed) {
+                return NSDictionary(dictionary: ["value": leftJSON]).isEqual(to: ["value": rightJSON])
+            }
+            return value == inherited
+        }
+    }
+
+    static func removeOverride(for key: String, profileID: String) {
+        var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
+        profiles[profileID]?.removeValue(forKey: key)
+        Defaults.displayBehaviorProfiles.typedValue = profiles
+        notifyChanges()
+    }
+
+    static func registerProfiles(_ profileIDs: [String]) {
+        var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
+        var changed = false
+        for id in profileIDs where id != defaultProfileID && profiles[id] == nil {
+            profiles[id] = [:]
+            changed = true
+        }
+        guard changed else { return }
+        Defaults.displayBehaviorProfiles.typedValue = profiles
+        notifyChanges()
+    }
+
+    static func removeProfile(_ profileID: String) {
+        guard profileID != defaultProfileID else { return }
+        var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
+        profiles.removeValue(forKey: profileID)
+        Defaults.displayBehaviorProfiles.typedValue = profiles
+        notifyChanges()
+    }
+
+    @discardableResult
+    static func writeOverride(_ value: CodableDefault, for key: String) -> Bool {
+        guard key != "displayBehaviorProfiles",
+              let profileID = BehaviorProfileContext.editingProfileID,
+              profileID != defaultProfileID else { return false }
+        setOverride(value, for: key, profileID: profileID)
+        return true
     }
 
     static func reset(profileID: String) {
         guard profileID != defaultProfileID else { return }
         var profiles = Defaults.displayBehaviorProfiles.typedValue ?? [:]
-        profiles.removeValue(forKey: profileID)
+        profiles[profileID] = [:]
         Defaults.displayBehaviorProfiles.typedValue = profiles
-        Notification.Name.displayBehaviorProfileOverridesChanged.post()
+        notifyChanges()
+    }
+
+    private static func notifyChanges() {
+        BehaviorProfileContext.withActiveProfile {
+            Notification.Name.displayBehaviorProfileOverridesChanged.post()
+        }
     }
 }
 
 enum BehaviorProfileContext {
     private static let key = "com.knollsoft.Rectangle.behaviorProfileID"
+    private static let editingKey = "jrectangle.editingProfileID"
+    static var activeProfileID: String?
 
     static var currentProfileID: String? {
-        Thread.current.threadDictionary[key] as? String
+        Thread.current.threadDictionary[key] as? String ?? activeProfileID
+    }
+
+    static var editingProfileID: String? {
+        Thread.current.threadDictionary[editingKey] as? String
     }
 
     @discardableResult
     static func setCurrentProfileID(_ profileID: String?) -> String? {
-        let previous = currentProfileID
-        if let profileID, profileID != BehaviorProfileStore.defaultProfileID {
+        let previous = Thread.current.threadDictionary[key] as? String
+        if let profileID {
             Thread.current.threadDictionary[key] = profileID
         } else {
             Thread.current.threadDictionary.removeObject(forKey: key)
@@ -349,6 +474,25 @@ enum BehaviorProfileContext {
         let previous = setCurrentProfileID(profileID)
         defer { _ = setCurrentProfileID(previous) }
         return try perform()
+    }
+
+    static func edit<T>(_ profileID: String, perform: () throws -> T) rethrows -> T {
+        let previous = editingProfileID
+        Thread.current.threadDictionary[editingKey] = profileID
+        defer {
+            if let previous { Thread.current.threadDictionary[editingKey] = previous }
+            else { Thread.current.threadDictionary.removeObject(forKey: editingKey) }
+        }
+        return try withProfileID(profileID, perform: perform)
+    }
+
+    static func withActiveProfile<T>(perform: () throws -> T) rethrows -> T {
+        let previous = editingProfileID
+        Thread.current.threadDictionary.removeObject(forKey: editingKey)
+        defer {
+            if let previous { Thread.current.threadDictionary[editingKey] = previous }
+        }
+        return try withProfileID(activeProfileID ?? BehaviorProfileStore.defaultProfileID, perform: perform)
     }
 }
 
@@ -368,6 +512,7 @@ class BoolDefault: Default {
             BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.bool ?? storedEnabled
         }
         set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(bool: newValue), for: key) { return }
             storedEnabled = newValue
             if initialized {
                 JSONPreferences.shared.set(newValue, forKey: key)
@@ -409,6 +554,7 @@ class OptionalBoolDefault: Default {
             return storedEnabled
         }
         set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(int: newValue == true ? 1 : newValue == false ? 2 : 0), for: key) { return }
             storedEnabled = newValue
             if initialized {
                 if newValue == true {
@@ -460,17 +606,24 @@ class StringDefault: Default {
     public private(set) var key: String
     private var initialized = false
     
+    private var storedValue: String?
     var value: String? {
-        didSet {
+        get {
+            if key == "displayBehaviorProfiles" { return storedValue }
+            return BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.string ?? storedValue
+        }
+        set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(string: newValue), for: key) { return }
+            storedValue = newValue
             if initialized {
-                JSONPreferences.shared.set(value, forKey: key)
+                JSONPreferences.shared.set(newValue, forKey: key)
             }
         }
     }
     
     init(key: String) {
         self.key = key
-        value = JSONPreferences.shared.string(forKey: key)
+        storedValue = JSONPreferences.shared.string(forKey: key)
         initialized = true
     }
     
@@ -493,6 +646,7 @@ class FloatDefault: Default {
             BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.float ?? storedValue
         }
         set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(float: newValue), for: key) { return }
             storedValue = newValue
             if initialized {
                 JSONPreferences.shared.set(newValue, forKey: key)
@@ -536,6 +690,7 @@ class DoubleDefault: Default {
             return storedValue
         }
         set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(double: newValue), for: key) { return }
             storedValue = newValue
             if initialized {
                 JSONPreferences.shared.set(newValue, forKey: key)
@@ -575,8 +730,9 @@ class PositiveIntDefault: Default {
     private var storedValue: Int
 
     var value: Int {
-        get { storedValue }
+        get { max(1, BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.int ?? storedValue) }
         set {
+            if userDefaults == nil, BehaviorProfileStore.writeOverride(CodableDefault(int: max(1, newValue)), for: key) { return }
             storedValue = max(1, newValue)
             if let userDefaults {
                 userDefaults.set(storedValue, forKey: key)
@@ -615,19 +771,23 @@ class IntDefault: Default {
     public private(set) var key: String
     private var initialized = false
     
+    private var storedValue: Int
     var value: Int {
-        didSet {
+        get { BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.int ?? storedValue }
+        set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(int: newValue), for: key) { return }
+            storedValue = newValue
             if initialized {
-                JSONPreferences.shared.set(value, forKey: key)
+                JSONPreferences.shared.set(newValue, forKey: key)
             }
         }
     }
     
     init(key: String, defaultValue: Int = 0) {
         self.key = key
-        value = JSONPreferences.shared.integer(forKey: key)
-        if(defaultValue != 0 && value == 0) {
-            value = defaultValue
+        storedValue = JSONPreferences.shared.integer(forKey: key)
+        if(defaultValue != 0 && storedValue == 0) {
+            storedValue = defaultValue
         }
         initialized = true
     }
@@ -647,10 +807,27 @@ class JSONDefault<T: Codable>: StringDefault {
     
     private var typeInitialized = false
     
+    private var storedTypedValue: T?
     var typedValue: T? {
-        didSet {
+        get {
+            // The profile store itself must never resolve through a profile.
+            if key != "displayBehaviorProfiles",
+               let json = BehaviorProfileStore.override(for: key, profileID: BehaviorProfileContext.currentProfileID)?.string,
+               let decoded = try? JSONDecoder().decode(T.self, from: Data(json.utf8)) {
+                return decoded
+            }
+            return storedTypedValue
+        }
+        set {
+            if typeInitialized, key != "displayBehaviorProfiles",
+               let profileID = BehaviorProfileContext.editingProfileID,
+               profileID != BehaviorProfileStore.defaultProfileID {
+                saveToJSON(newValue)
+                return
+            }
+            storedTypedValue = newValue
             if typeInitialized {
-                saveToJSON(typedValue)
+                saveToJSON(newValue)
             }
         }
     }
@@ -672,13 +849,23 @@ class JSONDefault<T: Codable>: StringDefault {
     
     override func load(from codable: CodableDefault) {
         if value != codable.string {
-            value = codable.string
-            typeInitialized = false
-            loadFromJSON()
-            typeInitialized = true
+            JSONPreferences.shared.performBatch {
+                value = codable.string
+                typeInitialized = false
+                loadFromJSON()
+                typeInitialized = true
+            }
+            BehaviorProfileStore.removeRedundantOverrides()
         }
     }
-    
+
+    override func toCodable() -> CodableDefault {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        guard let data = try? encoder.encode(typedValue) else { return super.toCodable() }
+        return CodableDefault(string: String(decoding: data, as: UTF8.self))
+    }
+
     private func loadFromJSON() {
         guard let jsonString = value else { return }
         let decoder = JSONDecoder()
@@ -706,6 +893,7 @@ class IntEnumDefault<E: RawRepresentable>: Default where E.RawValue == Int {
 
     var value: E {
         set {
+            if BehaviorProfileStore.writeOverride(CodableDefault(int: newValue.rawValue), for: key) { return }
             if newValue != storedValue {
                 storedValue = newValue
                 JSONPreferences.shared.set(storedValue.rawValue, forKey: key)

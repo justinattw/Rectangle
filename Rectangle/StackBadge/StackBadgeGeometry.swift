@@ -58,25 +58,33 @@ enum StackBadgeGeometry {
             && abs(frame.height - reference.height) <= tolerance
     }
 
+    static func usesRightEdge(_ frame: CGRect, in screenFrame: CGRect) -> Bool {
+        frame.midX > screenFrame.midX + 2
+    }
+
     /// Where the stack holding `member` is measured from, as the cycle
     /// shortcuts measure it: the left anchor of the densest cascade cluster
     /// holding it, and its size. When `sizeTolerance` is given, only frames of
     /// the member's size are clustered, so a denser group of other sizes at
     /// the same corner can't claim it.
     static func stackAnchor(for member: Int, among frames: [CGRect], cascadeRange: CGFloat,
-                            tolerance: CGFloat, sizeTolerance: CGFloat?, verticalRange: CGFloat? = nil) -> CGRect? {
+                            tolerance: CGFloat, sizeTolerance: CGFloat?, verticalRange: CGFloat? = nil,
+                            rightAligned: Bool = false) -> CGRect? {
         guard frames.indices.contains(member) else { return nil }
         let reference = frames[member]
         let pool = frames.indices.filter { index in
             guard let sizeTolerance else { return true }
             return isSameSize(frames[index], as: reference, tolerance: sizeTolerance)
         }
-        let origins = pool.map { frames[$0].origin }
+        let origins = pool.map { index in
+            CGPoint(x: rightAligned ? frames[index].maxX : frames[index].minX, y: frames[index].minY)
+        }
         guard let poolMember = pool.firstIndex(of: member),
               let anchor = clusterAnchor(containing: poolMember, among: origins,
                                          cascadeRange: cascadeRange, tolerance: tolerance, verticalRange: verticalRange)
         else { return nil }
-        return CGRect(origin: origins[anchor], size: reference.size)
+        return CGRect(x: origins[anchor].x - (rightAligned ? reference.width : 0),
+                      y: origins[anchor].y, width: reference.width, height: reference.height)
     }
 
     /// The indices of the frames stacked at `anchor`: in the cascade cluster
@@ -84,8 +92,11 @@ enum StackBadgeGeometry {
     /// given, within it of the anchor's size. Without it, any size counts, so
     /// a maximized window sharing a half's corner is stacked with the half.
     static func stackMembers(anchor: CGRect, among frames: [CGRect], cascadeRange: CGFloat,
-                             tolerance: CGFloat, sizeTolerance: CGFloat?, verticalRange: CGFloat? = nil) -> [Int] {
-        clusterIndices(anchoredAt: anchor.origin, among: frames.map { $0.origin },
+                             tolerance: CGFloat, sizeTolerance: CGFloat?, verticalRange: CGFloat? = nil,
+                             rightAligned: Bool = false) -> [Int] {
+        let origin = CGPoint(x: rightAligned ? anchor.maxX : anchor.minX, y: anchor.minY)
+        let origins = frames.map { CGPoint(x: rightAligned ? $0.maxX : $0.minX, y: $0.minY) }
+        return clusterIndices(anchoredAt: origin, among: origins,
                        cascadeRange: cascadeRange, tolerance: tolerance, verticalRange: verticalRange)
             .filter { index in
                 guard let sizeTolerance else { return true }
@@ -111,8 +122,8 @@ enum StackBadgeGeometry {
     /// How far from a stack's corner a window's origin can sit and still be in
     /// the stack: every cascade step the overlap offset can take, plus
     /// `tolerance` for rounding.
-    static func cascadeRange(offsetSize: CGFloat, maxCascade: Int, tolerance: CGFloat) -> CGFloat {
-        max(offsetSize, 0) * CGFloat(min(5, max(1, maxCascade))) + tolerance
+    static func cascadeRange(offsetSize: CGFloat, maxCascade: Int, tolerance: CGFloat, stackDepth: Int = 1) -> CGFloat {
+        abs(offsetSize) * CGFloat(max(min(5, max(1, maxCascade)), stackDepth - 1)) + tolerance
     }
 
     /// The indices of the window origins (AX coordinates) that form a

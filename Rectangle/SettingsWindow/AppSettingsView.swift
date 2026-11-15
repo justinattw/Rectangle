@@ -46,6 +46,17 @@ struct AppSettingsView: View {
                 Toggle("Remove keyboard shortcut restrictions", isOn: $viewModel.allowAnyShortcut)
             }
 
+            Section("Configuration File") {
+                TextField("Path", text: $viewModel.configPath)
+                    .textFieldStyle(.roundedBorder)
+                Button("Change Location...") {
+                    viewModel.changeConfigLocation()
+                }
+                Text("Use an absolute path or ~/. Changing location requires reopening JRectangle.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
             // MARK: - Footer Actions
             Section {
                 HStack {
@@ -60,6 +71,13 @@ struct AppSettingsView: View {
                     } label: {
                         Label("Export", systemImage: "square.and.arrow.up")
                     }
+
+                    Button {
+                        viewModel.showConfigInFinder()
+                    } label: {
+                        Label("Show Config in Finder", systemImage: "folder")
+                    }
+                    .help("Reveal the actual settings JSON in Finder. Quit JRectangle before editing it, then relaunch to load changes.")
                 }
 
                 Button("Restore Default Shortcuts & Snap Areas") {

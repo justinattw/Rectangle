@@ -89,6 +89,29 @@ final class TileSettingsView: NSView, NSTextFieldDelegate {
             columnsRow.widthAnchor.constraint(equalTo: mainStack.widthAnchor),
             rowsRow.widthAnchor.constraint(equalTo: mainStack.widthAnchor)
         ])
+        refreshValues()
+        Notification.Name.displayBehaviorProfileChanged.onPost { [weak self] _ in self?.refreshValues() }
+        Notification.Name.displayBehaviorProfileOverridesChanged.onPost { [weak self] _ in self?.refreshValues() }
+        Notification.Name.configImported.onPost { [weak self] _ in self?.refreshValues() }
+    }
+
+    private func refreshValues() {
+        let profileID = DisplayProfileSelectionModel.shared.selectedProfileID
+        BehaviorProfileContext.withProfileID(profileID) {
+            columnsTextField.integerValue = Defaults.tileColumnsMaxWindows.value
+            columnsStepper.integerValue = columnsTextField.integerValue
+            rowsTextField.integerValue = Defaults.tileRowsMaxWindows.value
+            rowsStepper.integerValue = rowsTextField.integerValue
+        }
+        columnsLabel.textColor = BehaviorProfileStore.override(for: Defaults.tileColumnsMaxWindows.key, profileID: profileID) == nil ? .labelColor : .systemBlue
+        rowsLabel.textColor = BehaviorProfileStore.override(for: Defaults.tileRowsMaxWindows.key, profileID: profileID) == nil ? .labelColor : .systemBlue
+    }
+
+    private func save(_ value: Int, setting: PositiveIntDefault) {
+        BehaviorProfileContext.edit(DisplayProfileSelectionModel.shared.selectedProfileID) {
+            setting.value = value
+        }
+        refreshValues()
     }
 
     private func configureStepper(_ stepper: NSStepper, value: Int) {
@@ -104,13 +127,13 @@ final class TileSettingsView: NSView, NSTextFieldDelegate {
     @objc private func columnsStepperChanged(_ sender: NSStepper) {
         let newValue = sender.integerValue
         columnsTextField.integerValue = newValue
-        Defaults.tileColumnsMaxWindows.value = newValue
+        save(newValue, setting: Defaults.tileColumnsMaxWindows)
     }
 
     @objc private func rowsStepperChanged(_ sender: NSStepper) {
         let newValue = sender.integerValue
         rowsTextField.integerValue = newValue
-        Defaults.tileRowsMaxWindows.value = newValue
+        save(newValue, setting: Defaults.tileRowsMaxWindows)
     }
 
     // MARK: - NSTextFieldDelegate
@@ -121,10 +144,10 @@ final class TileSettingsView: NSView, NSTextFieldDelegate {
 
         if textField === columnsTextField {
             columnsStepper.integerValue = val
-            Defaults.tileColumnsMaxWindows.value = val
+            save(val, setting: Defaults.tileColumnsMaxWindows)
         } else if textField === rowsTextField {
             rowsStepper.integerValue = val
-            Defaults.tileRowsMaxWindows.value = val
+            save(val, setting: Defaults.tileRowsMaxWindows)
         }
     }
 }
@@ -155,6 +178,9 @@ final class WidthSettingsView: NSView, NSTextFieldDelegate {
             self?.refreshValue()
         }
         Notification.Name.moveStepChanged.onPost { [weak self] _ in
+            self?.refreshValue()
+        }
+        Notification.Name.displayBehaviorProfileOverridesChanged.onPost { [weak self] _ in
             self?.refreshValue()
         }
         widthStepTextField.translatesAutoresizingMaskIntoConstraints = false

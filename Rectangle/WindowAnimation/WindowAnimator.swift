@@ -42,7 +42,8 @@ final class WindowAnimator {
     private func observeLifecycle() {
         guard !observingLifecycle else { return }
         observingLifecycle = true
-        for name in [Notification.Name.windowAnimationPreferencesChanged, .configImported] {
+        for name in [Notification.Name.windowAnimationPreferencesChanged, .configImported,
+                     .displayBehaviorProfileOverridesChanged] {
             NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
                 self?.finish()
             }

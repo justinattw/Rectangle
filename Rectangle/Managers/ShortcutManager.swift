@@ -111,6 +111,8 @@ class ShortcutManager {
         notificationCenter.addObserver(self, selector: #selector(defaultShortcutsChanged), name: .changeDefaults, object: nil)
         notificationCenter.addObserver(self, selector: #selector(userDefaultsChanged), name: UserDefaults.didChangeNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(shortcutPreferencesChanged), name: .shortcutPreferencesChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(shortcutPreferencesChanged), name: .activeDisplayProfileChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(shortcutPreferencesChanged), name: .displayBehaviorProfileOverridesChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(shortcutRecordingChanged), name: .shortcutRecording, object: nil)
         workspaceNotificationCenter.addObserver(self, selector: #selector(sessionDidResignActive), name: NSWorkspace.sessionDidResignActiveNotification, object: nil)
         workspaceNotificationCenter.addObserver(self, selector: #selector(sessionDidBecomeActive), name: NSWorkspace.sessionDidBecomeActiveNotification, object: nil)
@@ -125,6 +127,8 @@ class ShortcutManager {
     }
 
     public func bindShortcuts() {
+        let previous = BehaviorProfileContext.setCurrentProfileID(BehaviorProfileContext.activeProfileID ?? BehaviorProfileStore.defaultProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         guard sessionIsActive,
               !sessionRebindPending,
               !shortcutsSuspendedForRecording,
@@ -274,6 +278,10 @@ class ShortcutManager {
 
     private func execute(_ originalParameters: ExecutionParameters) {
         var parameters = originalParameters
+        let screen = originalParameters.screen
+            ?? screenDetection.detectScreens(using: originalParameters.windowElement ?? AccessibilityElement.getFrontWindowElement())?.currentScreen
+        let previousProfile = BehaviorProfileContext.setCurrentProfileID(screen?.behaviorProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfile) }
         // Snap previews use completion to dismiss after placement finishes. If this
         // method returns before handing off to WindowManager, finish that cleanup here.
         // After handoff, WindowManager owns completion (including animated moves);
@@ -385,6 +393,8 @@ class ShortcutManager {
     }
 
     @objc private func shortcutPreferencesChanged(_ notification: Notification) {
+        let previous = BehaviorProfileContext.setCurrentProfileID(BehaviorProfileContext.activeProfileID ?? BehaviorProfileStore.defaultProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         reloadShortcutBindingsIfNeeded()
         TodoManager.registerUnregisterToggleShortcut()
         TodoManager.registerUnregisterReflowShortcut()

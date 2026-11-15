@@ -63,7 +63,7 @@ struct BehaviorSettingsView: View {
                         // Keep fraction choices as compact checkboxes
                         HStack(spacing: 12) {
                             Spacer()
-                            ForEach(CycleSize.sortedSizes, id: \.self) { size in
+                            ForEach(CycleSize.sizesByFraction, id: \.self) { size in
                                 Toggle(size.title, isOn: viewModel.binding(for: size))
                                     .toggleStyle(.checkbox)
                             }
@@ -204,35 +204,40 @@ struct BehaviorSettingsView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Toggle("Offset window position on overlap", isOn: $viewModel.cyclingOverlapOffset)
                                 .foregroundColor(overrideColor(Defaults.cyclingOverlapOffset.key))
-                            Text("When enabled, newly placed windows shift slightly if another window already occupies that position.")
+                            Text("Each window added to a snap area becomes the next layer of its stack.")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                             HStack {
                                 Text("Horizontal overlap offset")
-                                    .foregroundColor(overrideColor(Defaults.cyclingOverlapOffsetHorizontal.key, Defaults.cyclingOverlapOffsetSize.key))
+                                    .foregroundColor(overrideColor(Defaults.stackOffsetX.key, Defaults.cyclingOverlapOffsetHorizontal.key, Defaults.cyclingOverlapOffsetSize.key))
                                 Spacer(minLength: 8)
-                                Slider(value: pixelBinding($viewModel.overlapHorizontal), in: 0...100,
+                                Slider(value: pixelBinding($viewModel.overlapHorizontal), in: -100...100,
                                        onEditingChanged: { if !$0 { viewModel.commitOverlapHorizontal() } })
                                     .frame(width: 120)
                                 Text("\(Int(viewModel.overlapHorizontal)) px").frame(width: 45, alignment: .trailing)
                             }
                             HStack {
                                 Text("Vertical overlap offset")
-                                    .foregroundColor(overrideColor(Defaults.cyclingOverlapOffsetVertical.key, Defaults.cyclingOverlapOffsetSize.key))
+                                    .foregroundColor(overrideColor(Defaults.stackOffsetY.key, Defaults.cyclingOverlapOffsetVertical.key, Defaults.cyclingOverlapOffsetSize.key))
                                 Spacer(minLength: 8)
-                                Slider(value: pixelBinding($viewModel.overlapVertical), in: 0...100,
+                                Slider(value: pixelBinding($viewModel.overlapVertical), in: -100...100,
                                        onEditingChanged: { if !$0 { viewModel.commitOverlapVertical() } })
                                     .frame(width: 120)
                                 Text("\(Int(viewModel.overlapVertical)) px").frame(width: 45, alignment: .trailing)
                             }
-                            Text("Offsets only apply where there is room within the display's usable area.")
+                            Picker("Stack sizing", selection: $viewModel.stackFitToSnapArea) {
+                                Text("Keep window sizes").tag(false)
+                                Text("Fit stack inside snap area").tag(true)
+                            }
+                            .foregroundColor(overrideColor(Defaults.stackFitToSnapArea.key))
+                            Text("Positive X moves right; positive Y moves up. Keep sizes uses the available display space. Fit resizes and repositions all layers inside the snap area. App size limits may prevent a layout.")
                                 .font(.caption).foregroundColor(.secondary)
                         }
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
                             Toggle("Only stack windows of the same size", isOn: $viewModel.stackSameSizeOnly)
                                 .foregroundColor(overrideColor(Defaults.stackSameSizeOnly.key))
-                            Text("For the window list and the cycle shortcuts. When off, windows stacked at the same top-left position count whatever their size")
+                            Text("Applies to overlap offsets, the window list and cycle shortcuts. When off, different-sized windows snapped to the same side can stack together.")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -273,7 +278,9 @@ struct BehaviorSettingsView: View {
                     Label("Stacked Windows", systemImage: "square.on.square")
                         .foregroundColor(overrideColor(Defaults.cyclingOverlapOffset.key,
                                                        Defaults.cyclingOverlapOffsetSize.key, Defaults.cyclingOverlapOffsetHorizontal.key,
-                                                       Defaults.cyclingOverlapOffsetVertical.key, Defaults.stackSameSizeOnly.key))
+                                                       Defaults.cyclingOverlapOffsetVertical.key, Defaults.stackOffsetX.key,
+                                                       Defaults.stackOffsetY.key, Defaults.stackFitToSnapArea.key,
+                                                       Defaults.stackSameSizeOnly.key))
                 }
             }
 
@@ -299,7 +306,7 @@ struct BehaviorSettingsView: View {
                                 get: { viewModel.selectedHSplitPreset },
                                 set: { viewModel.selectHSplitPreset($0) }
                             )) {
-                                ForEach(CycleSize.sortedSizes, id: \.self) { size in
+                                ForEach(CycleSize.sizesByFraction, id: \.self) { size in
                                     Text(size.title).tag(Optional(size))
                                 }
                                 Text("Other").tag(Optional<CycleSize>.none)
@@ -321,7 +328,7 @@ struct BehaviorSettingsView: View {
                                 get: { viewModel.selectedVSplitPreset },
                                 set: { viewModel.selectVSplitPreset($0) }
                             )) {
-                                ForEach(CycleSize.sortedSizes, id: \.self) { size in
+                                ForEach(CycleSize.sizesByFraction, id: \.self) { size in
                                     Text(size.title).tag(Optional(size))
                                 }
                                 Text("Other").tag(Optional<CycleSize>.none)

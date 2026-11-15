@@ -111,7 +111,7 @@ class WindowManager {
             return
         }
 
-        let profileID = sourceScreens.currentScreen.behaviorProfileID
+        let profileID = usableScreens.currentScreen.behaviorProfileID
         let previousProfileID = BehaviorProfileContext.setCurrentProfileID(profileID)
         defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
         
@@ -167,12 +167,11 @@ class WindowManager {
             calcResult.rect = GapCalculation.applyGaps(calcResult.rect, dimension: gapsApplicable, sharedEdges: gapSharedEdges, gapSize: Defaults.gapSize.value, skipTopGap: Defaults.skipGapTopEdge.enabled)
         }
 
+        var stackPlacement: OverlapOffsetGeometry.WindowStackPlacement?
         if Defaults.cyclingOverlapOffset.userEnabled, action.overlapOffsetApplies {
-            calcResult.rect = OverlapOffsetGeometry.applyOverlapOffsetIfNeeded(
-                calcResult.rect,
-                windowId: windowId,
-                screen: calcResult.screen
-            )
+            stackPlacement = OverlapOffsetGeometry.WindowStackPlacement.plan(base: calcResult.rect, windowID: windowId,
+                element: frontmostWindowElement, screen: calcResult.screen, history: windowHistory, animator: windowAnimator)
+            if let stackPlacement { calcResult.rect = stackPlacement.target.screenFlipped }
         }
 
         let willResize = action.resizes || calcResult.rect.size != currentNormalizedRect.size
@@ -208,6 +207,7 @@ class WindowManager {
         if pendingDestination == nil && (cooperativeMove?.placement?.isAlreadyAchieved() ?? currentNormalizedRect.equalTo(calcResult.rect)) {
             Logger.log("Window is already at its target frame")
             recordAction(windowId: windowId, resultingRect: currentWindowRect, action: calcResult.resultingAction, subAction: calcResult.resultingSubAction)
+            stackPlacement?.commit(actualFrame: currentWindowRect, history: windowHistory, animator: windowAnimator)
 
             return
         }
@@ -251,6 +251,7 @@ class WindowManager {
                             self.windowMovedAcrossDisplays(windowElement: frontmostWindowElement, resultingRect: finalRect,
                                                            preservesFocus: parameters.preservesFocus)
                             self.postProcess(result: resultParameters, resultingRect: finalRect, incrementCount: !animated)
+                            stackPlacement?.commit(actualFrame: finalRect, history: self.windowHistory, animator: self.windowAnimator)
                         }
                         return
                     }
@@ -268,6 +269,7 @@ class WindowManager {
             }
 
             postProcess(result: resultParameters, resultingRect: resultingRect, incrementCount: !animated)
+            stackPlacement?.commit(actualFrame: resultingRect, history: windowHistory, animator: windowAnimator)
 
         }
         

@@ -29,12 +29,21 @@ class SnapAreaSettingsViewController: NSViewController {
 
 @Observable
 final class SnapAreaViewModel {
+    private var isLoadingProfile = false
+    private(set) var profileRevision = 0
+
+    private func edit(_ block: () -> Void) {
+        guard !isLoadingProfile else { return }
+        BehaviorProfileContext.edit(DisplayProfileSelectionModel.shared.selectedProfileID, perform: block)
+    }
+
     // General Settings
     var windowSnapping: Bool {
         didSet {
             guard oldValue != windowSnapping else { return }
-            Defaults.windowSnapping.enabled = windowSnapping
-            Notification.Name.windowSnapping.post(object: windowSnapping)
+            edit { Defaults.windowSnapping.enabled = windowSnapping }
+            guard !isLoadingProfile else { return }
+            Notification.Name.windowSnapping.post(object: true)
             if windowSnapping {
                 MacTilingDefaults.checkForBuiltInTiling(skipIfAlreadyNotified: false)
             }
@@ -44,33 +53,35 @@ final class SnapAreaViewModel {
     var unsnapRestore: Bool {
         didSet {
             guard oldValue != unsnapRestore else { return }
-            Defaults.unsnapRestore.enabled = unsnapRestore
+            edit { Defaults.unsnapRestore.enabled = unsnapRestore }
         }
     }
     
     var unsnapRestoreFromSizeChange: Bool {
         didSet {
             guard oldValue != unsnapRestoreFromSizeChange else { return }
-            Defaults.unsnapRestoreFromSizeChange.enabled = unsnapRestoreFromSizeChange
+            edit { Defaults.unsnapRestoreFromSizeChange.enabled = unsnapRestoreFromSizeChange }
         }
     }
     
     var hapticFeedback: Bool {
         didSet {
             guard oldValue != hapticFeedback else { return }
-            Defaults.hapticFeedbackOnSnap.enabled = hapticFeedback
+            edit { Defaults.hapticFeedbackOnSnap.enabled = hapticFeedback }
         }
     }
     
     var animateFootprint: Bool {
         didSet {
             guard oldValue != animateFootprint else { return }
-            if animateFootprint {
-                if Defaults.footprintAnimationDurationMultiplier.value == 0.0 {
-                    Defaults.footprintAnimationDurationMultiplier.value = 0.75
+            edit {
+                if animateFootprint {
+                    if Defaults.footprintAnimationDurationMultiplier.value == 0.0 {
+                        Defaults.footprintAnimationDurationMultiplier.value = 0.75
+                    }
+                } else {
+                    Defaults.footprintAnimationDurationMultiplier.value = 0.0
                 }
-            } else {
-                Defaults.footprintAnimationDurationMultiplier.value = 0.0
             }
         }
     }
@@ -78,14 +89,14 @@ final class SnapAreaViewModel {
     var footprintBlur: Bool {
         didSet {
             guard oldValue != footprintBlur else { return }
-            Defaults.footprintBlur.enabled = footprintBlur
+            edit { Defaults.footprintBlur.enabled = footprintBlur }
         }
     }
     
     var blurAppearance: BlurAppearance {
         didSet {
             guard oldValue != blurAppearance else { return }
-            Defaults.blurAppearance.value = blurAppearance
+            edit { Defaults.blurAppearance.value = blurAppearance }
         }
     }
     
@@ -93,15 +104,18 @@ final class SnapAreaViewModel {
         didSet {
             guard oldValue != snapBeforeReachingEdges else { return }
             // Syncing an imported distance must not replace it with the toggle preset.
-            guard snapBeforeReachingEdges != (Defaults.snapBeforeReachingEdges.value > 0) else { return }
-            Defaults.snapBeforeReachingEdges.value = snapBeforeReachingEdges ? 20 : 0
+            edit {
+                guard snapBeforeReachingEdges != (Defaults.snapBeforeReachingEdges.value > 0) else { return }
+                Defaults.snapBeforeReachingEdges.value = snapBeforeReachingEdges ? 20 : 0
+            }
         }
     }
 
     var preventMissionControlDragging: Bool {
         didSet {
             guard oldValue != preventMissionControlDragging else { return }
-            Defaults.missionControlDragging.enabled = !preventMissionControlDragging
+            edit { Defaults.missionControlDragging.enabled = !preventMissionControlDragging }
+            guard !isLoadingProfile else { return }
             Notification.Name.missionControlDragging.post(object: !preventMissionControlDragging)
         }
     }
@@ -129,9 +143,14 @@ final class SnapAreaViewModel {
         self.isPortraitConnected = NSScreen.portraitDisplayConnected
         
         setupNotificationObservers()
+        syncDefaults()
     }
     
     func syncDefaults() {
+        isLoadingProfile = true
+        defer { isLoadingProfile = false }
+        let previous = BehaviorProfileContext.setCurrentProfileID(DisplayProfileSelectionModel.shared.selectedProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         self.windowSnapping = !Defaults.windowSnapping.userDisabled
         self.unsnapRestore = !Defaults.unsnapRestore.userDisabled
         self.unsnapRestoreFromSizeChange = !Defaults.unsnapRestoreFromSizeChange.userDisabled
@@ -142,7 +161,10 @@ final class SnapAreaViewModel {
         self.blurAppearance = Defaults.blurAppearance.value
         self.preventMissionControlDragging = Defaults.missionControlDragging.userDisabled
         self.showMissionControlDragging = Defaults.missionControlDragging.userModified
+        let dimensions = DisplayProfileSelectionModel.shared.selectedProfileID.split(separator: "x").compactMap { Int($0) }
         self.isPortraitConnected = NSScreen.portraitDisplayConnected
+            || (dimensions.count == 2 && dimensions[1] > dimensions[0])
+        profileRevision &+= 1
     }
     
     private func setupNotificationObservers() {
@@ -157,7 +179,7 @@ final class SnapAreaViewModel {
 
         center.publisher(for: NSApplication.didChangeScreenParametersNotification)
             .sink { [weak self] _ in
-                self?.isPortraitConnected = NSScreen.portraitDisplayConnected
+                self?.syncDefaults()
             }
             .store(in: &cancellables)
         
@@ -166,19 +188,29 @@ final class SnapAreaViewModel {
                 self?.syncDefaults()
             }
             .store(in: &cancellables)
+
+        center.publisher(for: .displayBehaviorProfileChanged)
+            .sink { [weak self] _ in self?.syncDefaults() }
+            .store(in: &cancellables)
+        center.publisher(for: .displayBehaviorProfileOverridesChanged)
+            .sink { [weak self] _ in self?.syncDefaults() }
+            .store(in: &cancellables)
         
         center.publisher(for: .windowSnapping)
             .sink { [weak self] _ in
-                self?.windowSnapping = !Defaults.windowSnapping.userDisabled
+                self?.syncDefaults()
             }
             .store(in: &cancellables)
     }
     
     // Snap Area Handlers
     func getSelectedTag(for directional: Directional, orientation: DisplayOrientation) -> Int {
-        let snapAreaConfig = orientation == .landscape
-        ? SnapAreaModel.instance.landscape[directional]
-        : SnapAreaModel.instance.portrait[directional]
+        _ = profileRevision
+        let snapAreaConfig = BehaviorProfileContext.withProfileID(DisplayProfileSelectionModel.shared.selectedProfileID) {
+            orientation == .landscape
+            ? SnapAreaModel.instance.landscape[directional]
+            : SnapAreaModel.instance.portrait[directional]
+        }
         
         return snapAreaConfig?.action?.rawValue ?? snapAreaConfig?.compound?.rawValue ?? -1
     }
@@ -190,7 +222,10 @@ final class SnapAreaViewModel {
         } else if selectedTag > -1, let action = WindowAction(rawValue: selectedTag) {
             snapAreaConfig = SnapAreaConfig(action: action)
         }
-        SnapAreaModel.instance.setConfig(type: orientation, directional: directional, snapAreaConfig: snapAreaConfig)
+        edit {
+            SnapAreaModel.instance.setConfig(type: orientation, directional: directional, snapAreaConfig: snapAreaConfig)
+        }
+        profileRevision &+= 1
     }
 }
 
@@ -312,8 +347,6 @@ struct SnapAreaPicker: View {
     let orientation: DisplayOrientation
     let directional: Directional
     
-    @State private var selectedTag: Int = -1
-    
     private var pickerAlignment: Alignment {
         switch directional {
         case .tl, .l, .bl:
@@ -326,7 +359,10 @@ struct SnapAreaPicker: View {
     }
     
     var body: some View {
-        Picker("", selection: $selectedTag) {
+        Picker("", selection: Binding(
+            get: { viewModel.getSelectedTag(for: directional, orientation: orientation) },
+            set: { viewModel.updateSnapArea(selectedTag: $0, directional: directional, orientation: orientation) }
+        )) {
             Text("-").tag(-1)
             
             Section {
@@ -360,14 +396,8 @@ struct SnapAreaPicker: View {
                 .stroke(Color.secondary.opacity(0.4), lineWidth: 1)
         )
         .frame(maxWidth: .infinity, alignment: pickerAlignment)
-        .onAppear {
-            selectedTag = viewModel.getSelectedTag(for: directional, orientation: orientation)
-        }
-        .onChange(of: selectedTag) { oldTag, newTag in
-            viewModel.updateSnapArea(selectedTag: newTag, directional: directional, orientation: orientation)
-        }
         .onReceive(NotificationCenter.default.publisher(for: .defaultSnapAreas)) { _ in
-            selectedTag = viewModel.getSelectedTag(for: directional, orientation: orientation)
+            viewModel.syncDefaults()
         }
     }
 }

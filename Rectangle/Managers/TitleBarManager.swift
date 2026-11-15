@@ -16,10 +16,19 @@ class TitleBarManager {
         Notification.Name.configImported.onPost { notification in
             self.toggleListening()
         }
+        for name in [Notification.Name.activeDisplayProfileChanged, .displayBehaviorProfileOverridesChanged,
+                     NSApplication.didChangeScreenParametersNotification] {
+            name.onPost { [weak self] _ in self?.toggleListening() }
+        }
     }
     
     private func toggleListening() {
-        if WindowAction(rawValue: Defaults.doubleClickTitleBar.value - 1) != nil {
+        let enabled = NSScreen.screens.contains { screen in
+            BehaviorProfileContext.withProfileID(screen.behaviorProfileID) {
+                WindowAction(rawValue: Defaults.doubleClickTitleBar.value - 1) != nil
+            }
+        }
+        if enabled {
             tabButtonPress.start()
             if !eventMonitor.running { eventMonitor.start() }
         } else {
@@ -36,6 +45,9 @@ class TitleBarManager {
     }
 
     private func handleDoubleClick(_ event: NSEvent, at location: CGPoint) {
+        let clickedScreen = Self.screenForClick(at: location.screenFlipped, screens: NSScreen.screens)
+        let previous = BehaviorProfileContext.setCurrentProfileID(clickedScreen?.behaviorProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         guard
             event.type == .leftMouseUp,
             event.clickCount == 2,
@@ -83,7 +95,6 @@ class TitleBarManager {
             windowFrame: windowElement.frame,
             pendingFrame: WindowAnimator.shared.logicalFrame(for: windowElement),
             lastAction: historyAction)
-        let clickedScreen = Self.screenForClick(at: location.screenFlipped, screens: NSScreen.screens)
         resolvedAction.postTitleBar(windowElement: windowElement, screen: clickedScreen)
     }
 

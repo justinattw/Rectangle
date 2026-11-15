@@ -4,10 +4,8 @@ import Cocoa
 
 /// Brings the windows stacked in the focused window's position forward one at
 /// a time. Stacks are found with the hover list's cascade rule: windows at the
-/// same corner or cascaded from it by the overlap offset and, when the user
-/// limits stacks to one size, the same size as the focused window. The hover
-/// list looks only near grid corners, so near other windows the two can
-/// still see a stack differently.
+/// same corner or side, or in a recorded offset stack, and, when the user
+/// limits stacks to one size, the same size as the focused window.
 enum StackCycleManager {
 
     private static let axTimeout: Float = 0.25
@@ -50,7 +48,8 @@ enum StackCycleManager {
             return
         }
 
-        let profileID = ScreenDetection().detectScreens(using: windowElement)?.currentScreen.behaviorProfileID
+        let screen = ScreenDetection().detectScreens(using: windowElement)?.currentScreen
+        let profileID = screen?.behaviorProfileID
         let previousProfileID = BehaviorProfileContext.setCurrentProfileID(profileID)
         defer { _ = BehaviorProfileContext.setCurrentProfileID(previousProfileID) }
 
@@ -59,32 +58,55 @@ enum StackCycleManager {
         let windows = WindowUtil.getWindowList(forceRefresh: true).filter { info in
             info.level == kCGNormalWindowLevel && info.alpha > 0 && info.pid != ownPid && info.id != todoId
         }
+        guard let focusedWindow = windows.first(where: { $0.id == focusedId }) else {
+            fail()
+            return
+        }
+        let windowFrames = Dictionary(uniqueKeysWithValues: windows.map { ($0.id, $0.frame) })
 
         let offset = Defaults.overlapOffset
-        let cascadeRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dx,
+        let span = AppDelegate.windowHistory.stackSpan(near: windowElement.frame.origin,
+            frames: windowFrames, tolerance: tolerance)
+        let cascadeRange = max(span.dx + tolerance, StackBadgeGeometry.cascadeRange(offsetSize: offset.dx,
                                                            maxCascade: Defaults.cyclingOverlapMaxCascade.value,
-                                                           tolerance: tolerance)
-        let verticalRange = StackBadgeGeometry.cascadeRange(offsetSize: offset.dy,
+                                                           tolerance: tolerance))
+        let verticalRange = max(span.dy + tolerance, StackBadgeGeometry.cascadeRange(offsetSize: offset.dy,
                                                             maxCascade: Defaults.cyclingOverlapMaxCascade.value,
-                                                            tolerance: tolerance)
+                                                            tolerance: tolerance))
         let sameSizeOnly = Defaults.stackSameSizeOnly.userEnabled
         if sameSizeOnly != sessionSameSizeOnly {
             session = nil
             sessionSameSizeOnly = sameSizeOnly
         }
         let sizeTolerance = sameSizeOnly ? StackBadgeGeometry.sizeTolerance : nil
-        let frames = windows.map { $0.frame }
+        let recordedMembers = AppDelegate.windowHistory.stackMembers(for: focusedId, frames: windowFrames,
+                                                                    sameSizeOnly: sameSizeOnly)
+        let screenFrame = screen?.adjustedVisibleFrame().screenFlipped
+        let focusedBase = AppDelegate.windowHistory.stackPlacements[focusedId]?.base.screenFlipped ?? focusedWindow.frame
+        let rightAligned = !sameSizeOnly
+            && screenFrame.map { StackBadgeGeometry.usesRightEdge(focusedBase, in: $0) } == true
+        let candidates = windows.filter { info in
+            let base = AppDelegate.windowHistory.stackPlacements[info.id]?.base.screenFlipped ?? info.frame
+            return !rightAligned || recordedMembers?.contains(info.id) == true
+                || screenFrame.map { StackBadgeGeometry.usesRightEdge(base, in: $0) } == true
+        }
+        let frames = candidates.map { $0.frame }
         let stackFor = { (anchor: CGRect) -> [CGWindowID] in
-            StackBadgeGeometry.stackMembers(anchor: anchor, among: frames, cascadeRange: cascadeRange,
-                                            tolerance: tolerance, sizeTolerance: sizeTolerance, verticalRange: verticalRange)
-                .map { windows[$0].id }
+            let geometricMembers = StackBadgeGeometry.stackMembers(anchor: anchor, among: frames, cascadeRange: cascadeRange,
+                                                                   tolerance: tolerance, sizeTolerance: sizeTolerance,
+                                                                   verticalRange: verticalRange, rightAligned: rightAligned)
+                .map { candidates[$0].id }
+            let members = (recordedMembers ?? []).union(geometricMembers)
+            return windows.filter {
+                members.contains($0.id) && (!sameSizeOnly || StackBadgeGeometry.isSameSize($0.frame, as: anchor))
+            }.map(\.id)
         }
 
         // Only a window this action could raise can anchor a stack.
-        guard let focusedIndex = (windows.firstIndex { $0.id == focusedId }),
+        guard let focusedIndex = (candidates.firstIndex { $0.id == focusedId }),
               let anchor = StackBadgeGeometry.stackAnchor(for: focusedIndex, among: frames, cascadeRange: cascadeRange,
                                                           tolerance: tolerance, sizeTolerance: sizeTolerance,
-                                                          verticalRange: verticalRange),
+                                                          verticalRange: verticalRange, rightAligned: rightAligned),
               let focus = sessionFocus(window: focusedId, isFocused: windowIsFocused, stack: stackFor(anchor)),
               let next = nextSession(focused: focus, freshAnchor: anchor,
                                      previous: session, forward: forward,

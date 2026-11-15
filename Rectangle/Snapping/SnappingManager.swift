@@ -173,13 +173,19 @@ class SnappingManager {
 
     let screenDetection = ScreenDetection()
     
-    private let marginTop = Defaults.snapEdgeMarginTop.cgFloat
-    private let marginBottom = Defaults.snapEdgeMarginBottom.cgFloat
-    private let marginLeft = Defaults.snapEdgeMarginLeft.cgFloat
-    private let marginRight = Defaults.snapEdgeMarginRight.cgFloat
+    private var marginTop: CGFloat { Defaults.snapEdgeMarginTop.cgFloat }
+    private var marginBottom: CGFloat { Defaults.snapEdgeMarginBottom.cgFloat }
+    private var marginLeft: CGFloat { Defaults.snapEdgeMarginLeft.cgFloat }
+    private var marginRight: CGFloat { Defaults.snapEdgeMarginRight.cgFloat }
+
+    private var snappingEnabledOnAnyDisplay: Bool {
+        NSScreen.screens.contains { screen in
+            BehaviorProfileContext.withProfileID(screen.behaviorProfileID) { !Defaults.windowSnapping.userDisabled }
+        }
+    }
     
     init() {
-        if Defaults.windowSnapping.enabled != false {
+        if snappingEnabledOnAnyDisplay {
             enableSnapping()
         }
         
@@ -198,6 +204,8 @@ class SnappingManager {
             self.startEventMonitor()
         }
         Notification.Name.frontAppChanged.onPost(using: frontAppChanged)
+        Notification.Name.displayBehaviorProfileOverridesChanged.onPost { [weak self] _ in self?.reloadFromDefaults() }
+        Notification.Name.activeDisplayProfileChanged.onPost { [weak self] _ in self?.reloadFromDefaults() }
         Notification.Name.windowActionWillExecute.onPost { [weak self] notification in
             guard let self, self.box?.waitingForPlacement == true,
                   (notification.object as? ExecutionParameters)?.source != .dragToSnap else { return }
@@ -229,7 +237,7 @@ class SnappingManager {
     }
     
     func toggleListening() {
-        if allowListening, !fullScreenGate.suspendsListening, !Defaults.windowSnapping.userDisabled {
+        if allowListening, !fullScreenGate.suspendsListening, snappingEnabledOnAnyDisplay {
             enableSnapping()
         } else {
             disableSnapping()
@@ -273,7 +281,7 @@ class SnappingManager {
     }
         
     public func reloadFromDefaults() {
-        if Defaults.windowSnapping.userDisabled {
+        if !snappingEnabledOnAnyDisplay {
             if eventMonitor?.running == true {
                 disableSnapping()
             }
@@ -358,6 +366,10 @@ class SnappingManager {
     }
     
     func handle(event: NSEvent) {
+        let profile = event.cgEvent.flatMap { event in NSScreen.screens.first { $0.frame.contains(event.location.screenFlipped) } }
+            ?? screenDetection.detectScreensAtCursor()?.currentScreen
+        let previous = BehaviorProfileContext.setCurrentProfileID(profile?.behaviorProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         if event.cgEvent?.getIntegerValueField(.eventSourceUserData) == DesktopMoveManager.eventMarker { return }
         switch event.type {
         case .keyDown:
@@ -729,6 +741,8 @@ class SnappingManager {
     }
     
     func getBoxRect(hotSpot: SnapArea, currentWindow: Window) -> CGRect? {
+        let previous = BehaviorProfileContext.setCurrentProfileID(hotSpot.screen.behaviorProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         if let calculation = WindowCalculationFactory.calculationsByAction[hotSpot.action] {
             
             let ignoreTodo = currentWindow.id.map { TodoManager.isTodoWindow($0) } ?? false
@@ -767,6 +781,9 @@ class SnappingManager {
     func snapAreaContainingCursor(priorSnapArea: SnapArea?, at loc: CGPoint) -> SnapArea? {
         let screens = NSScreen.screens
         for screen in screens {
+            let previous = BehaviorProfileContext.setCurrentProfileID(screen.behaviorProfileID)
+            defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
+            guard !Defaults.windowSnapping.userDisabled else { continue }
             guard let directional = directionalLocationOfCursor(loc: loc, screen: screen, screens: screens)
             else { continue }
             
@@ -795,6 +812,8 @@ class SnappingManager {
     }
     
     func directionalLocationOfCursor(loc: NSPoint, screen: NSScreen, screens: [NSScreen]? = nil) -> Directional? {
+        let previous = BehaviorProfileContext.setCurrentProfileID(screen.behaviorProfileID)
+        defer { _ = BehaviorProfileContext.setCurrentProfileID(previous) }
         return SnapEdgeDetection.direction(
             at: loc, in: screen.frame, screens: (screens ?? NSScreen.screens).map(\.frame),
             margins: NSEdgeInsets(top: marginTop, left: marginLeft, bottom: marginBottom, right: marginRight),

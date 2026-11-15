@@ -5,6 +5,12 @@ import MASShortcut
 
 extension Defaults {
     static func encoded() -> String? {
+        BehaviorProfileContext.withProfileID(BehaviorProfileStore.defaultProfileID) {
+            encodeGlobalConfig()
+        }
+    }
+
+    private static func encodeGlobalConfig() -> String? {
         guard let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String else { return nil }
         
         var shortcuts = [String: Shortcut]()
@@ -24,7 +30,7 @@ extension Defaults {
         }
         
         var codableDefaults = [String: CodableDefault]()
-        for exportableDefault in Defaults.array {
+        for exportableDefault in Defaults.array where exportableDefault.key != Defaults.displayBehaviorProfiles.key {
             codableDefaults[exportableDefault.key] = exportableDefault.toCodable()
         }
         codableDefaults[footprintAlpha.key] = CodableDefault(double: effectiveFootprintAlpha)
@@ -32,7 +38,8 @@ extension Defaults {
         let config = Config(bundleId: "com.knollsoft.Rectangle",
                             version: version,
                             shortcuts: shortcuts,
-                            defaults: codableDefaults)
+                            defaults: codableDefaults,
+                            profiles: Defaults.displayBehaviorProfiles.typedValue)
         
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -66,36 +73,41 @@ extension Defaults {
             return false
         }
 
-        let saved = JSONPreferences.shared.performBatch {
-            ShortcutPreferences.shared.performBatch {
-                for availableDefault in Defaults.array {
-                    if let codedDefault = config.defaults[availableDefault.key] {
-                        availableDefault.load(from: codedDefault)
+        let saved = BehaviorProfileContext.edit(BehaviorProfileStore.defaultProfileID) {
+            JSONPreferences.shared.performBatch {
+                ShortcutPreferences.shared.performBatch {
+                    for availableDefault in Defaults.array {
+                        if let codedDefault = config.defaults[availableDefault.key] {
+                            availableDefault.load(from: codedDefault)
+                        }
                     }
-                }
+                    if let profiles = config.profiles {
+                        Defaults.displayBehaviorProfiles.typedValue = profiles
+                    }
 
-                for action in WindowAction.active {
-                    let importedShortcut = config.shortcuts[action.name] ?? action.aliasName.flatMap { config.shortcuts[$0] }
-                    if let importedShortcut, importedShortcut.keyCode >= 0 {
-                        ShortcutPreferences.shared.set(importedShortcut.toMASSHortcut(), for: action.name)
-                    } else if importedShortcut != nil {
-                        ShortcutPreferences.shared.set(nil, for: action.name)
-                    } else {
-                        ShortcutPreferences.shared.reset(action.name)
+                    for action in WindowAction.active {
+                        let importedShortcut = config.shortcuts[action.name] ?? action.aliasName.flatMap { config.shortcuts[$0] }
+                        if let importedShortcut, importedShortcut.keyCode >= 0 {
+                            ShortcutPreferences.shared.set(importedShortcut.toMASSHortcut(), for: action.name)
+                        } else if importedShortcut != nil {
+                            ShortcutPreferences.shared.set(nil, for: action.name)
+                        } else {
+                            ShortcutPreferences.shared.reset(action.name)
+                        }
                     }
-                }
-                for defaultsKey in TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys + DesktopMoveManager.defaultsKeys + [CurrentSpaceWindowSwitcher.shortcutDefaultsKey] {
-                    if let importedShortcut = config.shortcuts[defaultsKey], importedShortcut.keyCode >= 0 {
-                        ShortcutPreferences.shared.set(importedShortcut.toMASSHortcut(), for: defaultsKey)
-                    } else if config.shortcuts[defaultsKey] != nil {
-                        ShortcutPreferences.shared.set(nil, for: defaultsKey)
-                    } else if defaultsKey != CurrentSpaceWindowSwitcher.shortcutDefaultsKey {
-                        ShortcutPreferences.shared.reset(defaultsKey)
+                    for defaultsKey in TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys + DesktopMoveManager.defaultsKeys + [CurrentSpaceWindowSwitcher.shortcutDefaultsKey] {
+                        if let importedShortcut = config.shortcuts[defaultsKey], importedShortcut.keyCode >= 0 {
+                            ShortcutPreferences.shared.set(importedShortcut.toMASSHortcut(), for: defaultsKey)
+                        } else if config.shortcuts[defaultsKey] != nil {
+                            ShortcutPreferences.shared.set(nil, for: defaultsKey)
+                        } else if defaultsKey != CurrentSpaceWindowSwitcher.shortcutDefaultsKey {
+                            ShortcutPreferences.shared.reset(defaultsKey)
+                        }
                     }
                 }
             }
         }
-        
+        BehaviorProfileStore.removeRedundantOverrides()
         Notification.Name.configImported.post(center: notificationCenter)
         return saved
     }
@@ -183,4 +195,5 @@ struct Config: Codable {
     let version: String
     let shortcuts: [String: Shortcut]
     let defaults: [String: CodableDefault]
+    var profiles: [String: [String: CodableDefault]]? = nil
 }

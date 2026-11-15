@@ -69,6 +69,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         addWindowActionMenuItems()
 
         NotificationCenter.default.addObserver(self, selector: #selector(rebuildMenu), name: .showAdditionalSizesInMenuChanged, object: nil)
+        for name in [Notification.Name.activeDisplayProfileChanged, .displayBehaviorProfileOverridesChanged] {
+            name.onPost { [weak self] _ in
+                BehaviorProfileContext.withActiveProfile { self?.rebuildMenu() }
+            }
+        }
 
         Notification.Name.configImported.onPost(using: { _ in
             self.statusItem.refreshVisibility()
@@ -134,6 +139,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.titleBarManager = TitleBarManager()
         self.greenButtonManager = GreenButtonManager()
         self.newWindowActionManager = NewWindowActionManager()
+        DisplayProfileRuntime.shared.start()
         self.initializeTodo()
         checkForProblematicApps()
         MacTilingDefaults.checkForBuiltInTiling(skipIfAlreadyNotified: true)

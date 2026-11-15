@@ -8,6 +8,12 @@ enum CycleSize: Int, CaseIterable {
     case oneThird = 2
     case oneQuarter = 3
     case threeQuarters = 4
+    case fourFifths = 5
+    case nineTenths = 6
+
+    static var sizesByFraction: [CycleSize] {
+        allCases.sorted { $0.fraction < $1.fraction }
+    }
     
     static func fromBits(bits: Int) -> Set<CycleSize> {
         Set(
@@ -25,7 +31,7 @@ enum CycleSize: Int, CaseIterable {
     // around to the smaller sizes.
     //
     // For example if all cycles are used, the order should be:
-    // 1/2, 2/3, 3/4, 1/4, 1/3
+    // 1/2, 2/3, 3/4, 4/5, 9/10, 1/4, 1/3
     static var sortedSizes: [CycleSize] = {
         let sortedSizes = Self.allCases.sorted(by: { $0.fraction < $1.fraction })
         
@@ -41,7 +47,9 @@ enum CycleSize: Int, CaseIterable {
 
     /// The sizes repeated executions cycle through, in cycling order.
     static func sortedSelectedSizes() -> [CycleSize] {
-        let useDefaultPositions = !Defaults.cycleSizesIsChanged.enabled
+        let hasOverride = BehaviorProfileStore.override(for: Defaults.selectedCycleSizes.key,
+                                                       profileID: BehaviorProfileContext.currentProfileID) != nil
+        let useDefaultPositions = !hasOverride && !Defaults.cycleSizesIsChanged.enabled
         let positions = useDefaultPositions ? defaultSizes : Defaults.selectedCycleSizes.value
 
         return sortedSizes.filter { positions.contains($0) }
@@ -79,6 +87,10 @@ extension CycleSize {
             String(localized: "¼")
         case .threeQuarters:
             String(localized: "¾")
+        case .fourFifths:
+            "4/5"
+        case .nineTenths:
+            "9/10"
         }
     }
     
@@ -94,6 +106,10 @@ extension CycleSize {
             1 / 4
         case .threeQuarters:
             3 / 4
+        case .fourFifths:
+            4 / 5
+        case .nineTenths:
+            9 / 10
         }
     }
     
@@ -130,6 +146,7 @@ class CycleSizesDefault: Default {
             return CycleSize.fromBits(bits: bits)
         }
         set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(int: newValue.toBits()), for: key) { return }
             storedValue = newValue
             if initialized {
                 JSONPreferences.shared.set(newValue.toBits(), forKey: key)

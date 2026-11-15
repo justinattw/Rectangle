@@ -1079,9 +1079,7 @@ struct CooperativeResizeCoordinator {
     }
 
     private func sortedCooperativeCycleSizes() -> [CycleSize] {
-        let useDefaultPositions = !Defaults.cycleSizesIsChanged.enabled
-        let positions = useDefaultPositions ? CycleSize.defaultSizes : Defaults.selectedCycleSizes.value
-        return CycleSize.sortedSizes.filter { positions.contains($0) }
+        CycleSize.sortedSelectedSizes()
     }
 
     private func cycleTargetFrames(action: WindowAction,

@@ -21,6 +21,7 @@ final class AppSettingsViewModel {
     }
 
      var versionString: String = ""
+     var configPath: String
 
      var allowAnyShortcut: Bool {
         didSet {
@@ -34,6 +35,7 @@ final class AppSettingsViewModel {
         self.launchOnLogin = Defaults.launchOnLogin.enabled
         self.hideMenuBarIcon = Defaults.hideMenuBarIcon.enabled
         self.allowAnyShortcut = Defaults.allowAnyShortcut.enabled
+        self.configPath = (JSONPreferences.shared.url.path as NSString).abbreviatingWithTildeInPath
 
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
@@ -100,6 +102,29 @@ final class AppSettingsViewModel {
             }
         }
         Notification.Name.windowSnapping.post(object: true)
+    }
+
+    func showConfigInFinder() {
+        NSWorkspace.shared.activateFileViewerSelecting([JSONPreferences.shared.url])
+    }
+
+    func changeConfigLocation() {
+        do {
+            let destination = try JSONPreferences.fileURL(for: configPath)
+            guard destination != JSONPreferences.shared.url.standardizedFileURL else { return }
+            let response = AlertUtil.twoButtonAlert(
+                question: "Change configuration location?",
+                text: "Use \(destination.path)?\n\nIf the file exists, its settings will be loaded without overwriting it. Otherwise, your current settings will be copied there. The original file will be kept.\n\nJRectangle will quit. Reopen it to use the selected configuration.",
+                confirmText: "Use and Quit"
+            )
+            guard response == .alertFirstButtonReturn else { return }
+            try JSONPreferences.shared.useLocationAfterRestart(destination)
+            NSApp.terminate(nil)
+        } catch {
+            Logger.log(error.localizedDescription)
+            AlertUtil.oneButtonAlert(question: "Could not change configuration location",
+                                     text: error.localizedDescription)
+        }
     }
 
     func importConfig() {

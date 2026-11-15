@@ -2799,6 +2799,25 @@ class StackCycleTests: XCTestCase {
                        [0, 1, 2])
     }
 
+    func testRightSideMixedFractionsUseRightEdgesForListAndCycling() throws {
+        let screen = CGRect(x: 0, y: 25, width: 1000, height: 800)
+        let frames = [
+            CGRect(x: 480, y: 25, width: 500, height: 800),
+            CGRect(x: 200, y: 25, width: 800, height: 800),
+            CGRect(x: 0, y: 25, width: 900, height: 800),
+            screen
+        ].filter { StackBadgeGeometry.usesRightEdge($0, in: screen) }
+        XCTAssertEqual(frames.count, 2)
+        for focused in frames.indices {
+            let anchor = try XCTUnwrap(StackBadgeGeometry.stackAnchor(for: focused, among: frames,
+                cascadeRange: 24, tolerance: 4, sizeTolerance: nil, rightAligned: true))
+            XCTAssertEqual(StackBadgeGeometry.stackMembers(anchor: anchor, among: frames,
+                cascadeRange: 24, tolerance: 4, sizeTolerance: nil, rightAligned: true), [0, 1])
+            XCTAssertEqual(StackBadgeGeometry.stackMembers(anchor: frames[focused], among: frames,
+                cascadeRange: 24, tolerance: 4, sizeTolerance: sizeTolerance, rightAligned: true), [focused])
+        }
+    }
+
     // Regression (review finding): with gaps on halves but not on maximize,
     // a maximized window's origin sits just up and left of a half's. Cycling
     // must pick the same stack the hover list shows, whichever is in front.
@@ -3203,6 +3222,296 @@ class StackCycleTests: XCTestCase {
 /// eligibility flag, while the offset it enabled was a no-op for anyone
 /// running the default of no gaps.
 class OverlapOffsetGeometryTests: XCTestCase {
+    private final class StackWindow: AccessibilityElement {
+        var currentFrame: CGRect
+        var refusesFrame = false
+        let testID: CGWindowID
+
+        init(_ frame: CGRect, id: CGWindowID = 1) {
+            currentFrame = frame
+            testID = id
+            super.init(AXUIElementCreateApplication(pid_t(10_000 + id)))
+        }
+
+        override var frame: CGRect { currentFrame }
+        override var windowId: CGWindowID? { testID }
+        override var isWindow: Bool? { true }
+        override var isMinimized: Bool? { false }
+        override var isHidden: Bool? { false }
+        override var isSheet: Bool? { false }
+        override var minimumSize: CGSize? { nil }
+        override func isResizable() -> Bool { true }
+        override func setFrame(_ frame: CGRect, adjustSizeFirst: Bool = true, adjustPosition: Bool = true) {
+            if !refusesFrame { currentFrame = frame }
+        }
+    }
+
+    private func withStackSettings<T>(sameSizeOnly: Bool = false, fit: Bool = false,
+                                      perform: () throws -> T) rethrows -> T {
+        try BehaviorProfileContext.withProfileID("default") {
+            let horizontal = Defaults.cyclingOverlapOffsetHorizontal.value
+            let vertical = Defaults.cyclingOverlapOffsetVertical.value
+            let sameSize = Defaults.stackSameSizeOnly.enabled
+            let fitToArea = Defaults.stackFitToSnapArea.enabled
+            defer {
+                Defaults.cyclingOverlapOffsetHorizontal.value = horizontal
+                Defaults.cyclingOverlapOffsetVertical.value = vertical
+                Defaults.stackSameSizeOnly.enabled = sameSize
+                Defaults.stackFitToSnapArea.enabled = fitToArea
+            }
+            Defaults.cyclingOverlapOffsetHorizontal.value = 20
+            Defaults.cyclingOverlapOffsetVertical.value = 0
+            Defaults.stackSameSizeOnly.enabled = sameSizeOnly
+            Defaults.stackFitToSnapArea.enabled = fit
+            return try perform()
+        }
+    }
+
+    func testMixedSidePlacementHonorsSizeToggleAndPreservesFractions() throws {
+        let screen = try XCTUnwrap(NSScreen.main)
+        for rightAligned in [false, true] {
+            for sameSizeOnly in [false, true] {
+                try withStackSettings(sameSizeOnly: sameSizeOnly) {
+                    let area = screen.adjustedVisibleFrame()
+                    let half = CGRect(x: rightAligned ? area.midX : area.minX, y: area.minY,
+                                      width: area.width / 2, height: area.height)
+                    let wider = CGRect(x: rightAligned ? area.maxX - area.width * 0.8 : area.minX,
+                                       y: area.minY, width: area.width * 0.8, height: area.height)
+                    let opposite = CGRect(x: rightAligned ? area.minX : area.midX, y: area.minY,
+                                          width: area.width / 2, height: area.height)
+                    let older = StackWindow(half.screenFlipped, id: 1)
+                    let arriving = StackWindow(wider.screenFlipped, id: 2)
+                    let unrelated = StackWindow(opposite.screenFlipped, id: 3)
+                    let maximized = StackWindow(area.screenFlipped, id: 4)
+                    let history = WindowHistory()
+                    let animator = WindowAnimator()
+                    let plan = try XCTUnwrap(OverlapOffsetGeometry.WindowStackPlacement.plan(base: wider,
+                        windowID: 2, element: arriving, screen: screen, history: history, animator: animator,
+                        windowElements: { [older, arriving, unrelated, maximized] }))
+                    XCTAssertEqual(plan.members.map(\.id), sameSizeOnly ? [] : [1])
+                    XCTAssertEqual(plan.target.size, wider.size)
+                    if !sameSizeOnly {
+                        XCTAssertEqual(plan.members.first?.target.size, half.size)
+                        arriving.currentFrame = plan.target
+                        plan.commit(actualFrame: plan.target, history: history, animator: animator)
+                        XCTAssertEqual(history.stackPlacements[1]?.base, half)
+                        XCTAssertEqual(history.stackPlacements[2]?.base, wider)
+                        XCTAssertEqual(history.stackPlacements[1]?.groupBase, history.stackPlacements[2]?.groupBase)
+                        XCTAssertTrue(area.contains(older.frame.screenFlipped))
+                        XCTAssertTrue(area.contains(arriving.frame.screenFlipped))
+                    }
+                    XCTAssertEqual(unrelated.frame, opposite.screenFlipped)
+                    XCTAssertEqual(maximized.frame, area.screenFlipped)
+                }
+            }
+        }
+    }
+
+    func testMixedFitStackReflowsFromEachOriginalFractionAsWindowsJoin() throws {
+        let screen = try XCTUnwrap(NSScreen.main)
+        try withStackSettings(fit: true) {
+            let area = screen.adjustedVisibleFrame()
+            let bases = [0.5, 0.8, 0.9].map { fraction in
+                CGRect(x: area.maxX - area.width * fraction, y: area.minY,
+                       width: area.width * fraction, height: area.height)
+            }
+            let windows = bases.enumerated().map { StackWindow($0.element.screenFlipped, id: CGWindowID($0.offset + 1)) }
+            let history = WindowHistory()
+            let animator = WindowAnimator()
+            for count in 2...3 {
+                let arriving = windows[count - 1]
+                let plan = try XCTUnwrap(OverlapOffsetGeometry.WindowStackPlacement.plan(base: bases[count - 1],
+                    windowID: arriving.testID, element: arriving, screen: screen, history: history, animator: animator,
+                    windowElements: { Array(windows.prefix(count)) }))
+                XCTAssertEqual(plan.members.count, count - 1)
+                arriving.currentFrame = plan.target
+                plan.commit(actualFrame: plan.target, history: history, animator: animator)
+                for index in 0..<count {
+                    XCTAssertEqual(windows[index].frame.width, bases[index].width - CGFloat(count - 1) * 20,
+                                   accuracy: 0.001)
+                    XCTAssertTrue(bases[index].contains(windows[index].frame.screenFlipped))
+                    XCTAssertEqual(history.stackPlacements[windows[index].testID]?.base, bases[index])
+                }
+                let frames = Dictionary(uniqueKeysWithValues: windows.prefix(count).map { ($0.testID, $0.frame) })
+                XCTAssertEqual(history.stackMembers(for: arriving.testID, frames: frames, sameSizeOnly: false),
+                               Set(windows.prefix(count).map(\.testID)))
+                XCTAssertEqual(history.stackSpan(near: arriving.frame.origin, frames: frames).dx,
+                               CGFloat(count - 1) * 20, accuracy: 0.001)
+            }
+        }
+    }
+
+    func testMixedKeepSizeStacksRemainOnScreenWithBothOffsetSigns() throws {
+        let screen = CGRect(x: -1000, y: 100, width: 1000, height: 800)
+        for rightAligned in [false, true] {
+            let bases = [500.0, 800.0, 900.0].map { width in
+                CGRect(x: rightAligned ? screen.maxX - width : screen.minX, y: screen.minY,
+                       width: width, height: screen.height)
+            }
+            for dx in [-200.0, 200.0] {
+                let frames = try XCTUnwrap(OverlapOffsetGeometry.stackFrames(bases: bases,
+                    offset: CGVector(dx: dx, dy: -30), screenFrame: screen, fit: false))
+                XCTAssertEqual(frames.map(\.size), bases.map(\.size))
+                XCTAssertTrue(frames.allSatisfy { screen.contains($0) })
+                let firstShift = frames[0].minX - bases[0].minX
+                let lastShift = frames[2].minX - bases[2].minX
+                XCTAssertEqual(lastShift - firstShift, dx < 0 ? -100 : 100)
+            }
+        }
+    }
+
+    func testMixedFitLayersStayInsideTheirOwnSnapAreasWithSignedOffsets() throws {
+        let screen = CGRect(x: 0, y: 0, width: 1000, height: 800)
+        let bases = [CGRect(x: 500, y: 0, width: 500, height: 800),
+                     CGRect(x: 200, y: 0, width: 800, height: 800)]
+        for offset in [CGVector(dx: -20, dy: 30), CGVector(dx: 20, dy: -30)] {
+            let frames = try XCTUnwrap(OverlapOffsetGeometry.stackFrames(bases: bases, offset: offset,
+                                                                         screenFrame: screen, fit: true))
+            for index in bases.indices {
+                XCTAssertTrue(bases[index].contains(frames[index]))
+                XCTAssertEqual(frames[index].size, CGSize(width: bases[index].width - 20, height: 770))
+            }
+        }
+    }
+
+    func testMixedStackMembershipHonorsSizeFilterAndPrunesMovedWindows() {
+        let history = WindowHistory()
+        let half = CGRect(x: 500, y: 0, width: 500, height: 800)
+        let wider = CGRect(x: 200, y: 0, width: 800, height: 800)
+        let first = half.screenFlipped.offsetBy(dx: -20, dy: 0)
+        let second = wider.screenFlipped
+        let opposite = CGRect(x: 0, y: 0, width: 500, height: 800).screenFlipped
+        history.stackPlacements[1] = .init(base: half, frame: first, order: 0)
+        history.stackPlacements[2] = .init(base: wider, groupBase: half, frame: second, order: 1)
+        history.stackPlacements[3] = .init(base: opposite.screenFlipped, frame: opposite, order: 0)
+        var frames: [CGWindowID: CGRect] = [1: first, 2: second, 3: opposite]
+        XCTAssertEqual(history.stackMembers(for: 1, frames: frames, sameSizeOnly: false), [1, 2])
+        XCTAssertEqual(history.stackMembers(for: 1, frames: frames, sameSizeOnly: true), [1])
+        XCTAssertEqual(history.stackSpan(near: first.origin, frames: frames), CGVector(dx: 20, dy: 0))
+        frames[2] = second.offsetBy(dx: 200, dy: 0)
+        XCTAssertEqual(history.stackMembers(for: 1, frames: frames, sameSizeOnly: false), [1])
+        XCTAssertNil(history.stackPlacements[2])
+        frames.removeValue(forKey: 1)
+        XCTAssertNil(history.stackMembers(for: 1, frames: frames, sameSizeOnly: false))
+    }
+
+    func testCommitReflowsOlderLayersAndPreservesRestoreFrames() {
+        let before = CGRect(x: 0, y: 0, width: 500, height: 800)
+        let olderTarget = CGRect(x: 0, y: 20, width: 480, height: 780)
+        let target = CGRect(x: 20, y: 0, width: 480, height: 780)
+        let older = StackWindow(before)
+        let arriving = StackWindow(target)
+        let history = WindowHistory()
+        let placement = OverlapOffsetGeometry.WindowStackPlacement(
+            base: before, groupBase: before, windowID: 2, element: arriving, target: target,
+            members: [.init(id: 1, element: older, before: before, target: olderTarget, base: before)])
+
+        placement.commit(actualFrame: before, history: history, animator: WindowAnimator())
+        XCTAssertEqual(older.frame, before)
+        XCTAssertTrue(history.stackPlacements.isEmpty)
+        placement.commit(actualFrame: target, history: history, animator: WindowAnimator())
+        XCTAssertEqual(older.frame, olderTarget)
+        XCTAssertEqual(history.restoreRects[1], before)
+        XCTAssertEqual(history.stackPlacements[1]?.order, 0)
+        XCTAssertEqual(history.stackPlacements[2]?.order, 1)
+    }
+
+    func testCommitCancelsIfEitherWindowHasMovedSincePlanning() {
+        let before = CGRect(x: 0, y: 0, width: 500, height: 800)
+        let target = CGRect(x: 20, y: 20, width: 480, height: 780)
+        let moved = CGRect(x: 200, y: 200, width: 500, height: 800)
+        let older = StackWindow(moved)
+        let arriving = StackWindow(target)
+        let history = WindowHistory()
+        let placement = OverlapOffsetGeometry.WindowStackPlacement(
+            base: before, groupBase: before, windowID: 2, element: arriving, target: target,
+            members: [.init(id: 1, element: older, before: before, target: target, base: before)])
+        placement.commit(actualFrame: target, history: history, animator: WindowAnimator())
+        XCTAssertEqual(older.frame, moved)
+        XCTAssertTrue(history.stackPlacements.isEmpty)
+        older.currentFrame = before
+        arriving.currentFrame = moved
+        placement.commit(actualFrame: target, history: history, animator: WindowAnimator())
+        XCTAssertEqual(older.frame, before)
+        XCTAssertTrue(history.stackPlacements.isEmpty)
+    }
+
+    func testRejectedReflowRestoresPreviouslyMovedMembers() {
+        let before = CGRect(x: 0, y: 0, width: 500, height: 800)
+        let target = CGRect(x: 40, y: 40, width: 460, height: 760)
+        let first = StackWindow(before)
+        let refusing = StackWindow(before)
+        refusing.refusesFrame = true
+        let arriving = StackWindow(target)
+        let history = WindowHistory()
+        let placement = OverlapOffsetGeometry.WindowStackPlacement(
+            base: before, groupBase: before, windowID: 3, element: arriving, target: target,
+            members: [.init(id: 1, element: first, before: before, target: target, base: before),
+                      .init(id: 2, element: refusing, before: before, target: target, base: before)])
+        placement.commit(actualFrame: target, history: history, animator: WindowAnimator())
+        XCTAssertEqual(first.frame, before)
+        XCTAssertEqual(refusing.frame, before)
+        XCTAssertTrue(history.stackPlacements.isEmpty)
+    }
+
+    func testStackDiscoveryUsesOnlyItsOwnLiveGeometryAfterOffsetsChange() {
+        let history = WindowHistory()
+        let base = CGRect(x: 0, y: 0, width: 500, height: 800)
+        let first = CGRect(x: 0, y: 0, width: 460, height: 760)
+        let last = first.offsetBy(dx: 40, dy: 60)
+        history.stackPlacements[1] = .init(base: base, frame: first, order: 0)
+        history.stackPlacements[2] = .init(base: base, frame: last, order: 2)
+        let distant = base.offsetBy(dx: 2000, dy: 0)
+        history.stackPlacements[3] = .init(base: distant, frame: distant, order: 100)
+        var frames: [CGWindowID: CGRect] = [1: first, 2: last, 3: distant]
+        XCTAssertEqual(history.stackSpan(near: first.origin, frames: frames), CGVector(dx: 40, dy: 60))
+        frames[2] = last.offsetBy(dx: 200, dy: 0)
+        XCTAssertEqual(history.stackSpan(near: first.origin, frames: frames), .zero)
+        XCTAssertNil(history.stackPlacements[2])
+        frames.removeValue(forKey: 3)
+        _ = history.stackSpan(near: first.origin, frames: frames)
+        XCTAssertNil(history.stackPlacements[3])
+    }
+
+    func testThreeFitLayersUseSignedOffsetsAndResizeEveryLayer() throws {
+        let base = CGRect(x: 0, y: 0, width: 500, height: 800)
+        let frames = try XCTUnwrap(OverlapOffsetGeometry.stackFrames(base: base, count: 3,
+            offset: CGVector(dx: 20, dy: -30), screenFrame: CGRect(x: 0, y: 0, width: 1000, height: 800), fit: true))
+        XCTAssertEqual(frames, [
+            CGRect(x: 0, y: 60, width: 460, height: 740),
+            CGRect(x: 20, y: 30, width: 460, height: 740),
+            CGRect(x: 40, y: 0, width: 460, height: 740)
+        ])
+        XCTAssertTrue(frames.allSatisfy { base.contains($0) })
+    }
+
+    func testKeepSizeRepositionsEarlierLayersToKeepNegativeStackOnScreen() throws {
+        let base = CGRect(x: 0, y: 0, width: 500, height: 800)
+        let screen = CGRect(x: 0, y: 0, width: 1000, height: 800)
+        let frames = try XCTUnwrap(OverlapOffsetGeometry.stackFrames(base: base, count: 3,
+            offset: CGVector(dx: -20, dy: 30), screenFrame: screen, fit: false))
+        XCTAssertEqual(frames.map(\.origin.x), [40, 20, 0])
+        XCTAssertTrue(frames.allSatisfy { $0.size == base.size && $0.minY == 0 && screen.contains($0) })
+    }
+
+    func testFitStackRejectsOffsetsThatLeaveNoWindowSize() {
+        XCTAssertNil(OverlapOffsetGeometry.stackFrames(base: CGRect(x: 0, y: 0, width: 100, height: 100),
+            count: 3, offset: CGVector(dx: 50, dy: 0), screenFrame: CGRect(x: 0, y: 0, width: 1000, height: 800), fit: true))
+        XCTAssertNil(OverlapOffsetGeometry.stackFrames(bases: [
+            CGRect(x: 0, y: 0, width: 80, height: 100),
+            CGRect(x: 0, y: 0, width: 500, height: 100)
+        ], offset: CGVector(dx: -80, dy: 0), screenFrame: screen, fit: true))
+    }
+
+    func testPositiveYStacksUpAndZeroAxesRemainAligned() throws {
+        let base = CGRect(x: 20, y: 20, width: 400, height: 300)
+        let frames = try XCTUnwrap(OverlapOffsetGeometry.stackFrames(base: base, count: 3,
+            offset: CGVector(dx: 0, dy: 15), screenFrame: CGRect(x: 0, y: 0, width: 1000, height: 800), fit: false))
+        XCTAssertEqual(frames.map(\.origin.y), [20, 35, 50])
+        XCTAssertEqual(frames.map(\.origin.x), [20, 20, 20])
+        XCTAssertEqual(StackBadgeGeometry.cascadeRange(offsetSize: -15, maxCascade: 1, tolerance: 4, stackDepth: 3), 34)
+    }
+
 
     private let screen = CGRect(x: 0, y: 0, width: 1000, height: 800)
     private let offset: CGFloat = 11
@@ -4957,6 +5266,16 @@ class CooperativeCornerResizeTests: XCTestCase {
 
 class CycleSizeRatioPresetTests: XCTestCase {
 
+    func testNewFractionsKeepStoredBitsAndSortNumerically() {
+        XCTAssertEqual(CycleSize.fromBits(bits: 31), [.twoThirds, .oneHalf, .oneThird, .oneQuarter, .threeQuarters])
+        XCTAssertEqual(CycleSize.sizesByFraction, [.oneQuarter, .oneThird, .oneHalf, .twoThirds, .threeQuarters, .fourFifths, .nineTenths])
+        XCTAssertEqual(CycleSize.sortedSizes, [.oneHalf, .twoThirds, .threeQuarters, .fourFifths, .nineTenths, .oneQuarter, .oneThird])
+        XCTAssertEqual(CycleSize.fromBits(bits: Set<CycleSize>([.fourFifths, .nineTenths]).toBits()), [.fourFifths, .nineTenths])
+        XCTAssertEqual(CycleSize.fromBits(bits: 1 << 6), [.nineTenths])
+        XCTAssertEqual(CycleSize.fourFifths.percentValue, 80, accuracy: 0.001)
+        XCTAssertEqual(CycleSize.nineTenths.percentValue, 90, accuracy: 0.001)
+    }
+
     func testPercentValuesMatchCycleSizeFractions() {
         XCTAssertEqual(CycleSize.oneHalf.percentValue, 50, accuracy: 0.001)
         XCTAssertEqual(CycleSize.twoThirds.percentValue, 66.666, accuracy: 0.001)
@@ -4966,6 +5285,8 @@ class CycleSizeRatioPresetTests: XCTestCase {
     func testMatchingPercentValueUsesTolerance() {
         XCTAssertEqual(CycleSize.matching(percentValue: 33.3334), .oneThird)
         XCTAssertEqual(CycleSize.matching(percentValue: 66.6666), .twoThirds)
+        XCTAssertEqual(CycleSize.matching(percentValue: 90), .nineTenths)
+        XCTAssertNil(CycleSize.matching(percentValue: 83.3333))
     }
 
     func testCustomPercentValueDoesNotMatchPreset() {
@@ -5818,7 +6139,7 @@ class HalfSplitCornerCalculationTests: XCTestCase {
         Defaults.verticalSplitRatio.value = CycleSize.oneThird.percentValue
         Defaults.cornerCycleExpansionAxis.value = .vertical
         Defaults.cycleSizesIsChanged.enabled = true
-        Defaults.selectedCycleSizes.value = Set(CycleSize.allCases)
+        Defaults.selectedCycleSizes.value = [.oneQuarter, .oneThird, .oneHalf, .twoThirds, .threeQuarters]
         Defaults.gapSize.value = 20
         ActiveSideSplitRatios.shared.resetAll()
 
@@ -8835,6 +9156,7 @@ final class WindowSizeConstraintExecutionTests: XCTestCase {
         override var frame: NSRect { testFrame }
         override var visibleFrame: NSRect { testFrame }
         override var safeAreaInsets: NSEdgeInsets { NSEdgeInsetsZero }
+        override var backingScaleFactor: CGFloat { 1 }
         override var hash: Int { ObjectIdentifier(self).hashValue }
         override func isEqual(_ object: Any?) -> Bool { (object as AnyObject?) === self }
     }
@@ -9000,6 +9322,7 @@ final class CrossDisplayResizeTests: XCTestCase {
         override var frame: NSRect { testFrame }
         override var visibleFrame: NSRect { testFrame }
         override var safeAreaInsets: NSEdgeInsets { NSEdgeInsetsZero }
+        override var backingScaleFactor: CGFloat { 1 }
         override var hash: Int { ObjectIdentifier(self).hashValue }
 
         // AppKit's equality implementation requires a real display ID.

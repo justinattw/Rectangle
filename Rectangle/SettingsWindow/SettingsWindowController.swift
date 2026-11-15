@@ -92,6 +92,7 @@ final class DisplayProfileSelectionModel {
 
     private(set) var selectedProfileID: String
     private(set) var overrideCount = 0
+    private(set) var overrideKeys: [String] = []
     private(set) var connectedScreens = NSScreen.screens
 
     var availableProfileIDs: [String] {
@@ -118,7 +119,9 @@ final class DisplayProfileSelectionModel {
         NotificationCenter.default.addObserver(forName: NSApplication.didChangeScreenParametersNotification,
                                                object: nil, queue: .main) { [weak self] _ in
             self?.connectedScreens = NSScreen.screens
+            BehaviorProfileStore.registerProfiles(NSScreen.screens.map(\.behaviorProfileID))
         }
+        Notification.Name.configImported.onPost { [weak self] _ in self?.refreshOverrideCount() }
     }
 
     func profileTitle(for profileID: String) -> String {
@@ -148,8 +151,23 @@ final class DisplayProfileSelectionModel {
         Notification.Name.displayBehaviorProfileChanged.post()
     }
 
+    func removeSelectedProfile() {
+        let profileID = selectedProfileID
+        guard profileID != BehaviorProfileStore.defaultProfileID else { return }
+        let response = AlertUtil.twoButtonAlert(
+            question: "Remove display profile?",
+            text: "Remove the saved profile for \(profileTitle(for: profileID)) and all of its overrides? A connected resolution will be discovered again when displays change or JRectangle restarts.",
+            confirmText: "Remove",
+            cancelText: "Cancel"
+        )
+        guard response == .alertFirstButtonReturn else { return }
+        selectProfile(BehaviorProfileStore.defaultProfileID)
+        BehaviorProfileStore.removeProfile(profileID)
+    }
+
     private func refreshOverrideCount() {
         overrideCount = BehaviorProfileStore.overrideCount(for: selectedProfileID)
+        overrideKeys = (Defaults.displayBehaviorProfiles.typedValue?[selectedProfileID] ?? [:]).keys.sorted()
     }
 }
 
@@ -178,12 +196,28 @@ private struct DisplayProfilePickerView: View {
                 .lineLimit(1)
                 .fixedSize()
 
-            if viewModel.selectedProfileID != BehaviorProfileStore.defaultProfileID,
-               viewModel.overrideCount > 0 {
-                Button("Reset") {
-                    viewModel.resetSelectedProfile()
+            if viewModel.selectedProfileID != BehaviorProfileStore.defaultProfileID {
+                Menu("Profile") {
+                    if viewModel.overrideCount > 0 {
+                        Menu("Inherit a setting from Default") {
+                            ForEach(viewModel.overrideKeys, id: \.self) { key in
+                                Button(key.replacingOccurrences(of: "shortcut:", with: "Shortcut: ")) {
+                                    BehaviorProfileStore.removeOverride(for: key, profileID: viewModel.selectedProfileID)
+                                }
+                            }
+                        }
+                        Button("Use Default for All Settings") {
+                            viewModel.resetSelectedProfile()
+                        }
+                        Divider()
+                    }
+                    Button("Remove Profile") {
+                        viewModel.removeSelectedProfile()
+                    }
                 }
                 .controlSize(.small)
+                .fixedSize()
+                .help("Inherit individual settings, clear overrides, or remove this saved profile.")
             }
         }
         .padding(.horizontal, 8)

@@ -6,9 +6,14 @@ APP := $(BUILD_DIR)/Build/Products/Release/JRectangle.app
 
 build:
 	@echo "Building JRectangle..."
-	@xcodebuild -quiet -project Rectangle.xcodeproj -scheme Rectangle \
+	@set -eu; \
+	identity=$$(/bin/sh scripts/local-signing-identity.sh); \
+	xcodebuild -quiet -project Rectangle.xcodeproj -scheme Rectangle \
 		-configuration Release -destination "platform=macOS,arch=$$(uname -m)" \
-		-derivedDataPath "$(BUILD_DIR)" build
+		-derivedDataPath "$(BUILD_DIR)" build; \
+	codesign --force --sign "$$identity" --timestamp=none --options runtime \
+		--entitlements Rectangle/RectangleRelease.entitlements "$(APP)"; \
+	codesign --verify --deep --strict "$(APP)"
 
 install: build
 	@set -eu; \

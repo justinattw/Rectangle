@@ -46,6 +46,7 @@ class SubsequentExecutionDefault: Default {
             return SubsequentExecutionMode(rawValue: rawValue) ?? .resize
         }
         set {
+            if initialized, BehaviorProfileStore.writeOverride(CodableDefault(int: newValue.rawValue), for: key) { return }
             storedValue = newValue
             if initialized {
                 JSONPreferences.shared.set(newValue.rawValue, forKey: key)

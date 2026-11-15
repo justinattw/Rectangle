@@ -16,10 +16,17 @@ class GreenButtonManager {
         Notification.Name.configImported.onPost { notification in
             self.toggleListening()
         }
+        for name in [Notification.Name.activeDisplayProfileChanged, .displayBehaviorProfileOverridesChanged,
+                     NSApplication.didChangeScreenParametersNotification] {
+            name.onPost { [weak self] _ in self?.toggleListening() }
+        }
     }
 
     private func toggleListening() {
-        if Defaults.greenButtonOverride.enabled {
+        let enabled = NSScreen.screens.contains { screen in
+            BehaviorProfileContext.withProfileID(screen.behaviorProfileID) { Defaults.greenButtonOverride.enabled }
+        }
+        if enabled {
             if !eventMonitor.running {
                 eventMonitor.start()
             }
@@ -40,7 +47,9 @@ class GreenButtonManager {
                 element.isFullScreenButton == true,
                 case let buttonFrame = element.frame,
                 buttonFrame != .null,
-                let windowElement = element.windowElement
+                let windowElement = element.windowElement,
+                let screen = ScreenDetection().detectScreens(using: windowElement)?.currentScreen,
+                BehaviorProfileContext.withProfileID(screen.behaviorProfileID, perform: { Defaults.greenButtonOverride.enabled })
             else {
                 return false
             }

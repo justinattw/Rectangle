@@ -112,7 +112,7 @@ enum DisplayOrientation {
     case landscape, portrait
 }
 
-struct SnapAreaConfig: Codable {
+struct SnapAreaConfig: Codable, Equatable {
     let compound: CompoundSnapArea?
     let action: WindowAction?
     

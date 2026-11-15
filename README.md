@@ -32,7 +32,11 @@ make install
 open /Applications/JRectangle.app
 ```
 
-`make install` builds the Release app and installs it in `/Applications`. Quit JRectangle before reinstalling; the installer keeps the previous app in a backup folder in `/Applications`. The installer requires write access to that folder. macOS may ask you to grant Accessibility permission again after a rebuild.
+`make install` builds the Release app and always installs it at `/Applications/JRectangle.app`. Quit JRectangle before reinstalling; the installer keeps the previous app in a backup folder in `/Applications`. The installer requires write access to that folder.
+
+On the first build, it creates a self-signed **JRectangle Local Development** identity in your default Keychain, trusted only for code signing in your user account. Approve the macOS Keychain prompts; if asked whether `codesign` may use this key, choose **Always Allow** for repeat builds. Later builds reuse that identity, including from a fresh clone. Private keys never belong in the repository. If an existing identity is unusable, the build stops rather than silently replacing it or falling back to ad-hoc signing.
+
+Grant Accessibility permission on the first launch, or once more when switching from an older ad-hoc build. Keeping the same signing identity and installation path is intended to preserve approval across subsequent builds. These builds are for personal use, not notarised public distribution.
 
 Settings are stored per macOS account. Use **App Settings > Export** and **Import** to transfer them to another account or Mac.
 
@@ -57,7 +61,15 @@ In **Shortcuts**, use the gear beside **Move Left** or **Larger Width** to set *
 
 The experimental **Previous Desktop** and **Next Desktop** shortcuts are below the display shortcuts and are unassigned by default. They simulate dragging the focused window's title bar while switching desktops, and follow the window. Enable the default Control-Left and Control-Right Mission Control shortcuts in **System Settings > Keyboard > Keyboard Shortcuts > Mission Control**, and allow JRectangle to control System Events when prompted. Accessibility permission is also required. Release the shortcut and mouse buttons, and avoid moving the mouse during the transfer. The pointer may remain on the window's title bar after a move. Full-screen windows, windows without a usable title bar, customized system desktop shortcuts, and some apps are not supported. At the end of the desktop list there may be no adjacent desktop; macOS does not provide a public way to confirm that the move succeeded.
 
-The display profile picker lists connected resolutions and labels a connected built-in display. Select a resolution to edit its overrides; blue labels mark overridden settings, including collapsed sections. Reset removes the selected profile's overrides. Profiles with the same resolution share settings.
+The **Display profile** picker is shared across **Shortcuts**, **Snap Areas**, and **Behavior**. Each pixel resolution inherits **Default**, with only changed settings saved as overrides. Returning a setting to Default removes its override automatically. Encountered resolutions stay saved and editable after disconnection. Use the profile menu to inherit individual settings, reset all overrides, or remove a saved profile. Connected resolutions are rediscovered when displays change or JRectangle restarts. Displays with the same resolution share settings.
+
+Beside **Import** and **Export**, **Show Config in Finder** reveals and selects the actual JSON file: `~/.config/jrectangle/config.json` (`~/.config/jrectangle/debug/config.json` for debug builds). It contains global `values` and a `profiles` section keyed by resolution, including profiles with no overrides. On first launch, settings are copied from the old Application Support location if the new file does not exist. The original is kept; an existing dotfile takes precedence.
+
+Under **App Settings > Configuration File**, enter an absolute path or a path beginning with `~/`, then click **Change Location...**. A new file receives a copy of the current settings; an existing file is validated and used without overwriting it. Confirming quits JRectangle; reopen it to load the selected file. The path choice stays in this app's local defaults, not the shared JSON. If that file later goes missing, startup reports an error instead of silently resetting your settings.
+
+Track the native JSON in your dotfiles directly or symlink its default location to your dotfiles repository. Saving settings preserves file and directory symlinks. Quit JRectangle before editing or replacing the file, then restart; external changes are not silently overwritten. Import and Export use a separate portable format that also includes profiles.
+
+Corner expansion and split-ratio fraction choices are ordered by size: 1/4, 1/3, 1/2, 2/3, 3/4, 4/5, and 9/10.
 
 ### Tile windows in rows or columns
 
@@ -81,7 +93,9 @@ When several windows are snapped to the same area, such as three windows on the 
 
 A window is in the stack when it sits at the same position as the window focused at the first press, or is offset from it by **Offset window position on overlap**, whatever its size. With **Only stack windows of the same size** on, it must also be the same size (within 24 points in width and height, so terminal windows that snap to whole character cells still count), so a maximized window that shares a corner with a half is not in that half's stack. The stacked window list follows the same setting. **Cycle stacked windows** first brings forward the window at the back of the stack; **Cycle stacked windows backward** first brings forward the window just behind the front one. Repeated presses visit every window in the stack. Pressing either shortcut while a window outside the stack is focused starts over from that window's stack. When the focused window has nothing stacked with it, JRectangle beeps.
 
-Set horizontal and vertical overlap offsets independently in **Stacked Windows**. A window only moves on an axis when there is enough room inside the usable display area.
+The same-size setting also controls automatic overlap offsets. With it off, windows snapped to the same left or right side can stack across fractions, such as 1/2 and 4/5. Right-side stacks align by their right edges rather than their top-left corners. Cycling and the window list include all members of these stacks.
+
+Set signed horizontal and vertical offsets independently in **Stacked Windows**. Each additional window advances one offset from the previous layer: positive X goes right, positive Y goes up, and negative values reverse those directions. **Keep window sizes** is the default; each window keeps its chosen fraction, while offsets compress or the stack shifts to stay inside the usable display. **Fit stack inside snap area** shrinks every layer as windows join, keeping each window inside its own original snap region. App minimum sizes can prevent a stack from fitting. These settings support display-profile overrides.
 
 ### Mouse button shortcuts
 
