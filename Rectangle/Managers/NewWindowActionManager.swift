@@ -45,7 +45,6 @@ final class NewWindowActionManager {
 
     private let ownPid: pid_t
     private let delay: TimeInterval
-    private let notificationCenter: NotificationCenter
     private let workspaceNotificationCenter: NotificationCenter
     private let observers: WindowCreationObserving
     private let actionProvider: () -> WindowAction?
@@ -60,12 +59,10 @@ final class NewWindowActionManager {
     private var observations = [pid_t: Observation]()
     private var handledWindowIds = HandledWindowIds()
     private var workspaceObservers = [NSObjectProtocol]()
-    private var configObserver: NSObjectProtocol?
 
     init(
         ownPid: pid_t = ProcessInfo.processInfo.processIdentifier,
         delay: TimeInterval = NewWindowActionManager.defaultDelay,
-        notificationCenter: NotificationCenter = .default,
         workspaceNotificationCenter: NotificationCenter = NSWorkspace.shared.notificationCenter,
         observers: WindowCreationObserving = AccessibilityWindowCreationObserver(),
         actionProvider: @escaping () -> WindowAction? = {
@@ -93,7 +90,6 @@ final class NewWindowActionManager {
     ) {
         self.ownPid = ownPid
         self.delay = delay
-        self.notificationCenter = notificationCenter
         self.workspaceNotificationCenter = workspaceNotificationCenter
         self.observers = observers
         self.actionProvider = actionProvider
@@ -105,16 +101,10 @@ final class NewWindowActionManager {
         self.isPrimaryMouseButtonDown = isPrimaryMouseButtonDown
 
         reloadFromDefaults()
-        configObserver = notificationCenter.addObserver(forName: .configImported, object: nil, queue: .main) { [weak self] _ in
-            self?.reloadFromDefaults()
-        }
     }
 
     deinit {
         stop()
-        if let configObserver {
-            notificationCenter.removeObserver(configObserver)
-        }
     }
 
     var observedProcessIdentifiers: Set<pid_t> {

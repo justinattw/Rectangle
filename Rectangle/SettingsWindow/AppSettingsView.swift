@@ -61,18 +61,6 @@ struct AppSettingsView: View {
             Section {
                 HStack {
                     Button {
-                        viewModel.importConfig()
-                    } label: {
-                        Label("Import", systemImage: "square.and.arrow.down")
-                    }
-                    
-                    Button {
-                        viewModel.exportConfig()
-                    } label: {
-                        Label("Export", systemImage: "square.and.arrow.up")
-                    }
-
-                    Button {
                         viewModel.showConfigInFinder()
                     } label: {
                         Label("Show Config in Finder", systemImage: "folder")

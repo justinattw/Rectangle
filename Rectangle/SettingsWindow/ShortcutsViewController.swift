@@ -349,13 +349,11 @@ class ShortcutsViewController: NSViewController {
     }
     
     private func setupGroups() {
-        let standardCategories: [ShortcutCategory] = [
-            ShortcutCategory(actions: [.moveLeft, .moveRight, .moveUp, .moveDown], includeCurrentSpaceSwitcher: true),
-            ShortcutCategory(actions: [.leftHalf, .rightHalf, .centerHalf, .topHalf, .bottomHalf]),
-            ShortcutCategory(actions: [.topLeft, .topRight, .bottomLeft, .bottomRight]),
-            ShortcutCategory(actions: [.maximize, .almostMaximize, .maximizeHeight, .largerWidth, .smallerWidth, .largerHeight, .smallerHeight, .center, .restore]),
-            ShortcutCategory(actions: [.nextDisplay, .previousDisplay], includeDesktopMoves: true)
-        ]
+        let standardCategories = WindowAction.standardShortcutGroups.map { actions in
+            ShortcutCategory(actions: actions,
+                             includeCurrentSpaceSwitcher: actions.contains(.moveLeft),
+                             includeDesktopMoves: actions.contains(.nextDisplay))
+        }
         
         let moreCategories: [ShortcutCategory] = [
             ShortcutCategory(actions: [.firstThird, .centerThird, .lastThird, .firstTwoThirds, .centerTwoThirds, .lastTwoThirds]),

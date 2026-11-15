@@ -92,7 +92,6 @@ final class TileSettingsView: NSView, NSTextFieldDelegate {
         refreshValues()
         Notification.Name.displayBehaviorProfileChanged.onPost { [weak self] _ in self?.refreshValues() }
         Notification.Name.displayBehaviorProfileOverridesChanged.onPost { [weak self] _ in self?.refreshValues() }
-        Notification.Name.configImported.onPost { [weak self] _ in self?.refreshValues() }
     }
 
     private func refreshValues() {

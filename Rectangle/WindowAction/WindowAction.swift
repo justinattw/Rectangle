@@ -156,6 +156,15 @@ enum WindowAction: Int, Codable {
          lastVerticalSixth = 146
 
     // Order matters here - it's used in the menu
+    static let standardShortcutGroups: [[WindowAction]] = [
+        [.moveLeft, .moveRight, .moveUp, .moveDown],
+        [.leftHalf, .rightHalf, .centerHalf, .topHalf, .bottomHalf],
+        [.topLeft, .topRight, .bottomLeft, .bottomRight],
+        [.maximize, .almostMaximize, .maximizeHeight, .largerWidth, .smallerWidth,
+         .largerHeight, .smallerHeight, .center, .restore],
+        [.nextDisplay, .previousDisplay]
+    ]
+
     static let active = [leftHalf, rightHalf, centerHalf, topHalf, bottomHalf,
                          topLeft, topRight, bottomLeft, bottomRight,
                          firstThird, centerThird, lastThird, firstTwoThirds, centerTwoThirds, lastTwoThirds,
@@ -213,28 +222,6 @@ enum WindowAction: Int, Codable {
     
     func postTitleBar(windowElement: AccessibilityElement?, screen: NSScreen? = nil) {
         NotificationCenter.default.post(name: notificationName, object: ExecutionParameters(self, screen: screen, windowElement: windowElement, source: .titleBar))
-    }
-
-    // Determines where separators should be used in the menu
-    var firstInGroup: Bool {
-        switch self {
-        case .leftHalf, .topLeft, .firstThird, .maximize, .almostMaximize, .nextDisplay, .moveLeft, .firstFourth, .topLeftSixth, .topLeftEighth, .topLeftNinth, .topLeftTwelfth, .topLeftSixteenth, .tileRows:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var excludedFromMenu: Bool {
-        switch self {
-        case .smallerWidth, .largerWidth, .topVerticalThird, .middleVerticalThird, .bottomVerticalThird, .topVerticalTwoThirds, .bottomVerticalTwoThirds,
-             .firstVerticalEighth, .secondVerticalEighth, .thirdVerticalEighth, .fourthVerticalEighth,
-             .fifthVerticalEighth, .sixthVerticalEighth, .seventhVerticalEighth, .lastVerticalEighth,
-             .firstVerticalSixth, .secondVerticalSixth, .thirdVerticalSixth,
-             .fourthVerticalSixth, .fifthVerticalSixth, .lastVerticalSixth,
-             .cycleStackedWindows, .cycleStackedWindowsBackward: return true
-        default: return false
-        }
     }
 
     var name: String {
@@ -995,7 +982,7 @@ enum WindowAction: Int, Codable {
         positionCycles || self == .maximize
     }
 
-    var category: WindowActionCategory? { // used to specify a submenu
+    var category: WindowActionCategory? {
         switch self {
         case .firstThird, .centerThird, .lastThird, .firstTwoThirds, .centerTwoThirds, .lastTwoThirds: return .thirds
         case .firstFourth, .secondFourth, .thirdFourth, .lastFourth, .firstThreeFourths, .centerThreeFourths, .lastThreeFourths: return .fourths

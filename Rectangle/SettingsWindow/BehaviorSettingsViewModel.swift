@@ -191,15 +191,6 @@ final class BehaviorSettingsViewModel {
         }
     }
     
-    var showAdditionalSizesInMenu: Bool {
-        didSet {
-            guard !isLoadingProfile else { return }
-            persistProfiledValue(CodableDefault(int: showAdditionalSizesInMenu ? 1 : 2), key: Defaults.showAdditionalSizesInMenu.key) {
-                Defaults.showAdditionalSizesInMenu.enabled = showAdditionalSizesInMenu
-            }
-            Notification.Name.showAdditionalSizesInMenuChanged.post()
-        }
-    }
     var cyclingOverlapOffset = false {
         didSet {
             persistProfiledValue(CodableDefault(int: cyclingOverlapOffset ? 1 : 2), key: Defaults.cyclingOverlapOffset.key) {
@@ -324,7 +315,6 @@ final class BehaviorSettingsViewModel {
         let hRatio = Defaults.horizontalSplitRatio.value
         let vRatio = Defaults.verticalSplitRatio.value
         
-        self.showAdditionalSizesInMenu = Defaults.showAdditionalSizesInMenu.userEnabled
         self.cyclingOverlapOffset = Defaults.cyclingOverlapOffset.userEnabled
         self.stackBadge = Defaults.stackBadge.userEnabled
         self.stackSameSizeOnly = Defaults.stackSameSizeOnly.userEnabled
@@ -342,9 +332,6 @@ final class BehaviorSettingsViewModel {
     }
     
     private func setupObservers() {
-        Notification.Name.configImported.onPost { [weak self] _ in
-            self?.reloadFromDefaults()
-        }
         Notification.Name.displayBehaviorProfileChanged.onPost { [weak self] _ in
             self?.reloadFromDefaults()
         }
@@ -404,7 +391,6 @@ final class BehaviorSettingsViewModel {
         let hRatio = Defaults.horizontalSplitRatio.value
         let vRatio = Defaults.verticalSplitRatio.value
         
-        self.showAdditionalSizesInMenu = Defaults.showAdditionalSizesInMenu.userEnabled
         self.cyclingOverlapOffset = Defaults.cyclingOverlapOffset.userEnabled
         self.stackBadge = Defaults.stackBadge.userEnabled
         self.stackSameSizeOnly = Defaults.stackSameSizeOnly.userEnabled
@@ -533,35 +519,6 @@ final class BehaviorSettingsViewModel {
         }
         NSApp.activate(ignoringOtherApps: true)
         aboutTodoWindowController?.showWindow(nil)
-    }
-    
-    func exportConfig() {
-        Notification.Name.windowSnapping.post(object: false)
-        let savePanel = NSSavePanel()
-        savePanel.allowedContentTypes = [.json]
-        savePanel.nameFieldStringValue = "RectangleConfig"
-        
-        if savePanel.runModal() == .OK, let url = savePanel.url {
-            do {
-                if let jsonString = Defaults.encoded() {
-                    try jsonString.write(to: url, atomically: false, encoding: .utf8)
-                }
-            } catch {
-                Logger.log(error.localizedDescription)
-            }
-        }
-        Notification.Name.windowSnapping.post(object: true)
-    }
-    
-    func importConfig() {
-        Notification.Name.windowSnapping.post(object: false)
-        let openPanel = NSOpenPanel()
-        openPanel.allowedContentTypes = [.json]
-        
-        if openPanel.runModal() == .OK, let url = openPanel.url {
-            Defaults.load(fileUrl: url)
-        }
-        Notification.Name.windowSnapping.post(object: true)
     }
     
     func selectHSplitPreset(_ preset: CycleSize?) {

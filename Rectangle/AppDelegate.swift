@@ -23,7 +23,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     private var prevActiveAppObservation: NSKeyValueObservation?
     private var prevActiveApp: NSRunningApplication?
-    private var additionalSizeMenuItems: [NSMenuItem] = []
     private var dynamicMenuItemCount: Int = 0
 
     @IBOutlet weak var mainStatusMenu: NSMenu!
@@ -40,9 +39,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         #if DEBUG
         if ProcessInfo.processInfo.environment["JRECTANGLE_TESTING"] == "1" { return }
         #endif
-        Defaults.loadFromSupportDir()
-        migrateShowEighthsInMenu()
-
         checkVersion()
         mainStatusMenu.delegate = self
         statusItem.refreshVisibility()
@@ -68,21 +64,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         addMenuIcons()
         addWindowActionMenuItems()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(rebuildMenu), name: .showAdditionalSizesInMenuChanged, object: nil)
         for name in [Notification.Name.activeDisplayProfileChanged, .displayBehaviorProfileOverridesChanged] {
             name.onPost { [weak self] _ in
                 BehaviorProfileContext.withActiveProfile { self?.rebuildMenu() }
             }
         }
 
-        Notification.Name.configImported.onPost(using: { _ in
-            self.statusItem.refreshVisibility()
-            self.applicationToggle.reloadFromDefaults()
-            self.shortcutManager.reloadFromDefaults()
-            self.snappingManager.reloadFromDefaults()
-            self.initializeTodo(false)
-        })
-        
         Notification.Name.todoMenuToggled.onPost(using: { _ in
             self.initializeTodo(false)
         })
@@ -356,58 +343,21 @@ extension AppDelegate: NSMenuDelegate {
         windowAction.postMenu()
     }
     
-    func addWindowActionMenuItems(showAdditional: Bool = Defaults.showAdditionalSizesInMenu.userEnabled,
-                                  showAllActions: Bool = Defaults.showAllActionsInMenu.userEnabled) {
-        let additionalSizeCategories: Set<WindowActionCategory> = [.eighths, .ninths, .twelfths, .sixteenths, .tiling]
-        let submenuOnlyWhenAdditional: Set<WindowActionCategory> = [.thirds, .size]
+    func addWindowActionMenuItems() {
         var menuIndex = 0
-        var categoryMenus: [CategoryMenu] = []
-        for action in WindowAction.active {
-            guard !action.excludedFromMenu, let displayName = action.displayName else { continue }
-            let newMenuItem = NSMenuItem(title: displayName, action: #selector(executeMenuWindowAction), keyEquivalent: "")
-            newMenuItem.representedObject = action
-            if #available(macOS 27.0, *) {
-                newMenuItem.preferredImageVisibility = .visible
-            }
-            if !showAllActions, let category = action.category {
-                // When additional sizes are off, keep Thirds and Size as flat items
-                if submenuOnlyWhenAdditional.contains(category) && !showAdditional {
-                    // Fall through to flat item handling below
-                } else {
-                    if menuIndex != 0 && action.firstInGroup {
-                        let menu = NSMenu(title: category.displayName)
-                        menu.autoenablesItems = false
-                        categoryMenus.append(CategoryMenu(menu: menu, category: category))
-                    }
-                    categoryMenus.last?.menu.addItem(newMenuItem)
-                    continue
-                }
-            }
-
-            // Flat item - suppress extra separator for almostMaximize when Size is not a submenu
-            let showSeparator = action.firstInGroup && !(action == .almostMaximize && !showAdditional)
-            if menuIndex != 0 && showSeparator {
+        for group in WindowAction.standardShortcutGroups {
+            if menuIndex != 0 {
                 mainStatusMenu.insertItem(NSMenuItem.separator(), at: menuIndex)
                 menuIndex += 1
             }
-            mainStatusMenu.insertItem(newMenuItem, at: menuIndex)
-            menuIndex += 1
-        }
-
-        if !categoryMenus.isEmpty {
-            mainStatusMenu.insertItem(NSMenuItem.separator(), at: menuIndex)
-            menuIndex += 1
-
-            let sortedCategoryMenus = categoryMenus.sorted { $0.category.menuOrder < $1.category.menuOrder }
-            for categoryMenu in sortedCategoryMenus {
-                categoryMenu.menu.delegate = self
-                let menuMenuItem = NSMenuItem(title: categoryMenu.category.displayName, action: nil, keyEquivalent: "")
-                if additionalSizeCategories.contains(categoryMenu.category) {
-                    menuMenuItem.isHidden = !showAdditional
-                    additionalSizeMenuItems.append(menuMenuItem)
+            for action in group {
+                guard let displayName = action.displayName else { continue }
+                let menuItem = NSMenuItem(title: displayName, action: #selector(executeMenuWindowAction), keyEquivalent: "")
+                menuItem.representedObject = action
+                if #available(macOS 27.0, *) {
+                    menuItem.preferredImageVisibility = .visible
                 }
-                mainStatusMenu.insertItem(menuMenuItem, at: menuIndex)
-                mainStatusMenu.setSubmenu(categoryMenu.menu, for: menuMenuItem)
+                mainStatusMenu.insertItem(menuItem, at: menuIndex)
                 menuIndex += 1
             }
         }
@@ -426,21 +376,7 @@ extension AppDelegate: NSMenuDelegate {
             mainStatusMenu.removeItem(at: 0)
         }
         dynamicMenuItemCount = 0
-        additionalSizeMenuItems.removeAll()
         addWindowActionMenuItems()
-    }
-
-    private func migrateShowEighthsInMenu() {
-        let oldKey = "showEighthsInMenu"
-        let oldValue = JSONPreferences.shared.integer(forKey: oldKey)
-        if oldValue != 0 && Defaults.showAdditionalSizesInMenu.notSet {
-            Defaults.showAdditionalSizesInMenu.enabled = (oldValue == 1)
-        }
-    }
-
-    struct CategoryMenu {
-        let menu: NSMenu
-        let category: WindowActionCategory
     }
 
 }

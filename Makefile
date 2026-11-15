@@ -2,7 +2,7 @@ APPLICATIONS_DIR ?= /Applications
 BUILD_DIR ?= $(CURDIR)/build
 APP := $(BUILD_DIR)/Build/Products/Release/JRectangle.app
 
-.PHONY: build install
+.PHONY: build install dmg
 
 build:
 	@echo "Building JRectangle..."
@@ -14,6 +14,18 @@ build:
 	codesign --force --sign "$$identity" --timestamp=none --options runtime \
 		--entitlements Rectangle/RectangleRelease.entitlements "$(APP)"; \
 	codesign --verify --deep --strict "$(APP)"
+
+dmg: build
+	@set -eu; \
+	staging=$$(mktemp -d "$(BUILD_DIR)/JRectangle-dmg.XXXXXX"); \
+	trap 'rm -rf "$$staging"' EXIT; \
+	trap 'exit 1' HUP INT TERM; \
+	ditto "$(APP)" "$$staging/JRectangle.app"; \
+	codesign --verify --deep --strict "$$staging/JRectangle.app"; \
+	ln -s /Applications "$$staging/Applications"; \
+	hdiutil create -ov -format UDZO -volname JRectangle \
+		-srcfolder "$$staging" "$(BUILD_DIR)/JRectangle.dmg"; \
+	echo "Created $(BUILD_DIR)/JRectangle.dmg"
 
 install: build
 	@set -eu; \

@@ -121,7 +121,6 @@ final class DisplayProfileSelectionModel {
             self?.connectedScreens = NSScreen.screens
             BehaviorProfileStore.registerProfiles(NSScreen.screens.map(\.behaviorProfileID))
         }
-        Notification.Name.configImported.onPost { [weak self] _ in self?.refreshOverrideCount() }
     }
 
     func profileTitle(for profileID: String) -> String {

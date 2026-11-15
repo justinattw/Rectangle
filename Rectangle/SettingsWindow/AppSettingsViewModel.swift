@@ -49,15 +49,6 @@ final class AppSettingsViewModel {
             self?.hideMenuBarIcon = true
         }
 
-        Notification.Name.configImported.onPost { [weak self] _ in
-            self?.reloadFromDefaults()
-        }
-    }
-
-    func reloadFromDefaults() {
-        self.launchOnLogin = Defaults.launchOnLogin.enabled
-        self.hideMenuBarIcon = Defaults.hideMenuBarIcon.enabled
-        self.allowAnyShortcut = Defaults.allowAnyShortcut.enabled
     }
 
     func restoreDefaults() {
@@ -83,27 +74,6 @@ final class AppSettingsViewModel {
         Notification.Name.defaultSnapAreas.post()
     }
 
-    func exportConfig() {
-        Notification.Name.windowSnapping.post(object: false)
-        let savePanel = NSSavePanel()
-        savePanel.allowedContentTypes = [.json]
-        savePanel.nameFieldStringValue = "RectangleConfig"
-        
-        if savePanel.runModal() == .OK, let url = savePanel.url {
-            do {
-                if let jsonString = Defaults.encoded() {
-                    try jsonString.write(to: url, atomically: true, encoding: .utf8)
-                } else {
-                    AlertUtil.oneButtonAlert(question: "Could not export configuration", text: "The settings could not be encoded.")
-                }
-            } catch {
-                Logger.log(error.localizedDescription)
-                AlertUtil.oneButtonAlert(question: "Could not export configuration", text: error.localizedDescription)
-            }
-        }
-        Notification.Name.windowSnapping.post(object: true)
-    }
-
     func showConfigInFinder() {
         NSWorkspace.shared.activateFileViewerSelecting([JSONPreferences.shared.url])
     }
@@ -127,14 +97,4 @@ final class AppSettingsViewModel {
         }
     }
 
-    func importConfig() {
-        Notification.Name.windowSnapping.post(object: false)
-        let openPanel = NSOpenPanel()
-        openPanel.allowedContentTypes = [.json]
-        
-        if openPanel.runModal() == .OK, let url = openPanel.url {
-            Defaults.load(fileUrl: url)
-        }
-        Notification.Name.windowSnapping.post(object: true)
-    }
 }

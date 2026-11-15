@@ -472,7 +472,6 @@ struct BehaviorSettingsView: View {
                         Toggle("Preserve side axis size for half actions, similar to Windows", isOn: $viewModel.halvesPreserveOtherAxisSize)
                             .foregroundColor(overrideColor(Defaults.halvesPreserveOtherAxisSize.key))
                         Toggle("Show warning when windows cannot be resized small enough", isOn: $viewModel.showMinimumWindowSizeWarning)
-                        Toggle("Show *Extra* shortcuts in menu", isOn: $viewModel.showAdditionalSizesInMenu)
                         VStack(alignment: .leading, spacing: 2) {
                             Toggle("Mouse button shortcuts act on the window under the pointer", isOn: $viewModel.mouseButtonShortcutsUseWindowUnderCursor)
                             Text("Keyboard shortcuts always act on the focused window")

@@ -5,7 +5,6 @@ import Cocoa
 extension Notification.Name {
     static let windowActionWillExecute = Notification.Name("windowActionWillExecute")
   
-    static let configImported = Notification.Name("configImported")
     static let windowAnimationPreferencesChanged = Notification.Name("windowAnimationPreferencesChanged")
     static let windowActionCompleted = Notification.Name("windowActionCompleted")
     static let windowSnapping = Notification.Name("windowSnapping")
@@ -22,7 +21,6 @@ extension Notification.Name {
     static let displayBehaviorProfileChanged = Notification.Name("displayBehaviorProfileChanged")
     static let displayBehaviorProfileOverridesChanged = Notification.Name("displayBehaviorProfileOverridesChanged")
     static let moveStepChanged = Notification.Name("moveStepChanged")
-    static let showAdditionalSizesInMenuChanged = Notification.Name("showAdditionalSizesInMenuChanged")
     static let shortcutRecording = Notification.Name("shortcutRecording")
     static let stackBadgeChanged = Notification.Name("stackBadgeChanged")
     static let snapAreaSettingsNeedsResize = Notification.Name("snapAreaSettingsNeedsResize")

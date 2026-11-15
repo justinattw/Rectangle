@@ -183,12 +183,6 @@ final class SnapAreaViewModel {
             }
             .store(in: &cancellables)
         
-        center.publisher(for: .configImported)
-            .sink { [weak self] _ in
-                self?.syncDefaults()
-            }
-            .store(in: &cancellables)
-
         center.publisher(for: .displayBehaviorProfileChanged)
             .sink { [weak self] _ in self?.syncDefaults() }
             .store(in: &cancellables)

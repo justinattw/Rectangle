@@ -88,16 +88,6 @@ class StackBadgeManager {
                 }
             }
         }
-        NotificationCenter.default.addObserver(
-            forName: .configImported,
-            object: nil, queue: .main
-        ) { [weak self] _ in
-            // An import can change the toggle shortcut - or clear a conflict
-            // that had left it unbound - so the binding is re-evaluated, not
-            // just the listener.
-            Self.reevaluateToggleShortcut()
-            self?.toggleListening()
-        }
         NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.activeSpaceDidChangeNotification,
             object: nil, queue: .main

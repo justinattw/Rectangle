@@ -466,11 +466,12 @@ class DisplayConfigurationLayerTests: XCTestCase {
         XCTAssertEqual(BehaviorProfileStore.overrideCount(for: profile), 1)
     }
 
-    func testExportUsesDefaultValuesWhileEditingAnotherProfile() throws {
+    func testNativeConfigKeepsDefaultAndProfileValuesSeparate() throws {
         BehaviorProfileContext.edit(profile) { Defaults.gapSize.value = 22 }
-        let exported = BehaviorProfileContext.edit(profile) { Defaults.encoded() }
-        let config = try XCTUnwrap(Defaults.convert(jsonString: XCTUnwrap(exported)))
-        XCTAssertEqual(config.defaults[Defaults.gapSize.key]?.float, 10)
-        XCTAssertEqual(config.profiles?[profile]?[Defaults.gapSize.key]?.float, 22)
+        let preferences = try JSONPreferences(url: JSONPreferences.shared.url, legacyValues: [:])
+        XCTAssertEqual(preferences.float(forKey: Defaults.gapSize.key), 10)
+        let data = Data(try XCTUnwrap(preferences.string(forKey: Defaults.displayBehaviorProfiles.key)).utf8)
+        let profiles = try JSONDecoder().decode([String: [String: CodableDefault]].self, from: data)
+        XCTAssertEqual(profiles[profile]?[Defaults.gapSize.key]?.float, 22)
     }
 }

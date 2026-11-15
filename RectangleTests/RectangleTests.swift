@@ -214,7 +214,7 @@ final class EarlySnapEdgeTests: XCTestCase {
         XCTAssertFalse(model.snapBeforeReachingEdges)
         XCTAssertNil(manager.directionalLocationOfCursor(loc: location, screen: screen))
     }
-    func testCustomDistanceSurvivesSettingsCreationAndImportSync() throws {
+    func testCustomDistanceSurvivesSettingsCreationAndDefaultsSync() throws {
         let saved = Defaults.snapBeforeReachingEdges.toCodable()
         defer { Defaults.snapBeforeReachingEdges.load(from: saved) }
         Defaults.snapBeforeReachingEdges.value = 32.5
@@ -418,7 +418,8 @@ class VerticalEighthActionTests: XCTestCase {
     }
 
     func testVerticalEighthActionsAreHiddenFromNormalUI() throws {
-        XCTAssertTrue(actions.allSatisfy(\.excludedFromMenu))
+        let standardActions = Set(WindowAction.standardShortcutGroups.flatMap { $0 })
+        XCTAssertTrue(actions.allSatisfy { !standardActions.contains($0) })
         XCTAssertTrue(actions.allSatisfy { !$0.isDragSnappable })
 
         let controller = ShortcutsViewController()
@@ -573,7 +574,8 @@ class VerticalSixthActionTests: XCTestCase {
 
     func testVerticalSixthActionsAreHiddenFromMenuAndDragSnapping() {
         XCTAssertTrue(actions.allSatisfy { WindowAction.active.contains($0) })
-        XCTAssertTrue(actions.allSatisfy(\.excludedFromMenu))
+        let standardActions = Set(WindowAction.standardShortcutGroups.flatMap { $0 })
+        XCTAssertTrue(actions.allSatisfy { !standardActions.contains($0) })
         XCTAssertTrue(actions.allSatisfy { !$0.isDragSnappable })
     }
 
@@ -609,37 +611,58 @@ class VerticalSixthActionTests: XCTestCase {
 
 class WindowActionMenuTests: XCTestCase {
 
-    func testRowsAndColumnsShareOptionalSubmenu() throws {
-        for showAdditional in [false, true] {
-            let menu = makeMenu(showAdditional: showAdditional, showAllActions: false)
-            let tilingItems = menu.items.filter { item in
-                item.submenu?.items.contains { $0.representedObject as? WindowAction == .tileRows } == true
-            }
-            XCTAssertEqual(tilingItems.count, 1)
-            let tilingItem = try XCTUnwrap(tilingItems.first)
-            XCTAssertEqual(tilingItem.submenu?.items.compactMap { $0.representedObject as? WindowAction },
-                           [.tileRows, .tileColumns])
-            XCTAssertEqual(tilingItem.isHidden, !showAdditional)
-            let topLevelActions = menu.items.compactMap { $0.representedObject as? WindowAction }
-            XCTAssertFalse(topLevelActions.contains(.tileRows))
-            XCTAssertFalse(topLevelActions.contains(.tileColumns))
-            XCTAssertTrue(topLevelActions.contains(.maximize))
-        }
-    }
-
-    func testShowAllActionsKeepsRowsAndColumnsFlat() {
-        let menu = makeMenu(showAdditional: false, showAllActions: true)
-        let visibleActions = menu.items.filter { !$0.isHidden }.compactMap { $0.representedObject as? WindowAction }
-        XCTAssertTrue(visibleActions.contains(.tileRows))
-        XCTAssertTrue(visibleActions.contains(.tileColumns))
+    func testMenuContainsOnlyTheMainShortcutGroupInSettingsOrder() {
+        let menu = makeMenu()
+        XCTAssertEqual(menu.items.compactMap { $0.representedObject as? WindowAction }, [
+            .moveLeft, .moveRight, .moveUp, .moveDown,
+            .leftHalf, .rightHalf, .centerHalf, .topHalf, .bottomHalf,
+            .topLeft, .topRight, .bottomLeft, .bottomRight,
+            .maximize, .almostMaximize, .maximizeHeight, .largerWidth, .smallerWidth,
+            .largerHeight, .smallerHeight, .center, .restore,
+            .nextDisplay, .previousDisplay
+        ])
         XCTAssertFalse(menu.items.contains { $0.submenu != nil })
     }
 
-    private func makeMenu(showAdditional: Bool, showAllActions: Bool) -> NSMenu {
+    func testLegacyMenuSettingsCannotRestoreExtraActions() {
+        let keys = ["showAllActionsInMenu", "showAdditionalSizesInMenu", "showEighthsInMenu"]
+        let saved = keys.map { JSONPreferences.shared.object(forKey: $0) }
+        defer {
+            for (key, value) in zip(keys, saved) {
+                JSONPreferences.shared.set(value, forKey: key)
+            }
+        }
+        for key in keys { JSONPreferences.shared.set(1, forKey: key) }
+        let actions = makeMenu().items.compactMap { $0.representedObject as? WindowAction }
+        XCTAssertFalse(actions.contains(.firstThird))
+        XCTAssertFalse(actions.contains(.topLeftNinth))
+        XCTAssertFalse(actions.contains(.tileRows))
+        XCTAssertFalse(actions.contains(.tileColumns))
+    }
+
+    func testRebuildingMenuPreservesStaticItemsWithoutDuplicatingActions() {
+        let menu = NSMenu()
+        let settings = NSMenuItem(title: "Settings", action: nil, keyEquivalent: "")
+        menu.addItem(settings)
+        let delegate = AppDelegate()
+        delegate.mainStatusMenu = menu
+        delegate.addWindowActionMenuItems()
+        let initialCount = menu.numberOfItems
+        let initialActions = menu.items.compactMap { $0.representedObject as? WindowAction }
+
+        for _ in 0..<2 {
+            delegate.rebuildMenu()
+            XCTAssertEqual(menu.numberOfItems, initialCount)
+            XCTAssertTrue(menu.items.last === settings)
+            XCTAssertEqual(menu.items.compactMap { $0.representedObject as? WindowAction }, initialActions)
+        }
+    }
+
+    private func makeMenu() -> NSMenu {
         let menu = NSMenu()
         let delegate = AppDelegate()
         delegate.mainStatusMenu = menu
-        delegate.addWindowActionMenuItems(showAdditional: showAdditional, showAllActions: showAllActions)
+        delegate.addWindowActionMenuItems()
         return menu
     }
 }
@@ -1417,14 +1440,14 @@ final class FootprintAlphaDefaultsTests: XCTestCase {
         }
     }
 
-    func testExplicitZeroSurvivesStyleChangesReloadAndConfigRoundTrip() throws {
+    func testExplicitZeroSurvivesStyleChangesReloadAndProfileCoding() {
         Defaults.footprintAlpha.value = 0
         for blurred in [false, true] {
             Defaults.footprintBlur.enabled = blurred
             XCTAssertEqual(Defaults.effectiveFootprintAlpha, 0)
             XCTAssertEqual(DoubleDefault(key: Defaults.footprintAlpha.key).value, 0)
 
-            let exported = try exportedAlpha()
+            let exported = Defaults.footprintAlpha.toCodable()
             XCTAssertEqual(exported.double, 0)
             XCTAssertNil(exported.float)
             Defaults.footprintAlpha.value = 0.8
@@ -1442,30 +1465,11 @@ final class FootprintAlphaDefaultsTests: XCTestCase {
                 Defaults.footprintBlur.enabled = blurred
                 XCTAssertEqual(Defaults.effectiveFootprintAlpha, expected)
                 XCTAssertEqual(DoubleDefault(key: Defaults.footprintAlpha.key).value, expected)
-                XCTAssertEqual(try exportedAlpha().double, expected)
+                XCTAssertEqual(Defaults.footprintAlpha.toCodable().double, expected)
             }
         }
     }
 
-    func testExportUsesTheEffectiveUnsetAlpha() throws {
-        for blurred in [false, true] {
-            JSONPreferences.shared.removeObject(forKey: Defaults.footprintAlpha.key)
-            Defaults.footprintBlur.enabled = blurred
-            let exported = try exportedAlpha()
-            XCTAssertEqual(exported.double, blurred ? 0 : 0.3)
-            XCTAssertNil(JSONPreferences.shared.object(forKey: Defaults.footprintAlpha.key))
-
-            Defaults.footprintAlpha.value = 0.8
-            Defaults.footprintAlpha.load(from: exported)
-            XCTAssertEqual(Defaults.effectiveFootprintAlpha, blurred ? 0 : 0.3)
-        }
-    }
-
-    private func exportedAlpha() throws -> CodableDefault {
-        let json = try XCTUnwrap(Defaults.encoded())
-        let config = try XCTUnwrap(Defaults.convert(jsonString: json))
-        return try XCTUnwrap(config.defaults[Defaults.footprintAlpha.key])
-    }
 }
 
 final class BoolDefaultTests: XCTestCase {
@@ -2114,15 +2118,15 @@ final class ScreenEdgeGapTests: XCTestCase {
         XCTAssertEqual(DoubleDefault(key: key, defaultValue: -1).value, -1)
     }
 
-    func testUnsetAndZeroNotchGapSurviveReloadAndConfigRoundTrip() throws {
+    func testUnsetAndZeroNotchGapSurviveReloadAndProfileCoding() {
         let notchGap = Defaults.screenEdgeGapTopNotch
         XCTAssertEqual(DoubleDefault(key: notchGap.key, defaultValue: -1).value, -1)
-        let exportedUnset = try exportedNotchGap()
+        let exportedUnset = notchGap.toCodable()
         XCTAssertEqual(exportedUnset.double, -1)
 
         notchGap.value = 0
         XCTAssertEqual(DoubleDefault(key: notchGap.key, defaultValue: -1).value, 0)
-        let exportedZero = try exportedNotchGap()
+        let exportedZero = notchGap.toCodable()
         XCTAssertEqual(exportedZero.double, 0)
 
         notchGap.load(from: exportedUnset)
@@ -2149,12 +2153,6 @@ final class ScreenEdgeGapTests: XCTestCase {
 
     private func topGap(on screen: NSScreen) -> CGFloat {
         screen.visibleFrame.maxY - screen.adjustedVisibleFrame().maxY
-    }
-
-    private func exportedNotchGap() throws -> CodableDefault {
-        let json = try XCTUnwrap(Defaults.encoded())
-        let config = try XCTUnwrap(Defaults.convert(jsonString: json))
-        return try XCTUnwrap(config.defaults[Defaults.screenEdgeGapTopNotch.key])
     }
 
     private final class TestScreen: NSScreen {
@@ -2318,10 +2316,10 @@ final class IgnoreMenuBarTests: XCTestCase {
         XCTAssertTrue(OptionalBoolDefault(key: key).notSet)
     }
 
-    func testOptionSurvivesConfigRoundTrip() throws {
+    func testOptionSurvivesProfileCoding() {
         let option = Defaults.ignoreMenuBar
         option.enabled = true
-        let exportedEnabled = try exportedIgnoreMenuBar()
+        let exportedEnabled = option.toCodable()
         XCTAssertEqual(exportedEnabled.int, 1)
 
         option.enabled = nil
@@ -2336,12 +2334,6 @@ final class IgnoreMenuBarTests: XCTestCase {
     // MenuBarUtilTests cover the rest of the rect.
     private func topEdge(of screen: NSScreen) -> CGFloat {
         screen.adjustedVisibleFrame(true, true).maxY
-    }
-
-    private func exportedIgnoreMenuBar() throws -> CodableDefault {
-        let json = try XCTUnwrap(Defaults.encoded())
-        let config = try XCTUnwrap(Defaults.convert(jsonString: json))
-        return try XCTUnwrap(config.defaults[Defaults.ignoreMenuBar.key])
     }
 
     private final class TestScreen: NSScreen {
@@ -2362,34 +2354,6 @@ final class IgnoreMenuBarTests: XCTestCase {
         override var safeAreaInsets: NSEdgeInsets { NSEdgeInsets(top: notchHeight, left: 0, bottom: 0, right: 0) }
         override var hash: Int { ObjectIdentifier(self).hashValue }
         override func isEqual(_ object: Any?) -> Bool { (object as AnyObject?) === self }
-    }
-}
-
-class DefaultsExportTests: XCTestCase {
-
-    func testOverlapDefaultsInExportArray() {
-        let keys = Defaults.array.map { $0.key }
-        XCTAssertTrue(keys.contains("cyclingOverlapOffset"), "cyclingOverlapOffset missing from Defaults.array")
-        XCTAssertTrue(keys.contains("cyclingOverlapOffsetSize"), "cyclingOverlapOffsetSize missing from Defaults.array")
-        XCTAssertTrue(keys.contains("cyclingOverlapMaxCascade"), "cyclingOverlapMaxCascade missing from Defaults.array")
-        XCTAssertTrue(keys.contains("cooperativeCornerResize"), "cooperativeCornerResize missing from Defaults.array")
-        XCTAssertTrue(keys.contains("stackBadge"), "stackBadge missing from Defaults.array")
-        XCTAssertTrue(keys.contains("stackSameSizeOnly"), "stackSameSizeOnly missing from Defaults.array")
-    }
-
-    func testMouseButtonSettingInExportArray() {
-        let keys = Defaults.array.map { $0.key }
-        XCTAssertTrue(keys.contains("mouseButtonShortcutsUseWindowUnderCursor"), "mouseButtonShortcutsUseWindowUnderCursor missing from Defaults.array")
-    }
-
-    func testIgnoreMenuBarInExportArray() {
-        let keys = Defaults.array.map { $0.key }
-        XCTAssertTrue(keys.contains("ignoreMenuBar"), "ignoreMenuBar missing from Defaults.array")
-    }
-
-    func testNewWindowActionInExportArray() {
-        let keys = Defaults.array.map { $0.key }
-        XCTAssertTrue(keys.contains("newWindowAction"), "newWindowAction missing from Defaults.array")
     }
 }
 
@@ -2429,168 +2393,6 @@ final class BundleIdentityTests: XCTestCase {
         XCTAssertEqual(Bundle.main.bundleIdentifier, "com.knollsoft.Rectangle.debug")
     }
 
-    func testExportedConfigKeepsTheReleaseBundleIdentifier() throws {
-        let json = try XCTUnwrap(Defaults.encoded())
-        let config = try XCTUnwrap(Defaults.convert(jsonString: json))
-        XCTAssertEqual(config.bundleId, "com.knollsoft.Rectangle")
-    }
-}
-
-class ConfigImportTests: XCTestCase {
-
-    private static let shortcutKeys = WindowAction.active.map(\.name) + TodoManager.defaultsKeys + StackBadgeManager.defaultsKeys
-    private var storedValues = [String: Any]()
-    private var absentKeys = Set<String>()
-
-    override func setUp() {
-        super.setUp()
-        for key in Self.shortcutKeys {
-            if let value = JSONPreferences.shared.object(forKey: key) {
-                storedValues[key] = value
-            } else {
-                absentKeys.insert(key)
-            }
-        }
-    }
-
-    override func tearDown() {
-        for key in Self.shortcutKeys {
-            if let value = storedValues[key] {
-                JSONPreferences.shared.set(value, forKey: key)
-            } else if absentKeys.contains(key) {
-                JSONPreferences.shared.removeObject(forKey: key)
-            }
-        }
-        storedValues.removeAll()
-        absentKeys.removeAll()
-        super.tearDown()
-    }
-
-    func testImportClearsOmittedActiveShortcut() throws {
-        try XCTSkipIf(true, "Flaky: intermittently fails the XCTAssertNil. Skipped until the cause is found.")
-
-        let action = WindowAction.almostMaximize
-        store(Shortcut(NSEvent.ModifierFlags.command.rawValue, 10), forKey: action.name)
-
-        try loadConfig(shortcuts: [:])
-
-        XCTAssertNil(JSONPreferences.shared.object(forKey: action.name))
-    }
-
-    func testImportClearsOmittedTodoShortcut() throws {
-        let defaultsKey = TodoManager.toggleDefaultsKey
-        store(Shortcut(NSEvent.ModifierFlags.command.rawValue, 11), forKey: defaultsKey)
-
-        try loadConfig(shortcuts: [:])
-
-        XCTAssertNil(JSONPreferences.shared.object(forKey: defaultsKey))
-    }
-
-    func testImportClearsOmittedStackBadgeShortcut() throws {
-        let defaultsKey = StackBadgeManager.toggleDefaultsKey
-        store(Shortcut(NSEvent.ModifierFlags.command.rawValue, 14), forKey: defaultsKey)
-
-        try loadConfig(shortcuts: [:])
-
-        XCTAssertNil(JSONPreferences.shared.object(forKey: defaultsKey))
-    }
-
-    func testImportAppliesSuppliedActiveShortcut() throws {
-        let action = WindowAction.almostMaximize
-        let importedShortcut = Shortcut(NSEvent.ModifierFlags.command.rawValue, 12)
-
-        try loadConfig(shortcuts: [action.name: importedShortcut])
-
-        let storedShortcut = try XCTUnwrap(ShortcutCycle.shortcut(for: action))
-        XCTAssertEqual(storedShortcut.keyCode, importedShortcut.keyCode)
-        XCTAssertEqual(storedShortcut.modifierFlags.rawValue, importedShortcut.modifierFlags)
-    }
-
-    func testImportUsesActiveShortcutAlias() throws {
-        let action = WindowAction.leftHalf
-        let alias = try XCTUnwrap(action.aliasName)
-        let importedShortcut = Shortcut(NSEvent.ModifierFlags.command.rawValue, 13)
-
-        try loadConfig(shortcuts: [alias: importedShortcut])
-
-        let storedShortcut = try XCTUnwrap(ShortcutCycle.shortcut(for: action))
-        XCTAssertEqual(storedShortcut.keyCode, importedShortcut.keyCode)
-        XCTAssertEqual(storedShortcut.modifierFlags.rawValue, importedShortcut.modifierFlags)
-    }
-
-    func testImportClearsInvalidActiveShortcut() throws {
-        try XCTSkipIf(true, "Flaky: intermittently fails the XCTAssertNil. Skipped until the cause is found.")
-
-        let action = WindowAction.almostMaximize
-        store(Shortcut(NSEvent.ModifierFlags.command.rawValue, 14), forKey: action.name)
-
-        try loadConfig(shortcuts: [action.name: Shortcut(NSEvent.ModifierFlags.command.rawValue, -1)])
-
-        XCTAssertNil(JSONPreferences.shared.object(forKey: action.name))
-    }
-
-    func testImportAppliesSuppliedMouseButtonShortcut() throws {
-        let action = WindowAction.cycleStackedWindows
-        let mouseButton = MouseButtonShortcut(buttonNumber: 3, modifierFlags: [.option])
-
-        try loadConfig(shortcuts: [action.name: Shortcut(masShortcut: mouseButton)])
-
-        let storedShortcut = try XCTUnwrap(ShortcutCycle.shortcut(for: action))
-        XCTAssertTrue(MouseButtonShortcut.isMouseButton(storedShortcut))
-        XCTAssertEqual(ShortcutCycle.ShortcutIdentity(storedShortcut), ShortcutCycle.ShortcutIdentity(mouseButton))
-    }
-
-    func testExportIncludesMouseButtonShortcutAndSetting() throws {
-        let action = WindowAction.cycleStackedWindowsBackward
-        let mouseButton = MouseButtonShortcut(buttonNumber: 4, modifierFlags: [])
-        store(Shortcut(masShortcut: mouseButton), forKey: action.name)
-
-        let config = try XCTUnwrap(Defaults.encoded().flatMap { Defaults.convert(jsonString: $0) })
-
-        let exportedShortcut = try XCTUnwrap(config.shortcuts[action.name])
-        XCTAssertEqual(exportedShortcut.keyCode, mouseButton.keyCode)
-        XCTAssertEqual(exportedShortcut.modifierFlags, mouseButton.modifierFlags.rawValue)
-        XCTAssertNotNil(config.defaults[Defaults.mouseButtonShortcutsUseWindowUnderCursor.key])
-    }
-
-    func testExportAndImportPreserveClearedShortcut() throws {
-        let action = WindowAction.almostMaximize
-        ShortcutPreferences.shared.set(nil, for: action.name)
-        let config = try XCTUnwrap(Defaults.encoded().flatMap { Defaults.convert(jsonString: $0) })
-        XCTAssertEqual(config.shortcuts[action.name]?.keyCode, -1)
-        store(Shortcut(NSEvent.ModifierFlags.command.rawValue, 12), forKey: action.name)
-        try loadConfig(shortcuts: config.shortcuts)
-        XCTAssertNil(ShortcutCycle.shortcut(for: action))
-    }
-
-    func testExportIncludesCurrentSpaceSwitcher() throws {
-        let key = CurrentSpaceWindowSwitcher.shortcutDefaultsKey
-        let previous = JSONPreferences.shared.object(forKey: key)
-        defer { JSONPreferences.shared.set(previous, forKey: key) }
-        store(Shortcut(NSEvent.ModifierFlags.option.rawValue, 48), forKey: key)
-        let config = try XCTUnwrap(Defaults.encoded().flatMap { Defaults.convert(jsonString: $0) })
-        XCTAssertEqual(config.shortcuts[key]?.keyCode, 48)
-    }
-
-    private func store(_ shortcut: Shortcut, forKey key: String) {
-        let transformer = ValueTransformer(forName: NSValueTransformerName(rawValue: MASDictionaryTransformerName))!
-        let value = transformer.reverseTransformedValue(shortcut.toMASSHortcut())
-        JSONPreferences.shared.set(value, forKey: key)
-    }
-
-    private func loadConfig(shortcuts: [String: Shortcut]) throws {
-        let config = Config(bundleId: "com.knollsoft.Rectangle",
-                            version: "ConfigImportTests",
-                            shortcuts: shortcuts,
-                            defaults: [:])
-        let data = try JSONEncoder().encode(config)
-        let fileURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("ConfigImportTests-\(UUID().uuidString).json")
-        defer { try? FileManager.default.removeItem(at: fileURL) }
-        try data.write(to: fileURL, options: .atomic)
-
-        Defaults.load(fileUrl: fileURL, notificationCenter: NotificationCenter())
-    }
 }
 
 class StackBadgeGeometryTests: XCTestCase {
@@ -2729,7 +2531,7 @@ class StackBadgeGeometryTests: XCTestCase {
         XCTAssertEqual(indices.sorted(), [1, 2])
     }
 
-    func testTodoSidebarWidthUnitInExportArray() {
+    func testTodoSidebarWidthUnitInDefaultsArray() {
         let keys = Defaults.array.map { $0.key }
         XCTAssertTrue(keys.contains("todoSidebarWidthUnit"), "todoSidebarWidthUnit missing from Defaults.array")
     }
@@ -3206,10 +3008,11 @@ class StackCycleTests: XCTestCase {
         XCTAssertEqual(WindowAction.cycleStackedWindowsBackward.name, "cycleStackedWindowsBackward")
     }
 
-    func testActionsHaveSettingsTitlesButStayOutOfMenu() {
+    func testActionsHaveSettingsTitlesButAreOutsideStandardShortcutGroups() {
+        let standardActions = Set(WindowAction.standardShortcutGroups.flatMap { $0 })
         for action in [WindowAction.cycleStackedWindows, .cycleStackedWindowsBackward] {
             XCTAssertNotNil(action.displayName)
-            XCTAssertTrue(action.excludedFromMenu)
+            XCTAssertFalse(standardActions.contains(action))
             XCTAssertFalse(action.positionCycles)
             XCTAssertFalse(action.overlapOffsetApplies)
             XCTAssertFalse(action.isDragSnappable)
@@ -10900,7 +10703,6 @@ final class NewWindowActionManagerTests: XCTestCase {
         let existingWindows: ValueBox<[pid_t: [AccessibilityElement]]>
         let ignoredApps: ValueBox<Set<String>>
         let mouseButtonDown: ValueBox<Bool>
-        let notificationCenter: NotificationCenter
     }
 
     private func makeHarness(actionName: String? = "maximize",
@@ -10914,11 +10716,9 @@ final class NewWindowActionManagerTests: XCTestCase {
         let existing = ValueBox(existingWindows)
         let ignored = ValueBox(Set<String>())
         let mouseButtonDown = ValueBox(false)
-        let notificationCenter = NotificationCenter()
         let manager = NewWindowActionManager(
             ownPid: 1,
             delay: 0,
-            notificationCenter: notificationCenter,
             workspaceNotificationCenter: NotificationCenter(),
             observers: spy,
             actionProvider: { NewWindowActionPolicy.action(named: actionName.value) },
@@ -10930,8 +10730,7 @@ final class NewWindowActionManagerTests: XCTestCase {
             isPrimaryMouseButtonDown: { mouseButtonDown.value }
         )
         return Harness(manager: manager, spy: spy, actionName: actionName, executed: executed,
-                       existingWindows: existing, ignoredApps: ignored, mouseButtonDown: mouseButtonDown,
-                       notificationCenter: notificationCenter)
+                       existingWindows: existing, ignoredApps: ignored, mouseButtonDown: mouseButtonDown)
     }
 
     func testNothingIsObservedWithoutAConfiguredAction() {
@@ -11033,12 +10832,12 @@ final class NewWindowActionManagerTests: XCTestCase {
         XCTAssertTrue(harness.manager.observedProcessIdentifiers.isEmpty)
     }
 
-    func testImportingAConfigReloadsTheSetting() {
+    func testReloadingDefaultsUpdatesTheSetting() {
         let harness = makeHarness(actionName: nil)
         XCTAssertTrue(harness.spy.attachedPids.isEmpty)
 
         harness.actionName.value = "center"
-        harness.notificationCenter.post(name: .configImported, object: nil)
+        harness.manager.reloadFromDefaults()
 
         XCTAssertEqual(harness.manager.action, .center)
         XCTAssertEqual(harness.spy.attachedPids, [100])
@@ -11126,7 +10925,7 @@ final class NewWindowActionManagerTests: XCTestCase {
         let harness = makeHarness(readyImmediately: false)
         let stale = harness.spy.failureHandler(for: 100)
 
-        harness.notificationCenter.post(name: .configImported, object: nil)
+        harness.manager.reloadFromDefaults()
         XCTAssertEqual(harness.spy.attachedPids, [100, 100])
 
         stale?()

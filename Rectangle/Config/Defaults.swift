@@ -56,8 +56,6 @@ class Defaults {
     static let ignoreMenuBar = OptionalBoolDefault(key: "ignoreMenuBar")
     static let lastVersion = StringDefault(key: "lastVersion")
     static let installVersion = StringDefault(key: "installVersion")
-    static let showAllActionsInMenu = OptionalBoolDefault(key: "showAllActionsInMenu")
-    static let showAdditionalSizesInMenu = OptionalBoolDefault(key: "showAdditionalSizesInMenu")
     static let footprintAlpha = DoubleDefault(key: "footprintAlpha")
     static var effectiveFootprintAlpha: Double {
         effectiveFootprintAlpha(usesBlur: footprintBlur.enabled)
@@ -214,8 +212,6 @@ class Defaults {
         screenEdgeGapTopNotch,
         ignoreMenuBar,
         newWindowAction,
-        showAllActionsInMenu,
-        showAdditionalSizesInMenu,
         footprintAlpha,
         footprintBorderWidth,
         footprintFade,

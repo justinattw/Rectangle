@@ -13,9 +13,6 @@ class TitleBarManager {
         Notification.Name.windowTitleBar.onPost { notification in
             self.toggleListening()
         }
-        Notification.Name.configImported.onPost { notification in
-            self.toggleListening()
-        }
         for name in [Notification.Name.activeDisplayProfileChanged, .displayBehaviorProfileOverridesChanged,
                      NSApplication.didChangeScreenParametersNotification] {
             name.onPost { [weak self] _ in self?.toggleListening() }
